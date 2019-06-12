@@ -9,8 +9,7 @@
 <p>
   Aropixel Menu Bundle is a complementray bundle of <a href="https://github.com/aropixel/admin-bundle">Aropixel Admin Bundle</a>. It gives possibility to manage menus (main menu, footer, ...) of your website.   
 </p>
-<br>
-<span align="center">
+
 
 ![GitHub last commit](https://img.shields.io/github/last-commit/aropixel/menu-bundle.svg)
 [![GitHub issues](https://img.shields.io/github/issues/aropixel/menu-bundle.svg)](https://github.com/stisla/stisla/issues)
