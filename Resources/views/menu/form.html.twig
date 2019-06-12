@@ -61,17 +61,13 @@
         <div class="col-md-4">
 
             <div class="card border-top-purple">
+                <div class="card-header">
+                    <h4 class="card-title">Section</h4>
+                </div>
                 <div class="card-body">
-                    <h6 class="no-margin text-semibold">Section</h6>
-                    <div class="m-t-10">
-                        <div class="form-group">
-                            <div class="row">
-                                <label class="control-label col-lg-2">Section</label>
-                                <div class="col-lg-10">
-                                    <input name="manual_section" type="text" class="form-control">
-                                </div>
-                            </div>
-                        </div>
+                    <div class="form-group m-b-0">
+                        <label>Section</label>
+                        <input name="manual_section" type="text" class="form-control">
                     </div>
                 </div>
                 <div class="card-footer text-right">
@@ -80,14 +76,17 @@
             </div>
 
             <div class="card border-top-pink" id="panel-pages">
+                <div class="card-header">
+                    <h4 class="card-title">Pages</h4>
+                </div>
                 <div class="card-body">
-                    <h6 class="text-semibold">Pages</h6>
                     <div>
                         {% for key,label in available_pages %}
-
-                            <div class="form-check"><input class="form-check-input" name="pages[]" type="checkbox" value="{{ key }}"> <label class="form-check-label"><span{% if key in already_included['pages'] %} style="color: #666;" {% endif %} >{{ label }}</span></label></div>
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="page{{ loop.index0 }}" name="pages[]" value="{{ key }}">
+                                <label class="custom-control-label" for="page{{ loop.index0 }}"><span{% if key in already_included['pages'] %} style="color: #666;" {% endif %} >{{ label }}</span></label>
+                            </div>
                         {% endfor %}
-
                     </div>
                 </div>
                 <div class="card-footer text-right">
@@ -96,25 +95,17 @@
             </div>
 
             <div class="card border-top-teal">
+                <div class="card-header">
+                    <h4 class="card-title">Lien manuel</h4>
+                </div>
                 <div class="card-body">
-                    <h6 class="no-margin text-semibold">Lien manuel</h6>
-                    <div class="m-t-10">
-                        <div class="form-group">
-                            <div class="row">
-                                <label class="control-label col-lg-2">Titre</label>
-                                <div class="col-lg-10">
-                                    <input name="manual_label" type="text" class="form-control">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="row">
-                                <label class="control-label col-lg-2">Lien</label>
-                                <div class="col-lg-10">
-                                    <input name="manual_link" type="text" class="form-control">
-                                </div>
-                            </div>
-                        </div>
+                    <div class="form-group">
+                        <label class="control-label">Titre</label>
+                        <input name="manual_label" type="text" class="form-control" />
+                    </div>
+                    <div class="form-group m-b-0">
+                        <label class="control-label">Lien</label>
+                        <input name="manual_link" type="text" class="form-control" />
                     </div>
                 </div>
                 <div class="card-footer text-right">
