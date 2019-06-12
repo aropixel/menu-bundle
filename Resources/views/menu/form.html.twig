@@ -1,0 +1,178 @@
+{% extends '@AropixelAdmin/Form/base.html.twig' %}
+
+
+{% block header_elements %}
+{% endblock %}
+
+
+{% block stylesheets %}
+    {{ parent() }}
+    {#<link href="{{ asset('bundles/aropixeladmin/theme_ll/js/plugins/nestable/jquery-nestable/jquery.nestable.css') }}" rel="stylesheet" type="text/css">#}
+    <link href="{{ asset('bundles/aropixelmenu/css/menu.css') }}" rel="stylesheet" type="text/css">
+{% endblock %}
+
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+        var max_level = {{ menus[type_menu].depth }};
+    </script>
+    <script type="text/javascript" src="{{ asset('bundles/aropixeladmin/modules/jquery.mjs.nestedSortable.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/aropixelmenu/js/menu.js') }}"></script>
+
+{% endblock %}
+
+
+{% block body %}
+
+    <template id="template_row">
+        {% include '@AropixelMenu/menu/item.html.twig' %}
+    </template>
+
+
+    <div class="row">
+
+        <div class="col-md-8">
+
+
+            <div class="card" id="panelMenu">
+
+                <div class="card-header">
+                    <h4 class="card-heading">{{ menus[type_menu].name }}</h4>
+                    <div class="card-header-action">
+                        <button type="button" class="btn btn-primary heading-btn" id="save_menu" data-type="{{ type_menu }}" data-name="{{ menus[type_menu].name }}" data-url="{{ path('menu_save') }}">Enregistrer</button>
+                    </div>
+                </div>
+
+                <div class="card-body">
+
+                    <p class="text-muted">Gérez votre menu en ajoutant des éléments de la colonne de droite.<br />
+                        Vous pouvez déplacer les éléments du menu par glisser-déposer. </p>
+                </div>
+                <ol class="menu" id="menu">
+                    {% for item in menu %}
+                        {{ include ('@AropixelMenu/menu/item.html.twig', {'item': item}) }}
+                    {% endfor %}
+                </ol>
+
+            </div>
+        </div>
+
+        <div class="col-md-4">
+
+            <div class="card border-top-purple">
+                <div class="card-body">
+                    <h6 class="no-margin text-semibold">Section</h6>
+                    <div class="m-t-10">
+                        <div class="form-group">
+                            <div class="row">
+                                <label class="control-label col-lg-2">Section</label>
+                                <div class="col-lg-10">
+                                    <input name="manual_section" type="text" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-right">
+                        <button type="button" class="btn btn-primary" id="add-section">Ajouter</button>
+                </div>
+            </div>
+
+            <div class="card border-top-pink" id="panel-pages">
+                <div class="card-body">
+                    <h6 class="text-semibold">Pages</h6>
+                    <div>
+                        {% for key,label in available_pages %}
+
+                            <div class="form-check"><input class="form-check-input" name="pages[]" type="checkbox" value="{{ key }}"> <label class="form-check-label"><span{% if key in already_included['pages'] %} style="color: #666;" {% endif %} >{{ label }}</span></label></div>
+                        {% endfor %}
+
+                    </div>
+                </div>
+                <div class="card-footer text-right">
+                        <button type="button" class="btn btn-primary" id="add-pages">Ajouter</button>
+                </div>
+            </div>
+
+            <div class="card border-top-teal">
+                <div class="card-body">
+                    <h6 class="no-margin text-semibold">Lien manuel</h6>
+                    <div class="m-t-10">
+                        <div class="form-group">
+                            <div class="row">
+                                <label class="control-label col-lg-2">Titre</label>
+                                <div class="col-lg-10">
+                                    <input name="manual_label" type="text" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <label class="control-label col-lg-2">Lien</label>
+                                <div class="col-lg-10">
+                                    <input name="manual_link" type="text" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-right">
+                    <button type="button" class="btn btn-primary" id="add-link">Ajouter</button>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Modal with basic title -->
+    <div id="modal_please_select" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body text-center">
+                    <h5 style="margin-bottom: 0">Veuillez sélectionner un élément</h5>
+                </div>
+
+                <div class="modal-footer text-center">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Compris !</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /modal with basic title -->
+
+    <!-- Modal with basic title -->
+    <div id="modal_edit" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Modifier l'élément de menu</h5>
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        <label>Texte du lien</label>
+                        <input type="text" name="item_label" placeholder="Texte du lien" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Destination du lien</label>
+                        <input type="text" name="item_link" placeholder="Destination du lien" class="form-control">
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+                    <button type="button" class="btn btn-primary" id="valid_edit">Valider</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /modal with basic title -->
+
+
+{% endblock %}
+

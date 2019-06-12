@@ -1,0 +1,12 @@
+{% extends '@AropixelMenu/menu/form.html.twig' %}
+
+{% block header_title %}{{ menus[type_menu].name }}{% endblock %}
+
+{% block header_breadcrumb %}
+    <ul class="breadcrumb breadcrumb-caret position-right">
+        <li class="breadcrumb-item"><a href="{{ url('_admin') }}">Accueil</a></li>
+        <li class="breadcrumb-item">Menus</li>
+        <li class="breadcrumb-item active">{{ menus[type_menu].name }}</li>
+    </ul>
+{% endblock %}
+
