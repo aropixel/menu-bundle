@@ -30,7 +30,8 @@ class MenuController extends AbstractController
 
         //
         $em = $this->getDoctrine();
-        $menuItems = $em->getRepository(Menu::class)->findBy(array(
+        $entity = $this->getParameter('aropixel_menu.entity');
+        $menuItems = $em->getRepository($entity)->findBy(array(
             'parent' => null,
             'type' => $type
         ));
@@ -125,8 +126,9 @@ class MenuController extends AbstractController
         }
 
         //
+        $entity = $this->getParameter('aropixel_menu.entity');
         $em = $this->getDoctrine()->getManager();
-        $em->getRepository(Menu::class)->deleteMenu($type);
+        $em->getRepository($entity)->deleteMenu($type);
         $em->flush();
 
         //
@@ -150,8 +152,11 @@ class MenuController extends AbstractController
     private function saveMenuItem($type, $item, Menu $parent=null)
     {
         //
+        $entity = $this->getParameter('aropixel_menu.entity');
         $em = $this->getDoctrine()->getManager();
-        $ligne = new Menu();
+
+        /** @var Menu $ligne */
+        $ligne = new $entity();
         $ligne->setType($type);
 
         //

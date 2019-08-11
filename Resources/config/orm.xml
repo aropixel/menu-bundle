@@ -16,6 +16,11 @@
     <services>
         <defaults public="true" />
 
+        <service id="aropixel_menu.event_subscriber.mapped_super_class" class="Aropixel\MenuBundle\EventListener\MappedSuperClassSubscriber">
+            <argument key="$entityName">%aropixel_menu.entity%</argument>
+            <tag name="doctrine.event_subscriber" priority="8192" />
+        </service>
+
         <service id="aropixel_menu.event_subscriber.map_page_bundle_class" class="Aropixel\MenuBundle\EventListener\MapPageBundleSubscriber">
             <argument key="$isPageEnabled">%aropixel_menu.page_active%</argument>
             <tag name="doctrine.event_subscriber" priority="8192" />

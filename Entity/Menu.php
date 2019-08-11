@@ -15,8 +15,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @Gedmo\Tree(type="nested")
- * @ORM\Table()
- * @ORM\Entity(repositoryClass="Aropixel\MenuBundle\Repository\MenuRepository")
+ * @ORM\MappedSuperclass(repositoryClass="Aropixel\MenuBundle\Repository\MenuRepository")
  */
 class Menu
 {

@@ -21,7 +21,7 @@ $(document).ready(function() {
 
             checked_inputs.each(function() {
 
-                var title = $(this).parent().children('span').html();
+                var title = $(this).parent().find('span').html();
                 var line_properties = {}
                 line_properties.label = 'Page générale';
                 line_properties.color = 'bg-pink';
@@ -42,8 +42,8 @@ $(document).ready(function() {
 
     $('#add-link').click(function() {
 
-        var label = $(this).closest('.panel').find('input[name="manual_label"]');
-        var link = $(this).closest('.panel').find('input[name="manual_link"]');
+        var label = $(this).closest('.card').find('input[name="manual_label"]');
+        var link = $(this).closest('.card').find('input[name="manual_link"]');
 
         var line_properties = {}
         line_properties.label = 'Lien manuel';
@@ -64,11 +64,11 @@ $(document).ready(function() {
 
     $('#add-section').click(function() {
 
-        var section = $(this).closest('.panel').find('input[name="manual_section"]');
+        var section = $(this).closest('.card').find('input[name="manual_section"]');
 
         var line_properties = {}
         line_properties.label = 'Section';
-        line_properties.color = 'bg-purple';
+        line_properties.color = 'bg-dark-grey';
         line_properties.title = section.val();
         line_properties.originalTitle = 'Section';
         line_properties.static = '';
@@ -136,7 +136,7 @@ $(document).ready(function() {
 
     function control_select(button) {
 
-        var checked = button.closest('.panel').find('input:checked');
+        var checked = button.closest('.card').find('input:checked');
         if (!checked.length) {
             $('#modal_please_select').modal('show');
             return false;
@@ -198,7 +198,7 @@ $(document).ready(function() {
 
         new_line.find('.title').html(line_properties.title);
         new_line.find('.link').html(line_properties.link ? '<a href="'+line_properties.link+'" target="_blank">'+hostname+'</a>' : line_properties.originalTitle);
-        new_line.find('.cell-label').html('<span class="label '+line_properties.color+'">'+line_properties.label+'</span>');
+        new_line.find('.cell-label').html('<span class="badge '+line_properties.color+'">'+line_properties.label+'</span>');
 
         if (line_properties.static) {
             var checkbox = $('#panel-pages .panel-body input[value="'+line_properties.static+'"]');

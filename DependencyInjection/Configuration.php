@@ -7,7 +7,7 @@
 
 namespace Aropixel\MenuBundle\DependencyInjection;
 
-use Aropixel\MenuBundle\Model\Menu;
+use Aropixel\MenuBundle\Entity\Menu;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
@@ -21,6 +21,7 @@ class Configuration implements ConfigurationInterface
         $treeBuilder->getRootNode()
             ->fixXmlConfig('menu')
             ->children()
+                ->scalarNode('entity')->defaultValue(Menu::class)->end()
                 ->arrayNode('menus')
                     ->arrayPrototype()
                         ->children()
@@ -29,8 +30,6 @@ class Configuration implements ConfigurationInterface
                         ->end()
                     ->end()
                 ->end()
-            ->end()
-            ->children()
                 ->arrayNode('static_pages')
                      ->defaultValue(array())
                      ->useAttributeAsKey('name')
