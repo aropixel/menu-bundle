@@ -17,6 +17,7 @@
 
 #panelMenu ol > li > div {
     width: 100%!important;
+    display: flex;
 }
 #panelMenu ol li > div > div {
     padding: 15px 20px;
