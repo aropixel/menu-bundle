@@ -221,7 +221,7 @@ $(document).ready(function() {
 
         var title = line.attr('data-title');
         var original_title = line.attr('data-original-title');
-        var label = line.find('.label').html();
+        var label = line.find('.badge').html();
 
         var static_key = line.attr('data-static');
         var page_id = line.attr('data-page');
