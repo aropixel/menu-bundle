@@ -8,7 +8,8 @@ in 0.1 minor versions.
 
 
 * 0.1.4 (2019-10-11)
- * Bug fix: type name isn't displayed in edit modal
+ * Bugfix: type name isn't displayed in edit modal
+ * Bugfix change link for custom link
 
 * 0.1.3 (2019-10-07)
  * Bugfix menu lines rendering
