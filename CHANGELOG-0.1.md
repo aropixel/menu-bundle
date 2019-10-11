@@ -4,8 +4,11 @@ CHANGELOG for 0.1.x
 This changelog references the relevant changes (bug and security fixes) done
 in 0.1 minor versions.
 
-* 0.1.4 (20xx-xx-xx)
+* 0.1.5 (20xx-xx-xx)
 
+
+* 0.1.4 (2019-10-11)
+ * Bug fix: type name isn't displayed in edit modal
 
 * 0.1.3 (2019-10-07)
  * Bugfix menu lines rendering
