@@ -1,4 +1,6 @@
-<li class="li-movable" data-static="{{ item is defined ? item.staticPage : '' }}"
+<li class="li-movable"
+    data-type
+    data-static="{{ item is defined ? item.staticPage : '' }}"
     data-page="{{ item is defined and item.page ? item.page.id : '' }}"
     data-link="{{ item is defined ? item.link : '' }}"
     data-title="{{ item is defined ? item.title : '' }}"

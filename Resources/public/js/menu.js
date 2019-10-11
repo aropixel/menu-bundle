@@ -260,8 +260,13 @@ $(document).ready(function() {
         var modal = $('#modal_edit');
 
         var title = modal.find('.modal-body input[name="item_label"]').val();
+        var linkInput = modal.find('.modal-body input[name="item_link"]');
 
         line.attr('data-title', title);
+        if (!linkInput.is(':disabled')) {
+            line.attr('data-link', linkInput.val());
+        }
+
         line.find('> div .title').html(title);
         modal.modal('hide');
     });
