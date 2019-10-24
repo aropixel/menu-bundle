@@ -9,65 +9,56 @@ namespace Aropixel\MenuBundle\Entity;
 
 use Aropixel\PageBundle\Entity\Page;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 
 
 /**
- * @Gedmo\Tree(type="nested")
- * @ORM\MappedSuperclass(repositoryClass="Aropixel\MenuBundle\Repository\MenuRepository")
+ * Menu
  */
-class Menu
+class Menu implements MenuInterface
 {
 
     /**
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue
+     * @var integer
      */
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=50)
+     * @var string
      */
     private $type;
 
     /**
-     * @ORM\Column(type="text")
+     * @var string
      */
     private $title;
 
     /**
-     * @Gedmo\Slug(handlers={
-     *      @Gedmo\SlugHandler(class="Gedmo\Sluggable\Handler\TreeSlugHandler", options={
-     *          @Gedmo\SlugHandlerOption(name="parentRelationField", value="parent"),
-     *          @Gedmo\SlugHandlerOption(name="separator", value="/")
-     *      })
-     * }, fields={"title"})
-     * @Doctrine\ORM\Mapping\Column(length=255)
+     * @var string
      */
     private $slug;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
+     * @var string
      */
     private $originalTitle;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @var string
      */
     private $link;
 
-
-    /** @var string */
+    /**
+     * @var string
+     */
     private $linkDomain;
 
-
-    /** @var bool */
+    /**
+     * @var bool
+     */
     private $isActiveItem = false;
 
     /**
-     * @ORM\Column(type="string", length=50, nullable=true)
+     * @var string
      */
     private $staticPage;
 
@@ -77,39 +68,32 @@ class Menu
     private $page;
 
     /**
-     * @Gedmo\TreeLeft
-     * @ORM\Column(type="integer", name="lft")
+     * @var integer
      */
     private $left;
 
     /**
-     * @Gedmo\TreeLevel
-     * @ORM\Column(type="integer", name="lvl")
+     * @var integer
      */
     private $level;
 
     /**
-     * @Gedmo\TreeRight
-     * @ORM\Column(type="integer", name="rgt")
+     * @var integer
      */
     private $right;
 
     /**
-     * @Gedmo\TreeRoot
-     * @ORM\Column(type="integer", nullable=true)
+     * @var integer
      */
     private $root;
 
     /**
-     * @Gedmo\TreeParent
-     * @ORM\ManyToOne(targetEntity="Menu", cascade={"persist"}, inversedBy="children")
-     * @ORM\JoinColumn(name="parent_id", referencedColumnName="id", onDelete="CASCADE")
+     * @var MenuInterface
      */
     private $parent;
 
     /**
-     * @ORM\OneToMany(targetEntity="Menu", mappedBy="parent")
-     * @ORM\OrderBy({"left" = "ASC"})
+     * @var MenuInterface[]
      */
     private $children;
 
@@ -124,7 +108,7 @@ class Menu
 
     /**
      * @param mixed $id
-     * @return Menu
+     * @return MenuInterface
      */
     public function setId($id)
     {
@@ -142,9 +126,9 @@ class Menu
 
     /**
      * @param string|null $type
-     * @return Menu
+     * @return MenuInterface
      */
-    public function setType(?string $type): self
+    public function setType(?string $type): MenuInterface
     {
         $this->type = $type;
         return $this;
@@ -160,9 +144,9 @@ class Menu
 
     /**
      * @param string|null $title
-     * @return Menu
+     * @return MenuInterface
      */
-    public function setTitle(?string $title): self
+    public function setTitle(?string $title): MenuInterface
     {
         $this->title = $title;
         return $this;
@@ -178,9 +162,9 @@ class Menu
 
     /**
      * @param string|null $originalTitle
-     * @return Menu
+     * @return MenuInterface
      */
-    public function setOriginalTitle(?string $originalTitle): self
+    public function setOriginalTitle(?string $originalTitle): MenuInterface
     {
         $this->originalTitle = $originalTitle;
         return $this;
@@ -196,9 +180,9 @@ class Menu
 
     /**
      * @param mixed $slug
-     * @return Menu
+     * @return MenuInterface
      */
-    public function setSlug($slug): self
+    public function setSlug($slug): MenuInterface
     {
         $this->slug = $slug;
         return $this;
@@ -214,9 +198,9 @@ class Menu
 
     /**
      * @param string|null $link
-     * @return Menu
+     * @return MenuInterface
      */
-    public function setLink(?string $link): self
+    public function setLink(?string $link): MenuInterface
     {
         $this->link = $link;
         return $this;
@@ -232,9 +216,9 @@ class Menu
 
     /**
      * @param string|null $linkDomain
-     * @return Menu
+     * @return MenuInterface
      */
-    public function setLinkDomain(?string $linkDomain): self
+    public function setLinkDomain(?string $linkDomain): MenuInterface
     {
         $this->linkDomain = $linkDomain;
         return $this;
@@ -250,9 +234,9 @@ class Menu
 
     /**
      * @param bool $isActiveItem
-     * @return Menu
+     * @return MenuInterface
      */
-    public function setIsActiveItem(bool $isActiveItem): self
+    public function setIsActiveItem(bool $isActiveItem): MenuInterface
     {
         $this->isActiveItem = $isActiveItem;
         return $this;
@@ -268,7 +252,7 @@ class Menu
 
     /**
      * @param mixed $staticPage
-     * @return Menu
+     * @return MenuInterface
      */
     public function setStaticPage($staticPage)
     {
@@ -286,9 +270,9 @@ class Menu
 
     /**
      * @param string|null $page
-     * @return Menu
+     * @return MenuInterface
      */
-    public function setPage(?Page $page): self
+    public function setPage(?Page $page): MenuInterface
     {
         $this->page = $page;
         return $this;
@@ -304,9 +288,9 @@ class Menu
 
     /**
      * @param int $left
-     * @return Menu
+     * @return MenuInterface
      */
-    public function setLeft(int $left): self
+    public function setLeft(int $left): MenuInterface
     {
         $this->left = $left;
         return $this;
@@ -322,9 +306,9 @@ class Menu
 
     /**
      * @param int $level
-     * @return Menu
+     * @return MenuInterface
      */
-    public function setLevel(int $level): self
+    public function setLevel(int $level): MenuInterface
     {
         $this->level = $level;
         return $this;
@@ -340,9 +324,9 @@ class Menu
 
     /**
      * @param int $right
-     * @return Menu
+     * @return MenuInterface
      */
-    public function setRight(int $right): self
+    public function setRight(int $right): MenuInterface
     {
         $this->right = $right;
         return $this;
@@ -358,34 +342,34 @@ class Menu
 
     /**
      * @param int|null $root
-     * @return Menu
+     * @return MenuInterface
      */
-    public function setRoot(?int $root): self
+    public function setRoot(?int $root): MenuInterface
     {
         $this->root = $root;
         return $this;
     }
 
     /**
-     * @return self
+     * @return MenuInterface
      */
-    public function getParent(): self
+    public function getParent(): MenuInterface
     {
         return $this->parent;
     }
 
     /**
      * @param self $parent
-     * @return Menu
+     * @return MenuInterface
      */
-    public function setParent(self $parent): self
+    public function setParent(self $parent): MenuInterface
     {
         $this->parent = $parent;
         return $this;
     }
 
     /**
-     * @return self[]|Collection
+     * @return MenuInterface[]|Collection
      */
     public function getChildren()
     {
@@ -394,7 +378,7 @@ class Menu
 
     /**
      * @param self[]|Collection $children
-     * @return Menu
+     * @return MenuInterface
      */
     public function setChildren($children)
     {
