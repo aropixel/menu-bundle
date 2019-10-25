@@ -8,8 +8,11 @@
 namespace Aropixel\MenuBundle\EventListener;
 
 use Aropixel\MenuBundle\Entity\Menu;
+use Aropixel\MenuBundle\Entity\MenuInterface;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Mapping\Driver\MappingDriver;
+use Doctrine\Common\Persistence\Mapping\ReflectionService;
+use Doctrine\Common\Persistence\Mapping\RuntimeReflectionService;
 use Doctrine\ORM\Configuration;
 use Doctrine\ORM\Event\LoadClassMetadataEventArgs;
 use Doctrine\ORM\Events;
@@ -20,6 +23,8 @@ use Webmozart\Assert\Assert;
 
 class MappedSuperClassSubscriber implements EventSubscriber
 {
+    /** @var RuntimeReflectionService */
+    private $reflectionService;
 
     /** @var string */
     private $entityName;
@@ -43,14 +48,85 @@ class MappedSuperClassSubscriber implements EventSubscriber
     public function loadClassMetadata(LoadClassMetadataEventArgs $eventArgs): void
     {
         $metadata = $eventArgs->getClassMetadata();
-        if ($metadata->getName() === $this->entityName) {
+        if ($metadata->getReflectionClass()->implementsInterface(MenuInterface::class)) {
 
-            if ($metadata->isMappedSuperclass) {
+            if ($this->entityName == $metadata->getName() && $metadata->isMappedSuperclass) {
 
                 $metadata->isMappedSuperclass = false;
+                $this->setAssociationMappings($metadata, $eventArgs->getEntityManager()->getConfiguration());
 
+            }
+            else {
+                $this->unsetAssociationMappings($metadata);
+            }
+
+        }
+    }
+
+    private function setAssociationMappings(ClassMetadataInfo $metadata, Configuration $configuration): void
+    {
+        $class = $metadata->getName();
+        if (!class_exists($class)) {
+            return;
+        }
+
+        $metadataDriver = $configuration->getMetadataDriverImpl();
+        Assert::isInstanceOf($metadataDriver, MappingDriver::class);
+
+        foreach (class_parents($class) as $parent) {
+            if (false === in_array($parent, $metadataDriver->getAllClassNames(), true)) {
+                continue;
+            }
+
+            $parentMetadata = new ClassMetadata(
+                $parent,
+                $configuration->getNamingStrategy()
+            );
+
+            // Wakeup Reflection
+            $parentMetadata->wakeupReflection($this->getReflectionService());
+
+            // Load Metadata
+            $metadataDriver->loadMetadataForClass($parent, $parentMetadata);
+
+            if ($parentMetadata->isMappedSuperclass) {
+                foreach ($parentMetadata->getAssociationMappings() as $key => $value) {
+                    if ($this->isRelation($value['type']) && !isset($metadata->associationMappings[$key])) {
+                        $metadata->associationMappings[$key] = $value;
+                    }
+                }
             }
         }
     }
 
+    private function unsetAssociationMappings(ClassMetadataInfo $metadata): void
+    {
+        foreach ($metadata->getAssociationMappings() as $key => $value) {
+            if ($this->isRelation($value['type'])) {
+                unset($metadata->associationMappings[$key]);
+            }
+        }
+    }
+
+    private function isRelation(int $type): bool
+    {
+        return in_array(
+            $type,
+            [
+                ClassMetadataInfo::MANY_TO_MANY,
+                ClassMetadataInfo::ONE_TO_MANY,
+                ClassMetadataInfo::ONE_TO_ONE,
+            ],
+            true
+        );
+    }
+
+    protected function getReflectionService(): ReflectionService
+    {
+        if ($this->reflectionService === null) {
+            $this->reflectionService = new RuntimeReflectionService();
+        }
+
+        return $this->reflectionService;
+    }
 }
