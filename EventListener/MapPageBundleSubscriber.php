@@ -50,10 +50,10 @@ class MapPageBundleSubscriber implements EventSubscriber
 
         if ($this->isPageEnabled && $metadata->getName()==$this->entityName) {
 
-//            $metadata->mapManyToOne(array(
-//                'fieldName' => 'page',
-//                'targetEntity' => Page::class
-//            ));
+            $metadata->mapManyToOne(array(
+                'fieldName' => 'page',
+                'targetEntity' => Page::class
+            ));
 
         }
 

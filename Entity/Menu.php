@@ -20,82 +20,82 @@ class Menu implements MenuInterface
     /**
      * @var integer
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string
      */
-    private $type;
+    protected $type;
 
     /**
      * @var string
      */
-    private $title;
+    protected $title;
 
     /**
      * @var string
      */
-    private $slug;
+    protected $slug;
 
     /**
      * @var string
      */
-    private $originalTitle;
+    protected $originalTitle;
 
     /**
      * @var string
      */
-    private $link;
+    protected $link;
 
     /**
      * @var string
      */
-    private $linkDomain;
+    protected $linkDomain;
 
     /**
      * @var bool
      */
-    private $isActiveItem = false;
+    protected $isActiveItem = false;
 
     /**
      * @var string
      */
-    private $staticPage;
+    protected $staticPage;
 
     /**
      * @var Page
      */
-    private $page;
+    protected $page;
 
     /**
      * @var integer
      */
-    private $left;
+    protected $left;
 
     /**
      * @var integer
      */
-    private $level;
+    protected $level;
 
     /**
      * @var integer
      */
-    private $right;
+    protected $right;
 
     /**
      * @var integer
      */
-    private $root;
+    protected $root;
 
     /**
      * @var MenuInterface
      */
-    private $parent;
+    protected $parent;
 
     /**
      * @var MenuInterface[]
      */
-    private $children;
+    protected $children;
 
 
     /**
