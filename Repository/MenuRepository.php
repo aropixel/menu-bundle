@@ -22,7 +22,7 @@ class MenuRepository extends NestedTreeRepository
 
         $qb = $this->createQueryBuilder('m');
 
-        $qb->delete(Menu::class, 'm')
+        $qb->delete($this->getClassName(), 'm')
             ->where('m.type = ?1')
             ->setParameter(1, $type);
 
