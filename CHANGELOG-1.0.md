@@ -4,8 +4,11 @@ CHANGELOG for 0.1.x
 This changelog references the relevant changes (bug and security fixes) done
 in 0.1 minor versions.
 
-* **1.0.3** _(20xx-xx-xx)_
+* **1.0.4** _(20xx-xx-xx)_
 
+
+* **1.0.3** _(2020-01-20)_
+    * Bugfix twig extension when entity is overrided
 
 * **1.0.2** _(2020-01-17)_
     * Bugfix delete menu when entity is overrided
