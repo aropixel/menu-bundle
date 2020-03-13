@@ -90,7 +90,7 @@ $(document).ready(function() {
         var line = $(this).closest('li[data-title]');
         if (line.attr('data-static')) {
 
-            if (line.attr('data-required')) {
+            if (line.attr('data-required') === '1') {
 
                 var remain = false;
                 $('#menu li').each(function() {
