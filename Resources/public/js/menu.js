@@ -30,6 +30,7 @@ $(document).ready(function() {
                 line_properties.static = '';
                 line_properties.page = $(this).attr('value');
                 line_properties.link = '';
+                line_properties.type = 'page';
 
                 add_line(line_properties);
 
@@ -53,6 +54,7 @@ $(document).ready(function() {
         line_properties.static = '';
         line_properties.page = '';
         line_properties.link = link.val();
+        line_properties.type = 'link';
 
 
         add_line(line_properties);
@@ -74,6 +76,7 @@ $(document).ready(function() {
         line_properties.static = '';
         line_properties.page = '';
         line_properties.link = '';
+        line_properties.type = 'section';
 
 
         add_line(line_properties);
@@ -87,7 +90,33 @@ $(document).ready(function() {
         var line = $(this).closest('li[data-title]');
         if (line.attr('data-static')) {
 
-            var saison = line.attr('data-saison');
+            if (line.attr('data-required')) {
+
+                var remain = false;
+                $('#menu li').each(function() {
+
+                    if ($(this).not(line) && $(this).attr('data-static') == line.attr('data-static')) {
+                        var remain = true;
+                    }
+
+                });
+
+                if (!remain) {
+
+                    //
+                    var _buttons = {
+                        "Fermer": function() {
+
+                            $(this).closest('.modal').modal('hide');
+
+                        }
+                    }
+
+                    modalDyn('Désolé', '<strong>Désolé, ce lien est obligatoire.</strong><br />Vous ne pouvez pas le supprimer.', _buttons, {modalClass: 'modal_mini', headerClass: 'bg-danger'});
+                    return;
+                }
+
+            }
             var checkbox = $('#panel-pages .panel-body input[value="'+line.attr('data-static')+'"]');
             checkbox.removeAttr('disabled');
         }
@@ -195,6 +224,7 @@ $(document).ready(function() {
         new_line.attr('data-link', line_properties.link);
         new_line.attr('data-title', line_properties.title);
         new_line.attr('data-original-title', line_properties.originalTitle);
+        new_line.attr('data-type', line_properties.type);
 
         new_line.find('.title').html(line_properties.title);
         new_line.find('.link').html(line_properties.link ? '<a href="'+line_properties.link+'" target="_blank">'+hostname+'</a>' : line_properties.originalTitle);
@@ -221,6 +251,7 @@ $(document).ready(function() {
 
         var title = line.attr('data-title');
         var original_title = line.attr('data-original-title');
+        var link = line.attr('data-link');
         var label = line.find('.badge').html();
 
         var static_key = line.attr('data-static');
@@ -230,12 +261,11 @@ $(document).ready(function() {
         modal.find('.modal-body input[name="item_label"]').val(title);
 
         var input_link = modal.find('.modal-body input[name="item_link"]');
-        if (static_key || page_id || input_link.val().length==0) {
+        if (static_key || page_id || link.length==0) {
             input_link.attr('disabled', 'disabled');
             input_link.val(label + ' : ' + original_title);
         }
         else {
-            var link = line.attr('data-link');
             input_link.removeAttr('disabled');
             input_link.val(link);
         }

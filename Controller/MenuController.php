@@ -29,7 +29,7 @@ class MenuController extends AbstractController
 
 
         //
-        $em = $this->getDoctrine();
+        $em = $this->getDoctrine()->getManager();
         $entity = $this->getParameter('aropixel_menu.entity');
         $menuItems = $em->getRepository($entity)->findBy(array(
             'parent' => null,
@@ -45,9 +45,42 @@ class MenuController extends AbstractController
 
         $pages = array();
         if ($isPageBundleActive) {
-            $pages = $this->getDoctrine()->getRepository(Page::class)->findPublished();
-        }
 
+            //
+            $pages = $this->getDoctrine()->getRepository(Page::class)->findPublished();
+
+            //
+            $add = [];
+            $requiredPages = $this->getParameter('aropixel_menu.required_pages');
+            foreach ($requiredPages as $code => $libelle) {
+
+                $found = false;
+
+                /** @var Menu $item */
+                foreach ($menuItems as $item) {
+
+                    if ($item->getStaticPage() && $item->getStaticPage() == $code) {
+                        $item->setIsRequired(true);
+                        $found = true;
+                        break;
+                    }
+                }
+
+                if (!$found) {
+                    $item = new Menu();
+                    $item->setStaticPage($code);
+                    $item->setTitle($libelle);
+                    $item->setOriginalTitle($libelle);
+                    $item->setType($type);
+                    $item->setIsRequired(true);
+                    $em->persist($item);
+                    $add[] = $item;
+                }
+            }
+
+        }
+        $menuItems+= $add;
+        $em->flush();
 
         //
         $alreadyIncluded = array(
@@ -83,6 +116,7 @@ class MenuController extends AbstractController
             }
 
         }
+
 
         $allPages = array();
         foreach ($pages as $page) {
@@ -193,6 +227,11 @@ class MenuController extends AbstractController
         if (strlen($item['data']['originalTitle'])) {
             $originalTitle = $item['data']['originalTitle'];
             $ligne->setOriginalTitle($originalTitle);
+        }
+
+        //
+        if ($item['data']['type'] == 'link' && !strlen($item['data']['link'])) {
+            $item['data']['link'] = '#';
         }
 
         //

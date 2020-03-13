@@ -35,6 +35,11 @@ class Configuration implements ConfigurationInterface
                      ->useAttributeAsKey('name')
                      ->prototype('variable')->end()
                 ->end()
+                ->arrayNode('required_pages')
+                     ->defaultValue(array())
+                     ->useAttributeAsKey('name')
+                     ->prototype('variable')->end()
+                ->end()
             ->end()
         ;
 

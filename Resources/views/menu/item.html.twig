@@ -1,10 +1,11 @@
 <li class="li-movable"
-    data-type
+    data-type="{{ item is defined and (item.page or item.staticPage) ? 'page' : (item is defined and item.link ? 'link' : (item is defined ? 'section' : '')) }}"
     data-static="{{ item is defined ? item.staticPage : '' }}"
     data-page="{{ item is defined and item.page ? item.page.id : '' }}"
     data-link="{{ item is defined ? item.link : '' }}"
     data-title="{{ item is defined ? item.title : '' }}"
-    data-original-title="{{ item is defined ? item.originalTitle : '' }}">
+    data-original-title="{{ item is defined ? item.originalTitle : '' }}"
+    data-required="{{ item is defined and item.isRequired ? '1' : '0' }}">
     <div class="dd-handle">
         <div>
             <div class="text-semibold title">{{ item is defined ? item.title : '' }}</div>

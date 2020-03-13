@@ -58,6 +58,11 @@ class Menu implements MenuInterface
     protected $isActiveItem = false;
 
     /**
+     * @var bool
+     */
+    protected $isRequired = false;
+
+    /**
      * @var string
      */
     protected $staticPage;
@@ -239,6 +244,24 @@ class Menu implements MenuInterface
     public function setIsActiveItem(bool $isActiveItem): MenuInterface
     {
         $this->isActiveItem = $isActiveItem;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isRequired(): bool
+    {
+        return $this->isRequired;
+    }
+
+    /**
+     * @param bool $isRequired
+     * @return Menu
+     */
+    public function setIsRequired(bool $isRequired): MenuInterface
+    {
+        $this->isRequired = $isRequired;
         return $this;
     }
 
