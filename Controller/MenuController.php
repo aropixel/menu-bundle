@@ -67,7 +67,7 @@ class MenuController extends AbstractController
                 }
 
                 if (!$found) {
-                    $item = new Menu();
+                    $item = new $entity();
                     $item->setStaticPage($code);
                     $item->setTitle($libelle);
                     $item->setOriginalTitle($libelle);
