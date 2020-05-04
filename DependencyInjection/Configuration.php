@@ -40,6 +40,9 @@ class Configuration implements ConfigurationInterface
                      ->useAttributeAsKey('name')
                      ->prototype('variable')->end()
                 ->end()
+                ->booleanNode('strict_mode')
+                    ->defaultValue(false)
+                ->end()
             ->end()
         ;
 

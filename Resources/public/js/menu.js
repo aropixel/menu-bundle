@@ -32,7 +32,23 @@ $(document).ready(function() {
                 line_properties.link = '';
                 line_properties.type = 'page';
 
-                add_line(line_properties);
+                if (!is_strict_mode() || !is_included(line_properties)) {
+                    add_line(line_properties);
+                }
+                else {
+
+                    //
+                    var _buttons = {
+                        "Fermer": function() {
+
+                            $(this).closest('.modal').modal('hide');
+
+                        }
+                    }
+
+                    modalDyn('Désolé', '<strong>Ce lien est déjà dans la liste.</strong><br />Vous ne pouvez pas l\'insérer qu\'une seule fois.', _buttons, {modalClass: 'modal_mini', headerClass: 'bg-danger'});
+                    return;
+                }
 
             });
             checked_inputs.removeAttr('checked');
@@ -163,6 +179,18 @@ $(document).ready(function() {
 
 
 
+    function is_strict_mode() {
+        return $('#add-pages').attr('data-strict') == '1';
+    }
+
+
+
+    function is_included(line_properties) {
+        return $('[data-page="'+line_properties.page+'"]').length;
+    }
+
+
+
     function control_select(button) {
 
         var checked = button.closest('.card').find('input:checked');
@@ -254,6 +282,7 @@ $(document).ready(function() {
         var link = line.attr('data-link');
         var label = line.find('.badge').html();
 
+        var type = line.attr('data-type');
         var static_key = line.attr('data-static');
         var page_id = line.attr('data-page');
 
@@ -261,7 +290,7 @@ $(document).ready(function() {
         modal.find('.modal-body input[name="item_label"]').val(title);
 
         var input_link = modal.find('.modal-body input[name="item_link"]');
-        if (static_key || page_id || link.length==0) {
+        if (static_key || page_id || (type=='section' && link.length==0)) {
             input_link.attr('disabled', 'disabled');
             input_link.val(label + ' : ' + original_title);
         }

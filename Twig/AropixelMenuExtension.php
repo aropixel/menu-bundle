@@ -30,13 +30,11 @@ abstract class AropixelMenuExtension extends AbstractExtension
 
     /** @var UrlGeneratorInterface */
     protected $router;
-    /**
-     * @var RequestStack
-     */
+
+    /** @var RequestStack */
     private $requestStack;
-    /**
-     * @var ParameterBagInterface
-     */
+
+    /** @var ParameterBagInterface */
     private $parameterBag;
 
 

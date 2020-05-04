@@ -91,7 +91,7 @@
                     </div>
                 </div>
                 <div class="card-footer text-right">
-                    <button type="button" class="btn btn-primary" id="add-pages">Ajouter</button>
+                    <button type="button" class="btn btn-primary" id="add-pages" data-strict="{{ is_strict_mode() ? '1' : '0' }}">Ajouter</button>
                 </div>
             </div>
             {% block post_pages %}{% endblock %}
