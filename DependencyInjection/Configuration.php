@@ -27,6 +27,7 @@ class Configuration implements ConfigurationInterface
                         ->children()
                             ->scalarNode('name')->end()
                             ->scalarNode('depth')->end()
+                            ->booleanNode('strict_mode')->defaultValue(false)->end()
                         ->end()
                     ->end()
                 ->end()
@@ -39,9 +40,6 @@ class Configuration implements ConfigurationInterface
                      ->defaultValue(array())
                      ->useAttributeAsKey('name')
                      ->prototype('variable')->end()
-                ->end()
-                ->booleanNode('strict_mode')
-                    ->defaultValue(false)
                 ->end()
             ->end()
         ;
