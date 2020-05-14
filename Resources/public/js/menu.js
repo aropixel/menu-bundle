@@ -27,8 +27,8 @@ $(document).ready(function() {
                 line_properties.color = 'bg-pink';
                 line_properties.title = title;
                 line_properties.originalTitle = title;
-                line_properties.static = '';
-                line_properties.page = $(this).attr('value');
+                line_properties.static = $(this).attr('data-type') === 'static' ? $(this).attr('value') : '';
+                line_properties.page = $(this).attr('data-type') === 'page' ? $(this).attr('value') : '';
                 line_properties.link = '';
                 line_properties.type = 'page';
 
@@ -186,7 +186,16 @@ $(document).ready(function() {
 
 
     function is_included(line_properties) {
-        return $('[data-page="'+line_properties.page+'"]').length;
+
+        if (line_properties.page.length) {
+            return $('[data-page="'+line_properties.page+'"]').length;
+        }
+
+        if (line_properties.static.length) {
+            return $('[data-static="'+line_properties.static+'"]').length;
+        }
+
+        return false;
     }
 
 

@@ -137,6 +137,7 @@ class MenuController extends AbstractController
             'menus' => $menus,
             'type_menu' => $type,
             'menu' => $menuItems,
+            'static_pages' => array_keys($staticPages),
             'available_pages' => $allPages,
             'already_included' => $alreadyIncluded,
         ]);

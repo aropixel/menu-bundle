@@ -84,7 +84,7 @@
                     <div>
                         {% for key,label in available_pages %}
                             <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" id="page{{ loop.index0 }}" name="pages[]" value="{{ key }}">
+                                <input type="checkbox" class="custom-control-input" id="page{{ loop.index0 }}" name="pages[]" value="{{ key }}" data-type="{{ key in static_pages ? 'static' : 'page' }}">
                                 <label class="custom-control-label" for="page{{ loop.index0 }}"><span{% if key in already_included['pages'] %} style="color: #666;" {% endif %} >{{ label }}</span></label>
                             </div>
                         {% endfor %}
