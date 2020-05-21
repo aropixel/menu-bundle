@@ -40,14 +40,13 @@
                 <div class="card-header">
                     <h4 class="card-heading">{{ menus[type_menu].name }}</h4>
                     <div class="card-header-action">
-                        <button type="button" class="btn btn-primary heading-btn" id="save_menu" data-type="{{ type_menu }}" data-name="{{ menus[type_menu].name }}" data-url="{{ path('menu_save') }}">Enregistrer</button>
+                        <button type="button" class="btn btn-primary heading-btn" id="save_menu" data-type="{{ type_menu }}" data-name="{{ menus[type_menu].name }}" data-url="{{ path('menu_save') }}">{% trans %}aropixel.menu.form.save{% endtrans %}</button>
                     </div>
                 </div>
 
                 <div class="card-body">
 
-                    <p class="text-muted">Gérez votre menu en ajoutant des éléments de la colonne de droite.<br />
-                        Vous pouvez déplacer les éléments du menu par glisser-déposer. </p>
+                    <p class="text-muted">{% trans %}aropixel.menu.form.instruction{% endtrans %}</p>
                 </div>
                 <ol class="menu" id="menu">
                     {% for item in menu %}
@@ -62,23 +61,23 @@
 
             <div class="card border-top-lg border-top-dark-grey">
                 <div class="card-header">
-                    <h4 class="card-title">Section</h4>
+                    <h4 class="card-title">{% trans %}aropixel.menu.form.panels.section{% endtrans %}</h4>
                 </div>
                 <div class="card-body">
                     <div class="form-group m-b-0">
-                        <label>Section</label>
+                        <label>{% trans %}aropixel.menu.form.panels.section{% endtrans %}</label>
                         <input name="manual_section" type="text" class="form-control">
                     </div>
                 </div>
                 <div class="card-footer text-right">
-                    <button type="button" class="btn btn-primary" id="add-section">Ajouter</button>
+                    <button type="button" class="btn btn-primary" id="add-section">{% trans %}aropixel.menu.form.add{% endtrans %}</button>
                 </div>
             </div>
             {% block post_sections %}{% endblock %}
 
             <div class="card border-top-lg border-top-pink" id="panel-pages">
                 <div class="card-header">
-                    <h4 class="card-title">Pages</h4>
+                    <h4 class="card-title">{% trans %}aropixel.menu.form.panels.pages{% endtrans %}</h4>
                 </div>
                 <div class="card-body">
                     <div>
@@ -91,27 +90,27 @@
                     </div>
                 </div>
                 <div class="card-footer text-right">
-                    <button type="button" class="btn btn-primary" id="add-pages" data-strict="{{ menus[type_menu].strict_mode ? '1' : '0' }}">Ajouter</button>
+                    <button type="button" class="btn btn-primary" id="add-pages" data-strict="{{ menus[type_menu].strict_mode ? '1' : '0' }}">{% trans %}aropixel.menu.form.add{% endtrans %}</button>
                 </div>
             </div>
             {% block post_pages %}{% endblock %}
 
             <div class="card border-top-lg border-top-teal">
                 <div class="card-header">
-                    <h4 class="card-title">Lien manuel</h4>
+                    <h4 class="card-title">{% trans %}aropixel.menu.form.panels.link.title{% endtrans %}</h4>
                 </div>
                 <div class="card-body">
                     <div class="form-group">
-                        <label class="control-label">Titre</label>
+                        <label class="control-label">{% trans %}aropixel.menu.form.panels.link.fields.title{% endtrans %}</label>
                         <input name="manual_label" type="text" class="form-control" />
                     </div>
                     <div class="form-group m-b-0">
-                        <label class="control-label">Lien</label>
+                        <label class="control-label">{% trans %}aropixel.menu.form.panels.link.fields.link{% endtrans %}</label>
                         <input name="manual_link" type="text" class="form-control" />
                     </div>
                 </div>
                 <div class="card-footer text-right">
-                    <button type="button" class="btn btn-primary" id="add-link">Ajouter</button>
+                    <button type="button" class="btn btn-primary" id="add-link">{% trans %}aropixel.menu.form.add{% endtrans %}</button>
                 </div>
             </div>
             {% block post_links %}{% endblock %}
@@ -125,11 +124,11 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-body text-center">
-                    <h5 style="margin-bottom: 0">Veuillez sélectionner un élément</h5>
+                    <h5 style="margin-bottom: 0">{% trans %}aropixel.menu.form.modals.empty.title{% endtrans %}</h5>
                 </div>
 
                 <div class="modal-footer text-center">
-                    <button type="button" class="btn btn-primary" data-dismiss="modal">Compris !</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">{% trans %}aropixel.menu.form.understood{% endtrans %}</button>
                 </div>
             </div>
         </div>
@@ -141,26 +140,26 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Modifier l'élément de menu</h5>
+                    <h5 class="modal-title">{% trans %}aropixel.menu.form.modals.edit.title{% endtrans %}</h5>
                     <button type="button" class="close" data-dismiss="modal">×</button>
                 </div>
                 <div class="modal-body">
 
                     <div class="form-group">
-                        <label>Texte du lien</label>
-                        <input type="text" name="item_label" placeholder="Texte du lien" class="form-control">
+                        <label>{% trans %}aropixel.menu.form.modals.edit.fields.text{% endtrans %}</label>
+                        <input type="text" name="item_label" placeholder="{% trans %}aropixel.menu.form.modals.edit.fields.text{% endtrans %}" class="form-control">
                     </div>
 
                     <div class="form-group">
-                        <label>Destination du lien</label>
-                        <input type="text" name="item_link" placeholder="Destination du lien" class="form-control">
+                        <label>{% trans %}aropixel.menu.form.modals.edit.fields.link{% endtrans %}</label>
+                        <input type="text" name="item_link" placeholder="{% trans %}aropixel.menu.form.modals.edit.fields.link{% endtrans %}" class="form-control">
                     </div>
 
                 </div>
 
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
-                    <button type="button" class="btn btn-primary" id="valid_edit">Valider</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">{% trans %}aropixel.menu.form.cancel{% endtrans %}</button>
+                    <button type="button" class="btn btn-primary" id="valid_edit">{% trans %}aropixel.menu.form.ok{% endtrans %}</button>
                 </div>
             </div>
         </div>
