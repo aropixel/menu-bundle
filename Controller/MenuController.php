@@ -3,6 +3,7 @@
 namespace Aropixel\MenuBundle\Controller;
 
 use Aropixel\MenuBundle\Entity\Menu;
+use Aropixel\MenuBundle\Provider\MenuProvider;
 use Aropixel\PageBundle\Entity\Page;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -149,7 +150,7 @@ class MenuController extends AbstractController
     /**
      * @Route("/save", name="menu_save", methods="POST")
      */
-    public function save(Request $request)
+    public function save(Request $request, MenuProvider $menuProvider)
     {
         //
         $type = $request->request->get('type');
@@ -177,6 +178,7 @@ class MenuController extends AbstractController
 
         //
         $em->flush();
+        $menuProvider->refreshCache();
 
         //
         return new Response('OK', Response::HTTP_OK);

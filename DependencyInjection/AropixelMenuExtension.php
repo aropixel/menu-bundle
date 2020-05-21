@@ -34,6 +34,7 @@ class AropixelMenuExtension extends Extension
         $container->setParameter('aropixel_menu.static_pages', $config['static_pages']);
         $container->setParameter('aropixel_menu.required_pages', $config['required_pages']);
         $container->setParameter('aropixel_menu.entity', $config['entity']);
+        $container->setParameter('aropixel_menu.cache.duration', $config['cache']);
 
         //
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));

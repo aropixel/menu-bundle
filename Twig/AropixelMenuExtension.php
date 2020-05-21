@@ -9,6 +9,7 @@ namespace Aropixel\MenuBundle\Twig;
 
 
 use Aropixel\MenuBundle\Entity\Menu;
+use Aropixel\MenuBundle\Provider\MenuProvider;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\ParameterBag;
@@ -25,34 +26,32 @@ abstract class AropixelMenuExtension extends AbstractExtension
     /** @var RequestStack */
     protected $request;
 
-    /** @var EntityManagerInterface */
-    protected $em;
-
     /** @var UrlGeneratorInterface */
     protected $router;
 
     /** @var RequestStack */
     private $requestStack;
 
-    /** @var ParameterBagInterface */
-    private $parameterBag;
+    /** @var MenuProvider */
+    private $menuProvider;
 
 
     /**
      * AropixelMenuExtension constructor.
+     * @param RequestStack $requestStack
+     * @param UrlGeneratorInterface $router
+     * @param MenuProvider $menuProvider
      */
     public function __construct(
         RequestStack $requestStack,
-        EntityManagerInterface $em,
         UrlGeneratorInterface $router,
-        ParameterBagInterface $parameterBag
+        MenuProvider $menuProvider
     )
     {
         $this->request = $requestStack->getCurrentRequest();
-        $this->em = $em;
         $this->router = $router;
         $this->requestStack = $requestStack;
-        $this->parameterBag = $parameterBag;
+        $this->menuProvider = $menuProvider;
     }
 
 
@@ -75,15 +74,7 @@ abstract class AropixelMenuExtension extends AbstractExtension
 
     public function getMenu($type)
     {
-        // permet de récupérer l'entité correcte définis en parametre du front
-        $menuEntity = $this->parameterBag->get('aropixel_menu.entity');
-
-        $menuItems = $this->em->getRepository($menuEntity)->findBy(array(
-            'parent' => null,
-            'type' => $type
-        ));
-
-        return $menuItems;
+        return $this->menuProvider->getMenu($type);
     }
 
 

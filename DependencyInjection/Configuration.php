@@ -41,6 +41,7 @@ class Configuration implements ConfigurationInterface
                      ->useAttributeAsKey('name')
                      ->prototype('variable')->end()
                 ->end()
+            ->scalarNode('cache')->defaultValue(60*60*24)->end()
             ->end()
         ;
 
