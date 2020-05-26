@@ -30,6 +30,9 @@ aropixel:
       modals:
         empty:
           title: "Please, select one item at least"
+        required:
+          title: "Sorry"
+          message: "<strong>Sorry, this link is required.</strong><br />You cannot remove it."
         edit:
           title: "Edit item menu"
           fields:

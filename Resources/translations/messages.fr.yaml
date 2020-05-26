@@ -30,6 +30,9 @@ aropixel:
       modals:
         empty:
           title: "Veuillez sélectionner un élément"
+        required:
+          title: "Désolé"
+          message: "<strong>Désolé, ce lien est obligatoire.</strong><br />Vous ne pouvez pas le supprimer."
         edit:
           title: "Modifier l'élément de menu"
           fields:

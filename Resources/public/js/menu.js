@@ -128,7 +128,7 @@ $(document).ready(function() {
                         }
                     }
 
-                    modalDyn('Désolé', '<strong>Désolé, ce lien est obligatoire.</strong><br />Vous ne pouvez pas le supprimer.', _buttons, {modalClass: 'modal_mini', headerClass: 'bg-danger'});
+                    modalDyn(required_title, required_message, _buttons, {modalClass: 'modal_mini', headerClass: 'bg-danger'});
                     return;
                 }
 

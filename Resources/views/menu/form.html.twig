@@ -16,6 +16,8 @@
     {{ parent() }}
     <script type="text/javascript">
         var max_level = {{ menus[type_menu].depth }};
+        var required_title = "{% trans %}aropixel.menu.form.modals.required.title{% endtrans %}";
+        var required_message = "{% trans %}aropixel.menu.form.modals.required.message{% endtrans %}";
     </script>
     <script type="text/javascript" src="{{ asset('bundles/aropixeladmin/modules/jquery.mjs.nestedSortable.js') }}"></script>
     <script type="text/javascript" src="{{ asset('bundles/aropixelmenu/js/menu.js') }}"></script>
