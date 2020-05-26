@@ -44,6 +44,7 @@ class MenuController extends AbstractController
         $bundles = $this->getParameter('kernel.bundles');
         $staticPages = $this->getParameter('aropixel_menu.static_pages');
         $isPageBundleActive = array_key_exists('AropixelPageBundle', $bundles);
+        $requiredPages = $menus[$type]['required_pages'];
 
         $pages = array();
         if ($isPageBundleActive) {
@@ -53,7 +54,7 @@ class MenuController extends AbstractController
 
             //
             $add = [];
-            $requiredPages = $this->getParameter('aropixel_menu.required_pages');
+//            $requiredPages = $this->getParameter('aropixel_menu.required_pages');
             foreach ($requiredPages as $code => $libelle) {
 
                 $found = false;
@@ -138,6 +139,7 @@ class MenuController extends AbstractController
         return $this->render('@AropixelMenu/menu/menu.html.twig', [
             'menus' => $menus,
             'type_menu' => $type,
+            'required_pages' => $requiredPages,
             'menu' => $menuItems,
             'static_pages' => array_keys($staticPages),
             'available_pages' => $allPages,
