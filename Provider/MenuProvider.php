@@ -15,19 +15,19 @@ use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Contracts\Cache\ItemInterface;
 
-class MenuProvider
+class MenuProvider implements MenuProviderInterface
 {
 
     /** @var EntityManagerInterface */
-    private $em;
+    protected $em;
 
 
     /** @var ParameterBagInterface */
-    private $parameterBag;
+    protected $parameterBag;
 
 
     /** @var array */
-    private $menus;
+    protected $menus;
 
 
     /** @var string Clé du cache */
@@ -48,7 +48,7 @@ class MenuProvider
     }
 
 
-    private function loadMenus()
+    protected function loadMenus()
     {
         // permet de récupérer l'entité correcte définis en parametre du front
         $cacheDuration = $this->parameterBag->get('aropixel_menu.cache.duration');
@@ -64,7 +64,7 @@ class MenuProvider
     }
 
 
-    private function load()
+    protected function load()
     {
         //
         $menuEntity = $this->parameterBag->get('aropixel_menu.entity');
@@ -80,7 +80,7 @@ class MenuProvider
 
 
 
-    private function loadAndCache($cacheDuration)
+    protected function loadAndCache($cacheDuration)
     {
         $em = $this->em;
         $menuEntity = $this->parameterBag->get('aropixel_menu.entity');
@@ -105,7 +105,7 @@ class MenuProvider
     }
 
 
-    private function splitMenus()
+    protected function splitMenus()
     {
         $splittedMenus = array();
 

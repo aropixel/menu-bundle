@@ -11,6 +11,8 @@
 
         <prototype namespace="Aropixel\MenuBundle\" resource="../../*" exclude="../../{DependencyInjection,Entity,Migrations,Resources,Tests}"/>
 
+        <service id="Aropixel\MenuBundle\Provider\MenuProviderInterface" alias="Aropixel\MenuBundle\Provider\MenuProvider"/>
+
     </services>
 
 </container>
