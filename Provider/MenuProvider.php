@@ -70,9 +70,7 @@ class MenuProvider implements MenuProviderInterface
         $menuEntity = $this->parameterBag->get('aropixel_menu.entity');
 
         //
-        $this->menus = $this->em->getRepository($menuEntity)->findBy(array(
-            'parent' => null,
-        ));
+        $this->menus = $this->em->getRepository($menuEntity)->findRootsWithPage();
 
         //
         $this->splitMenus();
@@ -89,9 +87,7 @@ class MenuProvider implements MenuProviderInterface
         $cache = new FilesystemAdapter();
         $this->menus = $cache->get(self::CACHE_KEY, function (ItemInterface $item) use ($em, $menuEntity, $cacheDuration) {
 
-            $menuItems = $em->getRepository($menuEntity)->findBy(array(
-                'parent' => null,
-            ));
+            $menuItems = $em->getRepository($menuEntity)->findRootsWithPage();
 
             $item->expiresAfter($cacheDuration);
             $item->set($menuItems);
