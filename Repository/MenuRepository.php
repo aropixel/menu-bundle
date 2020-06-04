@@ -23,10 +23,12 @@ class MenuRepository extends NestedTreeRepository
         $qb = $this->createQueryBuilder('m');
 
         $qb->leftJoin('m.page', 'page')
-            ->addSelect('page')
-            ->where('m.parent IS NULL');
+           ->addSelect('page')
+           ->where('m.parent IS NULL')
+           ->orderBy('m.id', 'ASC');
 
         $query = $qb->getQuery();
+
         return $query->getResult();
 
     }
