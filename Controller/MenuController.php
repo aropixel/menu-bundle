@@ -123,8 +123,7 @@ class MenuController extends AbstractController
 
         $allPages = array();
         foreach ($pages as $page) {
-            $code = $page->getCode();
-            if (is_null($code) || !strlen($code)) {
+            if ($page->getType() == Page::TYPE_DEFAULT) {
                 $allPages[$page->getId()] = $page->getTitle();
             }
         }
