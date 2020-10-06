@@ -3,9 +3,13 @@
 namespace Aropixel\MenuBundle\Controller;
 
 use Aropixel\MenuBundle\Entity\Menu;
+use Aropixel\MenuBundle\MenuAdder\MenuAdder;
+use Aropixel\MenuBundle\MenuAdder\PagesMenuAdder;
 use Aropixel\MenuBundle\Provider\MenuProvider;
 use Aropixel\MenuBundle\Provider\MenuProviderInterface;
 use Aropixel\PageBundle\Entity\Page;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,70 +24,27 @@ class MenuController extends AbstractController
     /**
      * @Route("/{type}/edit", name="menu_index", methods="GET")
      */
-    public function index($type): Response
+    public function index(
+        $type,
+        EntityManagerInterface $entityManager,
+        PagesMenuAdder $pagesMenuAdder,
+        MenuAdder $menuAdder
+    ): Response
     {
-
-        //
+        // récupère la config des différents menus (footer, navbar etc)
         $menus = $this->getParameter('aropixel_menu.menus');
+
         if (!array_key_exists($type, $menus)) {
             throw $this->createNotFoundException();
         }
 
+        $menuItems = $menuAdder->addToMenu($type);
 
-        //
-        $em = $this->getDoctrine()->getManager();
-        $entity = $this->getParameter('aropixel_menu.entity');
-        $menuItems = $em->getRepository($entity)->findBy(array(
-            'parent' => null,
-            'type' => $type
-        ));
+        // récupère toutes les pages (statiques + celle du bundle page bundle)
+        // et les trie dans un array
+        $allPages = $pagesMenuAdder->getAllPages();
 
-
-
-
-        $bundles = $this->getParameter('kernel.bundles');
-        $staticPages = $this->getParameter('aropixel_menu.static_pages');
-        $isPageBundleActive = array_key_exists('AropixelPageBundle', $bundles);
-        $requiredPages = $menus[$type]['required_pages'];
-
-        $pages = array();
-        if ($isPageBundleActive) {
-
-            //
-            $pages = $this->getDoctrine()->getRepository(Page::class)->findPublished();
-
-            //
-            $add = [];
-//            $requiredPages = $this->getParameter('aropixel_menu.required_pages');
-            foreach ($requiredPages as $code => $libelle) {
-
-                $found = false;
-
-                /** @var Menu $item */
-                foreach ($menuItems as $item) {
-
-                    if ($item->getStaticPage() && $item->getStaticPage() == $code) {
-                        $item->setIsRequired(true);
-                        $found = true;
-                        break;
-                    }
-                }
-
-                if (!$found) {
-                    $item = new $entity();
-                    $item->setStaticPage($code);
-                    $item->setTitle($libelle);
-                    $item->setOriginalTitle($libelle);
-                    $item->setType($type);
-                    $item->setIsRequired(true);
-                    $em->persist($item);
-                    $add[] = $item;
-                }
-            }
-
-        }
-        $menuItems+= $add;
-        $em->flush();
+        $entityManager->flush();
 
         //
         $alreadyIncluded = array(
@@ -91,24 +52,30 @@ class MenuController extends AbstractController
         );
 
 
+        // pour chaque item de menu on vérifie globalement si l'item a déjà été ajouté
+        // au menu, pour ensuite le bloquer au re-ajout dans le menu
         /** @var Menu $item */
         foreach ($menuItems as $item) {
 
 
             /** @var Page $page */
-            if ($isPageBundleActive && $page = $item->getPage()) {
+            // si le menu item est une page
+            if ($pagesMenuAdder->isPageBundleActive() && $page = $item->getPage()) {
+                // on ajoute son id dans l'array $alreadyIncluded
                 $alreadyIncluded['pages'][] = $page->getId();
             }
 
 
-            //
+            // si l'item est une page statique
             if ($code = $item->getStaticPage()) {
+                // on ajoute son code dans l'array $alreadyIncluded
                 $alreadyIncluded['pages'][] = $code;
             }
 
 
-            //
+            // si l'item est un lien
             if ($link = $item->getLink()) {
+                // on clean le lien et on le modifie pour l'item
                 $parsing = parse_url($link);
                 if ($parsing){
                     $item->setLinkDomain($parsing['host']);
@@ -120,19 +87,8 @@ class MenuController extends AbstractController
 
         }
 
-
-        $allPages = array();
-        foreach ($pages as $page) {
-            if ($page->getType() == Page::TYPE_DEFAULT) {
-                $allPages[$page->getId()] = $page->getTitle();
-            }
-        }
-        foreach ($staticPages as $key => $title) {
-            $allPages[$key] = $title;
-        }
-
-        asort($allPages);
-
+        $staticPages = $pagesMenuAdder->getStaticPages();
+        $requiredPages = $pagesMenuAdder->getRequiredPages($type);
 
         //
         return $this->render('@AropixelMenu/menu/menu.html.twig', [
@@ -145,9 +101,6 @@ class MenuController extends AbstractController
             'already_included' => $alreadyIncluded,
         ]);
     }
-
-
-
 
     /**
      * @Route("/save", name="menu_save", methods="POST")
