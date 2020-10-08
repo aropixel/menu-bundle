@@ -3,8 +3,9 @@
 namespace Aropixel\MenuBundle\Controller;
 
 use Aropixel\MenuBundle\Entity\Menu;
-use Aropixel\MenuBundle\MenuAdder\MenuAdder;
-use Aropixel\MenuBundle\MenuAdder\PagesMenuAdder;
+use Aropixel\MenuBundle\MenuAdder\LinkMenuHandler;
+use Aropixel\MenuBundle\MenuAdder\MenuHandler;
+use Aropixel\MenuBundle\MenuAdder\PagesMenuHandler;
 use Aropixel\MenuBundle\Provider\MenuProvider;
 use Aropixel\MenuBundle\Provider\MenuProviderInterface;
 use Aropixel\PageBundle\Entity\Page;
@@ -27,8 +28,9 @@ class MenuController extends AbstractController
     public function index(
         $type,
         EntityManagerInterface $entityManager,
-        PagesMenuAdder $pagesMenuAdder,
-        MenuAdder $menuAdder
+        PagesMenuHandler $pagesMenuHandler,
+        MenuHandler $menuHandler,
+        LinkMenuHandler $linkMenuHandler
     ): Response
     {
         // récupère la config des différents menus (footer, navbar etc)
@@ -38,67 +40,17 @@ class MenuController extends AbstractController
             throw $this->createNotFoundException();
         }
 
-        $menuItems = $menuAdder->addToMenu($type);
+        $menuItems = $menuHandler->addToMenu($type);
 
-        // récupère toutes les pages (statiques + celle du bundle page bundle)
-        // et les trie dans un array
-        $allPages = $pagesMenuAdder->getAllPages();
+        $inputRessources = $menuHandler->getInputRessources($menuItems);
 
-        $entityManager->flush();
+        $linkMenuHandler->setItemsLinkDomain($menuItems);
 
-        //
-        $alreadyIncluded = array(
-            'pages' => array(),
-        );
-
-
-        // pour chaque item de menu on vérifie globalement si l'item a déjà été ajouté
-        // au menu, pour ensuite le bloquer au re-ajout dans le menu
-        /** @var Menu $item */
-        foreach ($menuItems as $item) {
-
-
-            /** @var Page $page */
-            // si le menu item est une page
-            if ($pagesMenuAdder->isPageBundleActive() && $page = $item->getPage()) {
-                // on ajoute son id dans l'array $alreadyIncluded
-                $alreadyIncluded['pages'][] = $page->getId();
-            }
-
-
-            // si l'item est une page statique
-            if ($code = $item->getStaticPage()) {
-                // on ajoute son code dans l'array $alreadyIncluded
-                $alreadyIncluded['pages'][] = $code;
-            }
-
-
-            // si l'item est un lien
-            if ($link = $item->getLink()) {
-                // on clean le lien et on le modifie pour l'item
-                $parsing = parse_url($link);
-                if ($parsing){
-                    $item->setLinkDomain($parsing['host']);
-                }
-                else {
-                    $item->setLinkDomain($link);
-                }
-            }
-
-        }
-
-        $staticPages = $pagesMenuAdder->getStaticPages();
-        $requiredPages = $pagesMenuAdder->getRequiredPages($type);
-
-        //
         return $this->render('@AropixelMenu/menu/menu.html.twig', [
             'menus' => $menus,
             'type_menu' => $type,
-            'required_pages' => $requiredPages,
             'menu' => $menuItems,
-            'static_pages' => array_keys($staticPages),
-            'available_pages' => $allPages,
-            'already_included' => $alreadyIncluded,
+            'inputRessources' => $inputRessources,
         ]);
     }
 
@@ -214,6 +166,5 @@ class MenuController extends AbstractController
 
         return $ligne;
     }
-
 
 }

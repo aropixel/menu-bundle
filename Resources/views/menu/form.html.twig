@@ -77,24 +77,46 @@
             </div>
             {% block post_sections %}{% endblock %}
 
-            <div class="card border-top-lg border-top-pink" id="panel-pages">
-                <div class="card-header">
-                    <h4 class="card-title">{% trans %}aropixel.menu.form.panels.pages{% endtrans %}</h4>
-                </div>
-                <div class="card-body">
-                    <div>
-                        {% for key,label in available_pages %}
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" id="page{{ loop.index0 }}" name="pages[]" value="{{ key }}" data-type="{{ key in static_pages ? 'static' : 'page' }}">
-                                <label class="custom-control-label" for="page{{ loop.index0 }}"><span{% if key in already_included['pages'] %} style="color: #666;" {% endif %} >{{ label }}</span></label>
-                            </div>
-                        {% endfor %}
+            {% for inputRessource in inputRessources %}
+
+                <div class="card border-top-lg border-top-pink" id="panel-{{ inputRessource.ressourceNamePlural }}">
+                    <div class="card-header">
+                        {% set titleCard = 'aropixel.menu.form.panels.'~inputRessource.ressourceNamePlural %}
+                        <h4 class="card-title">{{ titleCard | trans}}</h4>
+                    </div>
+                    <div class="card-body">
+                        <div>
+                            {% for resource in inputRessource.ressources %}
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox"
+                                           class="custom-control-input"
+                                           id="{{ inputRessource.resourceNameSingular }}{{ loop.index0 }}"
+                                           name="{{ inputRessource.ressourceNamePlural }}[]"
+                                           value="{{ resource.value }}"
+                                           data-type="{{ resource.type }}"
+                                    >
+                                    <label class="custom-control-label" for="{{ inputRessource.resourceNameSingular }}{{ loop.index0 }}">
+                                        <span {{ resource.alreadyIncluded ? "style='color: #666;'" : "" }}>
+                                            {{ resource.label }}
+                                        </span>
+                                    </label>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="card-footer text-right">
+                        <button type="button"
+                                class="btn btn-primary"
+                                id="add-{{ inputRessource.ressourceNamePlural }}"
+                                data-strict="{{ menus[type_menu].strict_mode ? '1' : '0' }}"
+                        >
+                            {% trans %}aropixel.menu.form.add{% endtrans %}
+                        </button>
                     </div>
                 </div>
-                <div class="card-footer text-right">
-                    <button type="button" class="btn btn-primary" id="add-pages" data-strict="{{ menus[type_menu].strict_mode ? '1' : '0' }}">{% trans %}aropixel.menu.form.add{% endtrans %}</button>
-                </div>
-            </div>
+
+            {% endfor %}
+
             {% block post_pages %}{% endblock %}
 
             <div class="card border-top-lg border-top-teal">

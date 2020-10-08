@@ -7,7 +7,7 @@ use Aropixel\PageBundle\Entity\Page;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
-class PagesMenuAdder
+class PagesMenuHandler
 {
 
     private $_requiredPages;
@@ -38,26 +38,67 @@ class PagesMenuAdder
     /**
      * @return array
      */
-    public function getAllPages(): array
+    public function getInputRessources($menuItems): array
     {
-        $allPages = [];
+
+        $alreadyIncludedPages = $this->getAlreadyIncludedPages($menuItems);
+
+        $inputPageRessources = [
+            'resourceNameSingular' => 'page',
+            'ressourceNamePlural' => 'pages',
+        ];
+
+        $ressources = [];
 
         //Pour toutes les pages récupérées, on les ajoute dans l'array allPages
         foreach ($this->getPagesPublished() as $page) {
             if ($page->getType() == Page::TYPE_DEFAULT) {
-                $allPages[$page->getId()] = $page->getTitle();
+
+                $ressource = [];
+
+                $ressource['label'] = $page->getTitle();
+                $ressource['value'] = $page->getId();
+                $ressource['type'] = 'page';
+                $ressource['alreadyIncluded'] = false;
+
+                if (array_key_exists($page->getId(), $this->getStaticPages())) {
+                    $ressource['type'] = 'static';
+                }
+
+                if (in_array($page->getId(), $alreadyIncludedPages)) {
+                    $ressource['alreadyIncluded'] = true;
+                }
+
+                $ressources[$page->getId()] = $ressource;
             }
         }
         // pour toutes les statiques pages récupérées, on les ajoute dans l'array allPages
         foreach ($this->getStaticPages() as $key => $title) {
-            $allPages[$key] = $title;
+
+            $ressource = [];
+
+            $ressource['label'] = $title;
+            $ressource['value'] = $key;
+            $ressource['type'] = 'page';
+            $ressource['alreadyIncluded'] = false;
+
+            if (array_key_exists($key, $this->getStaticPages())) {
+                $ressource['type'] = 'static';
+            }
+
+            if (in_array($key, $alreadyIncludedPages)) {
+                $ressource['alreadyIncluded'] = true;
+            }
+
+            $ressources[$key] = $ressource;
         }
 
-        asort($allPages);
+        asort($ressources);
 
-        return $allPages;
+        $inputPageRessources['ressources'] = $ressources;
+
+        return $inputPageRessources;
     }
-
 
     public function getMenuPages($type, $menuItems): array
     {
@@ -66,14 +107,9 @@ class PagesMenuAdder
 
         $entity = $this->params->get('aropixel_menu.entity');
 
-        $pages = [];
+        $menuPageItems = [];
+
         if ($this->isPageBundleActive()) {
-
-            // récupère toutes les pages publiées
-            $pages = $this->getPagesPublished();
-
-            //
-            $menuPageItems = [];
 
             // pour toutes les pages obligatoire en config
             foreach ($requiredPages as $code => $libelle) {
@@ -111,14 +147,50 @@ class PagesMenuAdder
                 }
             }
 
+            $this->entityManager->flush();
+
         }
+
         return $menuPageItems;
+    }
+
+    private function getStaticPages()
+    {
+        if ((empty($this->_staticPages))) {
+            $this->_staticPages = $this->params->get('aropixel_menu.static_pages');
+        }
+        return $this->_staticPages;
+    }
+
+
+    /**
+     * @param array $menuItems
+     * @return array
+     */
+    private function getAlreadyIncludedPages(array $menuItems): array
+    {
+        $pagesAlreadyIncluded = [];
+
+        /** @var Menu $item */
+        foreach ($menuItems as $item) {
+            if ($this->isPageBundleActive() && $item->getPage()) {
+
+                $pagesAlreadyIncluded[] = $item->getPage();
+            }
+
+            if ($item->getStaticPage()) {
+                // on ajoute son code dans l'array $alreadyIncluded
+                $pagesAlreadyIncluded[] = $item->getStaticPage();
+            }
+        }
+
+        return $pagesAlreadyIncluded;
     }
 
     /**
      * @return bool
      */
-    public function isPageBundleActive(): bool
+    private function isPageBundleActive(): bool
     {
         // vérifie si le page bundle est activé ou pas
         $bundles = $this->params->get('kernel.bundles');
@@ -127,7 +199,7 @@ class PagesMenuAdder
         return $isPageBundleActive;
     }
 
-    public function getPagesPublished()
+    private function getPagesPublished()
     {
         if ((empty($this->_pagesPublished))) {
             $this->_pagesPublished = $this->entityManager->getRepository(Page::class)->findPublished();
@@ -135,15 +207,7 @@ class PagesMenuAdder
         return $this->_pagesPublished;
     }
 
-    public function getStaticPages()
-    {
-        if ((empty($this->_staticPages))) {
-            $this->_staticPages = $this->params->get('aropixel_menu.static_pages');
-        }
-        return $this->_staticPages;
-    }
-
-    public function getRequiredPages($type)
+    private function getRequiredPages($type)
     {
         $menus = $this->params->get('aropixel_menu.menus');
 

@@ -7,7 +7,7 @@ namespace Aropixel\MenuBundle\MenuAdder;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
-class MenuAdder
+class MenuHandler
 {
     /**
     * @var EntityManagerInterface
@@ -20,19 +20,19 @@ class MenuAdder
     private $params;
 
     /**
-     * @var PagesMenuAdder
+     * @var PagesMenuHandler
      */
-    private $pagesMenuAdder;
+    private $pagesMenuHandler;
 
     public function __construct(
         EntityManagerInterface $entityManager,
         ParameterBagInterface $params,
-        PagesMenuAdder $pagesMenuAdder
+        PagesMenuHandler $pagesMenuHandler
     )
     {
         $this->entityManager = $entityManager;
         $this->params = $params;
-        $this->pagesMenuAdder = $pagesMenuAdder;
+        $this->pagesMenuHandler = $pagesMenuHandler;
     }
 
 
@@ -40,10 +40,19 @@ class MenuAdder
     public function addToMenu($type)
     {
         $menuItems = $this->getMenuItems($type);
-        $menuPageItems = $this->pagesMenuAdder->getMenuPages($type, $menuItems);
+        $menuPageItems = $this->pagesMenuHandler->getMenuPages($type, $menuItems);
         $menuItems+= $menuPageItems;
 
         return $menuItems;
+    }
+
+    public function getInputRessources($menuItems)
+    {
+        $inputRessources = [];
+
+        $inputRessources[] = $this->pagesMenuHandler->getInputRessources($menuItems);
+
+        return $inputRessources;
     }
 
     // récupère tous les menus items déjà enregistrés
