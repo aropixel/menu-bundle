@@ -32,7 +32,6 @@ class MenuHandler
     {
         $this->menuHandlers = iterator_to_array($menuHandlers);
 
-        dump($this->menuHandlers); die;
         $this->entityManager = $entityManager;
         $this->params = $params;
     }
