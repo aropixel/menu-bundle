@@ -3,13 +3,14 @@
 namespace Aropixel\MenuBundle\MenuHandler;
 
 use Aropixel\MenuBundle\Entity\Menu;
+use Aropixel\MenuBundle\Model\MenuInputRessources;
 
 class LinkMenuHandler implements ItemMenuHandlerInterface
 {
 
-    public function getInputRessources($menuItems): array
+    public function getInputRessources($menuItems): ?MenuInputRessources
     {
-        return [];
+        return null;
     }
 
     public function addToMenu(array $menuItems, $type): array

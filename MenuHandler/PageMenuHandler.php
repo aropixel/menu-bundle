@@ -3,7 +3,10 @@
 namespace Aropixel\MenuBundle\MenuHandler;
 
 use Aropixel\MenuBundle\Entity\Menu;
+use Aropixel\MenuBundle\Model\MenuInputRessource;
+use Aropixel\MenuBundle\Model\MenuInputRessources;
 use Aropixel\PageBundle\Entity\Page;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
@@ -36,70 +39,65 @@ class PageMenuHandler implements ItemMenuHandlerInterface
     }
 
     /**
-     * @return array
+     * @return MenuInputRessources
      */
-    public function getInputRessources($menuItems): array
+    public function getInputRessources($menuItems): ?MenuInputRessources
     {
 
         $alreadyIncludedPages = $this->getAlreadyIncludedPages($menuItems);
 
-        $inputPageRessources = [
-            'resourceNameSingular' => 'page',
-            'ressourceNamePlural' => 'pages',
-            'ressourceLabel' => 'Page Générale',
-            'ressourceColor' => 'bg-pink'
-        ];
+        $menuInputPageRessources = new MenuInputRessources();
 
-        $ressources = [];
+        $menuInputPageRessources->setResourceNameSingular('page');
+        $menuInputPageRessources->setRessourceNamePlural('pages');
+        $menuInputPageRessources->setRessourceLabel('Page Générale');
+        $menuInputPageRessources->setRessourceColor('bg-pink');
+
 
         //Pour toutes les pages récupérées, on les ajoute dans l'array allPages
         foreach ($this->getPagesPublished() as $page) {
             if ($page->getType() == Page::TYPE_DEFAULT) {
 
-                $ressource = [];
+                $menuInputPageRessource = new MenuInputRessource();
 
-                $ressource['label'] = $page->getTitle();
-                $ressource['value'] = $page->getId();
-                $ressource['type'] = 'page';
-                $ressource['alreadyIncluded'] = false;
+                $menuInputPageRessource->setLabel($page->getTitle());
+                $menuInputPageRessource->setValue($page->getId());
+                $menuInputPageRessource->setType('page');
+                $menuInputPageRessource->setAlreadyIncluded(false);
 
                 if (array_key_exists($page->getId(), $this->getStaticPages())) {
-                    $ressource['type'] = 'static';
+                    $menuInputPageRessource->setType('static');
                 }
 
                 if (in_array($page->getId(), $alreadyIncludedPages)) {
-                    $ressource['alreadyIncluded'] = true;
+                    $menuInputPageRessource->setAlreadyIncluded(true);
                 }
 
-                $ressources[$page->getId()] = $ressource;
+                 $menuInputPageRessources->addRessources($menuInputPageRessource);
             }
         }
         // pour toutes les statiques pages récupérées, on les ajoute dans l'array allPages
         foreach ($this->getStaticPages() as $key => $title) {
 
-            $ressource = [];
+            $menuInputPageRessource = new MenuInputRessource();
 
-            $ressource['label'] = $title;
-            $ressource['value'] = $key;
-            $ressource['type'] = 'page';
-            $ressource['alreadyIncluded'] = false;
+            $menuInputPageRessource->setLabel($title);
+            $menuInputPageRessource->setValue($key);
+            $menuInputPageRessource->setType('page');
+            $menuInputPageRessource->setAlreadyIncluded(false);
 
             if (array_key_exists($key, $this->getStaticPages())) {
-                $ressource['type'] = 'static';
+                $menuInputPageRessource->setType('static');
             }
 
             if (in_array($key, $alreadyIncludedPages)) {
-                $ressource['alreadyIncluded'] = true;
+                $menuInputPageRessource->setAlreadyIncluded(true);
             }
 
-            $ressources[$key] = $ressource;
+             $menuInputPageRessources->addRessource($menuInputPageRessource);
         }
 
-        asort($ressources);
-
-        $inputPageRessources['ressources'] = $ressources;
-
-        return $inputPageRessources;
+        return $menuInputPageRessources;
     }
 
     public function addToMenu(array $menuItems, $type): array
@@ -151,8 +149,6 @@ class PageMenuHandler implements ItemMenuHandlerInterface
             $this->entityManager->flush();
 
         }
-
-
 
         return $menuItems;
     }

@@ -30,7 +30,9 @@ class MenuHandler
         ParameterBagInterface $params
     )
     {
-        $this->menuHandlers = $menuHandlers;
+        $this->menuHandlers = iterator_to_array($menuHandlers);
+
+        dump($this->menuHandlers); die;
         $this->entityManager = $entityManager;
         $this->params = $params;
     }
@@ -53,7 +55,6 @@ class MenuHandler
         $inputRessources = [];
 
         foreach ($this->menuHandlers as $menuHandler) {
-            dump($menuHandler);
             if (!empty($menuHandler->getInputRessources($menuItems))) {
                 $inputRessources[] = $menuHandler->getInputRessources($menuItems);
             }

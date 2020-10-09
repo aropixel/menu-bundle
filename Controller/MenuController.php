@@ -4,7 +4,6 @@ namespace Aropixel\MenuBundle\Controller;
 
 use Aropixel\MenuBundle\Entity\Menu;
 use Aropixel\MenuBundle\MenuHandler\MenuHandler;
-use Aropixel\MenuBundle\MenuHandler\PageMenuHandler;
 use Aropixel\MenuBundle\Provider\MenuProvider;
 use Aropixel\MenuBundle\Provider\MenuProviderInterface;
 use Aropixel\PageBundle\Entity\Page;
