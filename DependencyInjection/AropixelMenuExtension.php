@@ -2,6 +2,7 @@
 
 namespace Aropixel\MenuBundle\DependencyInjection;
 
+use Aropixel\MenuBundle\MenuHandler\ItemMenuHandlerInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
@@ -35,6 +36,10 @@ class AropixelMenuExtension extends Extension
 //        $container->setParameter('aropixel_menu.required_pages', $config['required_pages']);
         $container->setParameter('aropixel_menu.entity', $config['entity']);
         $container->setParameter('aropixel_menu.cache.duration', $config['cache']);
+
+        $container->registerForAutoconfiguration(ItemMenuHandlerInterface::class)
+            ->addTag('aropixel.item_menu_handler_tag')
+        ;
 
         //
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));

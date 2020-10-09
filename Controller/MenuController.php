@@ -3,9 +3,8 @@
 namespace Aropixel\MenuBundle\Controller;
 
 use Aropixel\MenuBundle\Entity\Menu;
-use Aropixel\MenuBundle\MenuAdder\LinkMenuHandler;
-use Aropixel\MenuBundle\MenuAdder\MenuHandler;
-use Aropixel\MenuBundle\MenuAdder\PagesMenuHandler;
+use Aropixel\MenuBundle\MenuHandler\MenuHandler;
+use Aropixel\MenuBundle\MenuHandler\PageMenuHandler;
 use Aropixel\MenuBundle\Provider\MenuProvider;
 use Aropixel\MenuBundle\Provider\MenuProviderInterface;
 use Aropixel\PageBundle\Entity\Page;
@@ -28,9 +27,7 @@ class MenuController extends AbstractController
     public function index(
         $type,
         EntityManagerInterface $entityManager,
-        PagesMenuHandler $pagesMenuHandler,
-        MenuHandler $menuHandler,
-        LinkMenuHandler $linkMenuHandler
+        MenuHandler $menuHandler
     ): Response
     {
         // récupère la config des différents menus (footer, navbar etc)

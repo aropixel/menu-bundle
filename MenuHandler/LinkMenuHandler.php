@@ -1,6 +1,6 @@
 <?php
 
-namespace Aropixel\MenuBundle\MenuAdder;
+namespace Aropixel\MenuBundle\MenuHandler;
 
 use Aropixel\MenuBundle\Entity\Menu;
 

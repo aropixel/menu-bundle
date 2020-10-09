@@ -1,13 +1,13 @@
 <?php
 
-namespace Aropixel\MenuBundle\MenuAdder;
+namespace Aropixel\MenuBundle\MenuHandler;
 
 use Aropixel\MenuBundle\Entity\Menu;
 use Aropixel\PageBundle\Entity\Page;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
-class PagesMenuHandler
+class PageMenuHandler implements ItemMenuHandlerInterface
 {
 
     private $_requiredPages;
@@ -102,7 +102,7 @@ class PagesMenuHandler
         return $inputPageRessources;
     }
 
-    public function addToMenu($menuItems, $type): array
+    public function addToMenu(array $menuItems, $type): array
     {
 
         // récupère les pages obligatoires en config
@@ -157,7 +157,7 @@ class PagesMenuHandler
         return $menuItems;
     }
 
-    public function hydrateMenuItem($item, $line)
+    public function hydrateMenuItem($item, $line): void
     {
         $static = null;
         $page = null;

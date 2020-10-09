@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Aropixel\MenuBundle\MenuAdder;
+namespace Aropixel\MenuBundle\MenuHandler;
 
 
 use Aropixel\MenuBundle\Entity\Menu;
@@ -21,34 +21,18 @@ class MenuHandler
      */
     private $params;
 
-    /**
-     * @var PagesMenuHandler
-     */
-    private $pagesMenuHandler;
+    private $menuHandlers;
 
-    /**
-     * @var LinkMenuHandler
-     */
-    private $linkMenuHandler;
-
-    /**
-     * @var CategoryMenuHandler
-     */
-    private $categoryMenuHandler;
 
     public function __construct(
+        iterable $menuHandlers,
         EntityManagerInterface $entityManager,
-        ParameterBagInterface $params,
-        PagesMenuHandler $pagesMenuHandler,
-        LinkMenuHandler $linkMenuHandler,
-        CategoryMenuHandler $categoryMenuHandler
+        ParameterBagInterface $params
     )
     {
+        $this->menuHandlers = $menuHandlers;
         $this->entityManager = $entityManager;
         $this->params = $params;
-        $this->pagesMenuHandler = $pagesMenuHandler;
-        $this->linkMenuHandler = $linkMenuHandler;
-        $this->categoryMenuHandler = $categoryMenuHandler;
     }
 
 
@@ -57,8 +41,9 @@ class MenuHandler
     {
         $menuItems = $this->getMenuItems($type);
 
-        $menuItems = $this->pagesMenuHandler->addToMenu($menuItems, $type);
-        $menuItems = $this->linkMenuHandler->addToMenu($menuItems, $type);
+        foreach ($this->menuHandlers as $menuHandler) {
+            $menuItems = $menuHandler->addToMenu($menuItems, $type);
+        }
 
         return $menuItems;
     }
@@ -67,16 +52,11 @@ class MenuHandler
     {
         $inputRessources = [];
 
-        if (!empty($this->pagesMenuHandler->getInputRessources($menuItems))) {
-            $inputRessources[] = $this->pagesMenuHandler->getInputRessources($menuItems);
-        }
-
-        if (!empty($this->linkMenuHandler->getInputRessources($menuItems))) {
-            $inputRessources[] = $this->linkMenuHandler->getInputRessources($menuItems);
-        }
-
-        if (!empty($this->categoryMenuHandler->getInputRessources($menuItems))) {
-            $inputRessources[] = $this->categoryMenuHandler->getInputRessources($menuItems);
+        foreach ($this->menuHandlers as $menuHandler) {
+            dump($menuHandler);
+            if (!empty($menuHandler->getInputRessources($menuItems))) {
+                $inputRessources[] = $menuHandler->getInputRessources($menuItems);
+            }
         }
 
         return $inputRessources;
@@ -98,9 +78,9 @@ class MenuHandler
         //
         $title = "";
 
-        $this->pagesMenuHandler->hydrateMenuItem($item, $line);
-        $this->linkMenuHandler->hydrateMenuItem($item, $line);
-        $this->categoryMenuHandler->hydrateMenuItem($item, $line);
+        foreach ($this->menuHandlers as $menuHandler) {
+            $menuHandler->hydrateMenuItem($item, $line);
+        }
 
         //
         if (strlen($item['data']['title'])) {
