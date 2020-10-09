@@ -7,10 +7,9 @@
 
 namespace Aropixel\MenuBundle\EventListener;
 
-use Aropixel\MenuBundle\Entity\Menu;
 use Aropixel\MenuBundle\Entity\MenuInterface;
 use Doctrine\Common\EventSubscriber;
-use Doctrine\Common\Persistence\Mapping\Driver\MappingDriver;
+use Doctrine\Persistence\Mapping\Driver\MappingDriverChain;
 use Doctrine\Common\Persistence\Mapping\ReflectionService;
 use Doctrine\Common\Persistence\Mapping\RuntimeReflectionService;
 use Doctrine\ORM\Configuration;
@@ -71,7 +70,7 @@ class MappedSuperClassSubscriber implements EventSubscriber
         }
 
         $metadataDriver = $configuration->getMetadataDriverImpl();
-        Assert::isInstanceOf($metadataDriver, MappingDriver::class);
+        Assert::isInstanceOf($metadataDriver, MappingDriverChain::class);
 
         foreach (class_parents($class) as $parent) {
             if (false === in_array($parent, $metadataDriver->getAllClassNames(), true)) {
