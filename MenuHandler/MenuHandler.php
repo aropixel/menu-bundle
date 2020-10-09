@@ -37,7 +37,14 @@ class MenuHandler
     }
 
 
-    // on ajoute les nouveaux items de menu aux items déjà enregistrés
+    /**
+     * @param $type
+     * @return object[]
+     *
+     * récupère les items sauvés en bdd en fonction de leur type (categorie etc) via
+     * des différents services menuHandler (injectés  dans le constructor grâce au tag)
+     *
+     */
     public function addToMenu($type)
     {
         $menuItems = $this->getMenuItems($type);
@@ -49,6 +56,13 @@ class MenuHandler
         return $menuItems;
     }
 
+    /**
+     * @param $menuItems
+     * @return array
+     *
+     * récupère les ressources des différents services menuHandler (injectés dans le constructor grâce au tag)
+     * dans le but de les affcher en sélection pour créer le menu
+     */
     public function getInputRessources($menuItems)
     {
         $inputRessources = [];
@@ -62,6 +76,14 @@ class MenuHandler
         return $inputRessources;
     }
 
+    /**
+     * @param $type
+     * @param $item
+     * @param Menu|null $parent
+     * @return Menu
+     *
+     * persist un item de menu en fonction de son type (en faisant appel aux différents menu handler)
+     */
     public function saveMenuItem($type, $item, Menu $parent=null)
     {
         $entity = $this->params->get('aropixel_menu.entity');
@@ -108,7 +130,10 @@ class MenuHandler
         return $line;
     }
 
-    // récupère tous les menus items déjà enregistrés
+    /**
+     * @param $type
+     * @return object[]
+     */
     private function getMenuItems($type)
     {
         $entity = $this->params->get('aropixel_menu.entity');

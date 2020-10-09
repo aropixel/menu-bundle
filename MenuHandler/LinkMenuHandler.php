@@ -8,11 +8,24 @@ use Aropixel\MenuBundle\Model\MenuInputRessources;
 class LinkMenuHandler implements ItemMenuHandlerInterface
 {
 
+    /**
+     * @param $menuItems
+     * @return MenuInputRessources|null
+     *
+     * récupère les items de liens à afficher pour créer le menu : pas besoin ici (étant donné que c'est un champs texte)
+     */
     public function getInputRessources($menuItems): ?MenuInputRessources
     {
         return null;
     }
 
+    /**
+     * @param array $menuItems
+     * @param $type
+     * @return array
+     *
+     * récupère les items sauvés en bdd du menu actuel
+     */
     public function addToMenu(array $menuItems, $type): array
     {
         // pour chaque item de menu on vérifie globalement si l'item a déjà été ajouté
@@ -36,6 +49,12 @@ class LinkMenuHandler implements ItemMenuHandlerInterface
         return $menuItems;
     }
 
+    /**
+     * @param $item
+     * @param $line
+     *
+     * ajoute les infos pour persister un item link du menu
+     */
     public function hydrateMenuItem($item, $line): void
     {
         $link = null;

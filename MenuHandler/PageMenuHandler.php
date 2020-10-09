@@ -39,7 +39,11 @@ class PageMenuHandler implements ItemMenuHandlerInterface
     }
 
     /**
-     * @return MenuInputRessources
+     * @param $menuItems
+     * @return MenuInputRessources|null
+     *
+     * récupère les pages statiques et dynamiques, créé un model d'input avec (avec label, value etc)
+     * dans le but de les affcher en sélection pour créer le menu
      */
     public function getInputRessources($menuItems): ?MenuInputRessources
     {
@@ -100,6 +104,13 @@ class PageMenuHandler implements ItemMenuHandlerInterface
         return $menuInputPageRessources;
     }
 
+    /**
+     * @param array $menuItems
+     * @param $type
+     * @return array
+     *
+     * récupère les items sauvés en bdd du menu actuel
+     */
     public function addToMenu(array $menuItems, $type): array
     {
 
@@ -153,6 +164,12 @@ class PageMenuHandler implements ItemMenuHandlerInterface
         return $menuItems;
     }
 
+    /**
+     * @param $item
+     * @param $line
+     *
+     * ajoute les infos pour persister un item page du menu
+     */
     public function hydrateMenuItem($item, $line): void
     {
         $static = null;
@@ -227,6 +244,9 @@ class PageMenuHandler implements ItemMenuHandlerInterface
         return $isPageBundleActive;
     }
 
+    /**
+     * @return mixed
+     */
     private function getPagesPublished()
     {
         if ((empty($this->_pagesPublished))) {
@@ -235,6 +255,10 @@ class PageMenuHandler implements ItemMenuHandlerInterface
         return $this->_pagesPublished;
     }
 
+    /**
+     * @param $type
+     * @return mixed
+     */
     private function getRequiredPages($type)
     {
         $menus = $this->params->get('aropixel_menu.menus');

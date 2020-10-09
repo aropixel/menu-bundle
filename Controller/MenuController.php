@@ -2,13 +2,8 @@
 
 namespace Aropixel\MenuBundle\Controller;
 
-use Aropixel\MenuBundle\Entity\Menu;
 use Aropixel\MenuBundle\MenuHandler\MenuHandler;
-use Aropixel\MenuBundle\Provider\MenuProvider;
 use Aropixel\MenuBundle\Provider\MenuProviderInterface;
-use Aropixel\PageBundle\Entity\Page;
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,7 +20,6 @@ class MenuController extends AbstractController
      */
     public function index(
         $type,
-        EntityManagerInterface $entityManager,
         MenuHandler $menuHandler
     ): Response
     {
@@ -36,8 +30,10 @@ class MenuController extends AbstractController
             throw $this->createNotFoundException();
         }
 
+        // ajoute les items déjà enregistrés du menu
         $menuItems = $menuHandler->addToMenu($type);
 
+        // récupère les valeurs de à afficher en sélection des items de menu (categories, pges etc)
         $inputRessources = $menuHandler->getInputRessources($menuItems);
 
         return $this->render('@AropixelMenu/menu/menu.html.twig', [
