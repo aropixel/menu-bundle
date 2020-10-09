@@ -94,6 +94,9 @@
                                            name="{{ inputRessource.ressourceNamePlural }}[]"
                                            value="{{ resource.value }}"
                                            data-type="{{ resource.type }}"
+                                           data-label="{{ inputRessource.ressourceLabel }}"
+                                           data-color="{{ inputRessource.ressourceColor }}"
+                                           data-ressourceType="{{ inputRessource.resourceNameSingular }}"
                                     >
                                     <label class="custom-control-label" for="{{ inputRessource.resourceNameSingular }}{{ loop.index0 }}">
                                         <span {{ resource.alreadyIncluded ? "style='color: #666;'" : "" }}>
@@ -106,8 +109,7 @@
                     </div>
                     <div class="card-footer text-right">
                         <button type="button"
-                                class="btn btn-primary"
-                                id="add-{{ inputRessource.ressourceNamePlural }}"
+                                class="btn btn-primary add-input-ressource"
                                 data-strict="{{ menus[type_menu].strict_mode ? '1' : '0' }}"
                         >
                             {% trans %}aropixel.menu.form.add{% endtrans %}

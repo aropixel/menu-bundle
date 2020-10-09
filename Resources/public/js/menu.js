@@ -13,7 +13,7 @@ $(document).ready(function() {
         helper:	'clone',
     });
 
-    $('#add-pages').click(function() {
+    $('.add-input-ressource').click(function() {
 
         var checked_inputs = control_select($(this))
 
@@ -22,15 +22,17 @@ $(document).ready(function() {
             checked_inputs.each(function() {
 
                 var title = $(this).parent().find('span').html();
+
                 var line_properties = {}
-                line_properties.label = 'Page générale';
-                line_properties.color = 'bg-pink';
+                line_properties.label = $(this).attr('data-label');
+                line_properties.color = $(this).attr('data-color');
                 line_properties.title = title;
                 line_properties.originalTitle = title;
                 line_properties.static = $(this).attr('data-type') === 'static' ? $(this).attr('value') : '';
                 line_properties.page = $(this).attr('data-type') === 'page' ? $(this).attr('value') : '';
+                line_properties.category = $(this).attr('data-type') === 'category' ? $(this).attr('value') : '';
                 line_properties.link = '';
-                line_properties.type = 'page';
+                line_properties.type = $(this).attr('data-ressourceType');
 
                 if (!is_strict_mode() || !is_included(line_properties)) {
                     add_line(line_properties);
@@ -139,7 +141,7 @@ $(document).ready(function() {
 
         if (line.attr('data-page')) {
 
-            var checkbox = $('#add-pages').closest('.panel').find('input[value="'+line.attr('data-page')+'"]');
+            var checkbox = $('.add-input-ressource').closest('.panel').find('input[value="'+line.attr('data-page')+'"]');
             checkbox.removeAttr('disabled');
         }
         line.fadeOut('fast', function() { $(this).remove() })
@@ -180,7 +182,7 @@ $(document).ready(function() {
 
 
     function is_strict_mode() {
-        return $('#add-pages').attr('data-strict') == '1';
+        return $('.add-input-ressource').attr('data-strict') == '1';
     }
 
 
@@ -258,6 +260,7 @@ $(document).ready(function() {
         var new_line = $(template);
         new_line.attr('data-static', line_properties.static);
         new_line.attr('data-page', line_properties.page);
+        new_line.attr('data-category', line_properties.category);
         new_line.attr('data-link', line_properties.link);
         new_line.attr('data-title', line_properties.title);
         new_line.attr('data-original-title', line_properties.originalTitle);

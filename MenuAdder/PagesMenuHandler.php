@@ -46,6 +46,8 @@ class PagesMenuHandler
         $inputPageRessources = [
             'resourceNameSingular' => 'page',
             'ressourceNamePlural' => 'pages',
+            'ressourceLabel' => 'Page Générale',
+            'ressourceColor' => 'bg-pink'
         ];
 
         $ressources = [];
@@ -100,14 +102,13 @@ class PagesMenuHandler
         return $inputPageRessources;
     }
 
-    public function getMenuPages($type, $menuItems): array
+    public function addToMenu($menuItems, $type): array
     {
+
         // récupère les pages obligatoires en config
         $requiredPages = $this->getRequiredPages($type);
 
         $entity = $this->params->get('aropixel_menu.entity');
-
-        $menuPageItems = [];
 
         if ($this->isPageBundleActive()) {
 
@@ -143,7 +144,7 @@ class PagesMenuHandler
                     $this->entityManager->persist($item);
 
                     // et on ajoute l'item de menu à l'array $menuPageItems
-                    $menuPageItems[] = $item;
+                    $menuItems[] = $item;
                 }
             }
 
@@ -151,7 +152,38 @@ class PagesMenuHandler
 
         }
 
-        return $menuPageItems;
+
+
+        return $menuItems;
+    }
+
+    public function hydrateMenuItem($item, $line)
+    {
+        $static = null;
+        $page = null;
+        $title = null;
+
+        $staticPages = $this->params->get('aropixel_menu.static_pages');
+
+        if (strlen($item['data']['page'])) {
+            if (array_key_exists($item['data']['page'], $staticPages)) {
+                $static = $item['data']['page'];
+            }
+            else {
+                $page = $this->entityManager->getRepository(Page::class)->find($item['data']['page']);
+                $title = $page->getTitle();
+            }
+        }
+
+        $line->setPage($page);
+        $line->setTitle($title);
+
+        //
+        if (strlen($item['data']['static'])) {
+            $static = $item['data']['static'];
+        }
+
+        $line->setStaticPage($static);
     }
 
     private function getStaticPages()
