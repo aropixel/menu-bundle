@@ -42,7 +42,7 @@
             </cascade>
             <join-column name="parent_id" referenced-column-name="id" on-delete="CASCADE" />
         </many-to-one>
-        <one-to-many field="children" target-entity="Aropixel\MenuBundle\Entity\MenuInterface" mapped-by="parent">
+        <one-to-many field="children" target-entity="Aropixel\MenuBundle\Entity\MenuInterface" mapped-by="parent" fetch="EAGER">
             <order-by>
                 <order-by-field name="left" />
             </order-by>

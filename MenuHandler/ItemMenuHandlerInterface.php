@@ -9,7 +9,9 @@ interface ItemMenuHandlerInterface
 {
     public function addToMenu(array $menuItems, $type): array;
 
-    public function getInputRessources($menuItems): ?MenuInputRessources;
+    public function getInputRessources(array $menuItems): ?MenuInputRessources;
 
     public function hydrateMenuItem($item, $line): void;
+
+    public function afterSave($type, array $linesItems): void;
 }

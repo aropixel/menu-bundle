@@ -14,7 +14,7 @@ class LinkMenuHandler implements ItemMenuHandlerInterface
      *
      * récupère les items de liens à afficher pour créer le menu : pas besoin ici (étant donné que c'est un champs texte)
      */
-    public function getInputRessources($menuItems): ?MenuInputRessources
+    public function getInputRessources(array $menuItems): ?MenuInputRessources
     {
         return null;
     }
@@ -71,5 +71,16 @@ class LinkMenuHandler implements ItemMenuHandlerInterface
 
         $line->setLink($link);
     }
+
+    /**
+     * @param array $linesItems
+     *
+     * nothing to do here after save
+     */
+    public function afterSave($type, array $linesItems): void
+    {
+
+    }
+
 
 }

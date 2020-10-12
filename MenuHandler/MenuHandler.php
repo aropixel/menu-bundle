@@ -76,6 +76,24 @@ class MenuHandler
         return $inputRessources;
     }
 
+    public function saveMenu($type, $menuItems)
+    {
+        $linesItems = [];
+
+        foreach ($menuItems as $i => $item) {
+            $linesItems[] = $this->saveMenuItem($type, $item);
+        }
+
+        $this->entityManager->flush();
+
+        // if items need to be modified after flush (for exemple for sub items, they need to be flushed before we can use it)
+        foreach ($this->menuHandlers as $menuHandler) {
+            $menuHandler->afterSave($type, $linesItems);
+        }
+
+        $this->entityManager->flush();
+    }
+
     /**
      * @param $type
      * @param $item
@@ -84,7 +102,7 @@ class MenuHandler
      *
      * persist un item de menu en fonction de son type (en faisant appel aux différents menu handler)
      */
-    public function saveMenuItem($type, $item, Menu $parent=null)
+    private function saveMenuItem($type, $item, Menu $parent=null)
     {
         $entity = $this->params->get('aropixel_menu.entity');
 
@@ -137,13 +155,23 @@ class MenuHandler
     private function getMenuItems($type)
     {
         $entity = $this->params->get('aropixel_menu.entity');
+        $menuRepository = $this->entityManager->getRepository($entity);
 
-        $menuItems = $this->entityManager->getRepository($entity)->findBy(array(
+        $menuRootItems = $menuRepository->findBy(array(
             'parent' => null,
             'type' => $type
         ));
 
-        return $menuItems;
+        // TODO : find better way to get Parents with children
+        foreach ($menuRootItems as $menuRootItem) {
+            $children = $menuRepository->children($menuRootItem, false, [], true);
+
+            if (!empty($children)) {
+                $menuRootItem->setChildren($children);
+            }
+        }
+
+        return $menuRootItems;
     }
 
 }

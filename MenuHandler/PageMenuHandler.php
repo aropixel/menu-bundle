@@ -45,7 +45,7 @@ class PageMenuHandler implements ItemMenuHandlerInterface
      * récupère les pages statiques et dynamiques, créé un model d'input avec (avec label, value etc)
      * dans le but de les affcher en sélection pour créer le menu
      */
-    public function getInputRessources($menuItems): ?MenuInputRessources
+    public function getInputRessources(array $menuItems): ?MenuInputRessources
     {
 
         $alreadyIncludedPages = $this->getAlreadyIncludedPages($menuItems);
@@ -197,6 +197,16 @@ class PageMenuHandler implements ItemMenuHandlerInterface
         }
 
         $line->setStaticPage($static);
+    }
+
+    /**
+     * @param array $linesItems
+     *
+     * nothing to do here after save
+     */
+    public function afterSave($type, array $linesItems): void
+    {
+
     }
 
     private function getStaticPages()

@@ -52,6 +52,7 @@
                 </div>
                 <ol class="menu" id="menu">
                     {% for item in menu %}
+                        {{ dump(item.children) }}
                         {{ include ('@AropixelMenu/menu/item.html.twig', {'item': item}) }}
                     {% endfor %}
                 </ol>

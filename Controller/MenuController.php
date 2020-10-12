@@ -72,13 +72,9 @@ class MenuController extends AbstractController
         $singleRoot = null;
         $menuItems = $request->request->get('menu');
 
-        //
-        foreach ($menuItems as $i => $item) {
-            $menuHandler->saveMenuItem($type, $item, $singleRoot);
-        }
+        $menuHandler->saveMenu($type, $menuItems);
 
         //
-        $em->flush();
         $menuProvider->refreshCache();
 
         //
