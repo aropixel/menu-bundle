@@ -42,8 +42,7 @@ class PageMenuHandler implements ItemMenuHandlerInterface
      * @param $menuItems
      * @return MenuInputRessources|null
      *
-     * récupère les pages statiques et dynamiques, créé un model d'input avec (avec label, value etc)
-     * dans le but de les affcher en sélection pour créer le menu
+     * get the static and dynamics pages with a class model in order to be displayed into the menu form
      */
     public function getInputRessources(array $menuItems): ?MenuInputRessources
     {
@@ -57,8 +56,7 @@ class PageMenuHandler implements ItemMenuHandlerInterface
         $menuInputPageRessources->setRessourceLabel('Page Générale');
         $menuInputPageRessources->setRessourceColor('bg-pink');
 
-
-        //Pour toutes les pages récupérées, on les ajoute dans l'array allPages
+        // create an input item for all the created pages
         foreach ($this->getPagesPublished() as $page) {
             if ($page->getType() == Page::TYPE_DEFAULT) {
 
@@ -80,7 +78,8 @@ class PageMenuHandler implements ItemMenuHandlerInterface
                  $menuInputPageRessources->addRessources($menuInputPageRessource);
             }
         }
-        // pour toutes les statiques pages récupérées, on les ajoute dans l'array allPages
+
+        // create an input item for all the static pages
         foreach ($this->getStaticPages() as $key => $title) {
 
             $menuInputPageRessource = new MenuInputRessource();
@@ -109,41 +108,40 @@ class PageMenuHandler implements ItemMenuHandlerInterface
      * @param $type
      * @return array
      *
-     * récupère les items sauvés en bdd du menu actuel
+     * get the current menu page items
      */
-    public function addToMenu(array $menuItems, $type): array
+    public function getMenuItems(array $menuItems, $type): array
     {
 
-        // récupère les pages obligatoires en config
+        // get all the mandatory pages in the menu config
         $requiredPages = $this->getRequiredPages($type);
 
         $entity = $this->params->get('aropixel_menu.entity');
 
         if ($this->isPageBundleActive()) {
 
-            // pour toutes les pages obligatoire en config
+            // for all the mandatory page
             foreach ($requiredPages as $code => $libelle) {
 
                 $found = false;
 
 
-                // Pour chaque item de menu déjà sauvegardé
+                // for all the menu items already persisted
                 /** @var Menu $item */
                 foreach ($menuItems as $item) {
 
-                    // si c'est une page statique et qu'elle notée en config
+                    // if it's a static page and if the page is mandatory
                     if ($item->getStaticPage() && $item->getStaticPage() == $code) {
-                        // on la passe en obligatoire
+                        // set the item required
                         $item->setIsRequired(true);
-                        // et on met un flag pour dire que la page a déjà été traitée
                         $found = true;
                         break;
                     }
                 }
 
-                // si la page obliatoire n'a pas été trouvé dans les page déjà enregistrées
+                // if the mandatory page is not saved into the menu
                 if (!$found) {
-                    // on créé un nouvel item de menu
+                    // we create a new menu item for the page
                     $item = new $entity();
                     $item->setStaticPage($code);
                     $item->setTitle($libelle);
@@ -152,7 +150,6 @@ class PageMenuHandler implements ItemMenuHandlerInterface
                     $item->setIsRequired(true);
                     $this->entityManager->persist($item);
 
-                    // et on ajoute l'item de menu à l'array $menuPageItems
                     $menuItems[] = $item;
                 }
             }
@@ -168,7 +165,7 @@ class PageMenuHandler implements ItemMenuHandlerInterface
      * @param $item
      * @param $line
      *
-     * ajoute les infos pour persister un item page du menu
+     * add item page info before persisting it
      */
     public function hydrateMenuItem($item, $line): void
     {
@@ -221,6 +218,7 @@ class PageMenuHandler implements ItemMenuHandlerInterface
     /**
      * @param array $menuItems
      * @return array
+     *
      */
     private function getAlreadyIncludedPages(array $menuItems): array
     {
@@ -234,7 +232,6 @@ class PageMenuHandler implements ItemMenuHandlerInterface
             }
 
             if ($item->getStaticPage()) {
-                // on ajoute son code dans l'array $alreadyIncluded
                 $pagesAlreadyIncluded[] = $item->getStaticPage();
             }
         }
@@ -247,11 +244,9 @@ class PageMenuHandler implements ItemMenuHandlerInterface
      */
     private function isPageBundleActive(): bool
     {
-        // vérifie si le page bundle est activé ou pas
         $bundles = $this->params->get('kernel.bundles');
 
-        $isPageBundleActive = array_key_exists('AropixelPageBundle', $bundles);
-        return $isPageBundleActive;
+        return array_key_exists('AropixelPageBundle', $bundles);
     }
 
     /**

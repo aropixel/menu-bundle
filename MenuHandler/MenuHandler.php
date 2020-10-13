@@ -41,16 +41,15 @@ class MenuHandler
      * @param $type
      * @return object[]
      *
-     * récupère les items sauvés en bdd en fonction de leur type (categorie etc) via
-     * des différents services menuHandler (injectés  dans le constructor grâce au tag)
+     * get All the menu items persisted with the related handler depending on their type (pages etc)
      *
      */
-    public function addToMenu($type)
+    public function getMenu($type)
     {
         $menuItems = $this->getMenuItems($type);
 
         foreach ($this->menuHandlers as $menuHandler) {
-            $menuItems = $menuHandler->addToMenu($menuItems, $type);
+            $menuItems = $menuHandler->getMenuItems($menuItems, $type);
         }
 
         return $menuItems;
@@ -60,8 +59,7 @@ class MenuHandler
      * @param $menuItems
      * @return array
      *
-     * récupère les ressources des différents services menuHandler (injectés dans le constructor grâce au tag)
-     * dans le but de les affcher en sélection pour créer le menu
+    // get the values for the menu form (pages, link etc)
      */
     public function getInputRessources($menuItems)
     {
@@ -76,6 +74,12 @@ class MenuHandler
         return $inputRessources;
     }
 
+    /**
+     * @param $type
+     * @param $menuItems
+     *
+     * save each new menu item
+     */
     public function saveMenu($type, $menuItems)
     {
         $linesItems = [];
@@ -100,7 +104,7 @@ class MenuHandler
      * @param Menu|null $parent
      * @return Menu
      *
-     * persist un item de menu en fonction de son type (en faisant appel aux différents menu handler)
+     * persist a new menu item
      */
     private function saveMenuItem($type, $item, Menu $parent=null)
     {
@@ -151,6 +155,8 @@ class MenuHandler
     /**
      * @param $type
      * @return object[]
+     *
+     * get the current menu items
      */
     private function getMenuItems($type)
     {

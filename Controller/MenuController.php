@@ -23,17 +23,17 @@ class MenuController extends AbstractController
         MenuHandler $menuHandler
     ): Response
     {
-        // récupère la config des différents menus (footer, navbar etc)
+        // get the menus config
         $menus = $this->getParameter('aropixel_menu.menus');
 
         if (!array_key_exists($type, $menus)) {
             throw $this->createNotFoundException();
         }
 
-        // ajoute les items déjà enregistrés du menu
-        $menuItems = $menuHandler->addToMenu($type);
+        // get all menu items
+        $menuItems = $menuHandler->getMenu($type);
 
-        // récupère les valeurs de à afficher en sélection des items de menu (categories, pges etc)
+        // get the values for the menu form (pages, link etc)
         $inputRessources = $menuHandler->getInputRessources($menuItems);
 
         return $this->render('@AropixelMenu/menu/menu.html.twig', [

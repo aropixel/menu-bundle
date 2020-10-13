@@ -12,7 +12,7 @@ class LinkMenuHandler implements ItemMenuHandlerInterface
      * @param $menuItems
      * @return MenuInputRessources|null
      *
-     * récupère les items de liens à afficher pour créer le menu : pas besoin ici (étant donné que c'est un champs texte)
+     * get the static and dynamics pages with a class model in order to be displayed into the menu form : empty here
      */
     public function getInputRessources(array $menuItems): ?MenuInputRessources
     {
@@ -24,18 +24,17 @@ class LinkMenuHandler implements ItemMenuHandlerInterface
      * @param $type
      * @return array
      *
-     * récupère les items sauvés en bdd du menu actuel
+     * get the current menu link items
      */
-    public function addToMenu(array $menuItems, $type): array
+    public function getMenuItems(array $menuItems, $type): array
     {
-        // pour chaque item de menu on vérifie globalement si l'item a déjà été ajouté
-        // au menu, pour ensuite le bloquer au re-ajout dans le menu
         /** @var Menu $item */
         foreach ($menuItems as $item) {
 
-            // si l'item est un lien
+            // if the menu item is indeed a link
             if ($item->getLink()) {
-                // on clean le lien et on le modifie pour l'item
+
+                // we clean the related link with the host
                 $parsing = parse_url($item->getLink());
                 if ($parsing) {
                     $item->setLinkDomain($parsing['host']);
@@ -53,7 +52,7 @@ class LinkMenuHandler implements ItemMenuHandlerInterface
      * @param $item
      * @param $line
      *
-     * ajoute les infos pour persister un item link du menu
+     * add item link info before persisting it
      */
     public function hydrateMenuItem($item, $line): void
     {
