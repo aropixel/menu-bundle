@@ -125,7 +125,6 @@ class PageMenuHandler implements ItemMenuHandlerInterface
 
                 $found = false;
 
-
                 // for all the menu items already persisted
                 /** @var Menu $item */
                 foreach ($menuItems as $item) {
@@ -175,6 +174,8 @@ class PageMenuHandler implements ItemMenuHandlerInterface
 
         $staticPages = $this->params->get('aropixel_menu.static_pages');
 
+        // si c'est une page qui a été sauvée, on enrichit les variables $pages ou $static
+        // pour les relier à la line
         if (strlen($item['data']['page'])) {
             if (array_key_exists($item['data']['page'], $staticPages)) {
                 $static = $item['data']['page'];
@@ -206,7 +207,7 @@ class PageMenuHandler implements ItemMenuHandlerInterface
 
     }
 
-    private function getStaticPages()
+    public function getStaticPages()
     {
         if ((empty($this->_staticPages))) {
             $this->_staticPages = $this->params->get('aropixel_menu.static_pages');
@@ -220,7 +221,7 @@ class PageMenuHandler implements ItemMenuHandlerInterface
      * @return array
      *
      */
-    private function getAlreadyIncludedPages(array $menuItems): array
+    public function getAlreadyIncludedPages(array $menuItems): array
     {
         $pagesAlreadyIncluded = [];
 
@@ -242,7 +243,7 @@ class PageMenuHandler implements ItemMenuHandlerInterface
     /**
      * @return bool
      */
-    private function isPageBundleActive(): bool
+    public function isPageBundleActive(): bool
     {
         $bundles = $this->params->get('kernel.bundles');
 
@@ -264,7 +265,7 @@ class PageMenuHandler implements ItemMenuHandlerInterface
      * @param $type
      * @return mixed
      */
-    private function getRequiredPages($type)
+    public function getRequiredPages($type)
     {
         $menus = $this->params->get('aropixel_menu.menus');
 
