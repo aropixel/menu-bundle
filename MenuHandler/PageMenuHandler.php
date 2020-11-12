@@ -75,7 +75,7 @@ class PageMenuHandler implements ItemMenuHandlerInterface
                     $menuInputPageRessource->setAlreadyIncluded(true);
                 }
 
-                 $menuInputPageRessources->addRessources($menuInputPageRessource);
+                 $menuInputPageRessources->addRessource($menuInputPageRessource);
             }
         }
 
