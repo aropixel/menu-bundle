@@ -18,6 +18,7 @@ use Doctrine\ORM\Event\LoadClassMetadataEventArgs;
 use Doctrine\ORM\Events;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
+use Doctrine\Persistence\Mapping\Driver\MappingDriverChain;
 use Webmozart\Assert\Assert;
 
 
@@ -71,7 +72,7 @@ class MappedSuperClassSubscriber implements EventSubscriber
         }
 
         $metadataDriver = $configuration->getMetadataDriverImpl();
-        Assert::isInstanceOf($metadataDriver, MappingDriver::class);
+        Assert::isInstanceOf($metadataDriver, MappingDriverChain::class);
 
         foreach (class_parents($class) as $parent) {
             if (false === in_array($parent, $metadataDriver->getAllClassNames(), true)) {
