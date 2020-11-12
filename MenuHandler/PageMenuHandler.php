@@ -229,7 +229,7 @@ class PageMenuHandler implements ItemMenuHandlerInterface
         foreach ($menuItems as $item) {
             if ($this->isPageBundleActive() && $item->getPage()) {
 
-                $pagesAlreadyIncluded[] = $item->getPage();
+                $pagesAlreadyIncluded[] = $item->getPage()->getId();
             }
 
             if ($item->getStaticPage()) {
