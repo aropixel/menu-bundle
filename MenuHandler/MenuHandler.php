@@ -14,12 +14,12 @@ class MenuHandler
     /**
     * @var EntityManagerInterface
      */
-    private $entityManager;
+    protected $entityManager;
 
     /**
      * @var ParameterBagInterface
      */
-    private $params;
+    protected $params;
 
     private $menuHandlers;
 
@@ -106,7 +106,7 @@ class MenuHandler
      *
      * persist a new menu item
      */
-    private function saveMenuItem($type, $item, Menu $parent=null)
+    protected function saveMenuItem($type, $item, Menu $parent=null)
     {
         $entity = $this->params->get('aropixel_menu.entity');
 
@@ -158,7 +158,7 @@ class MenuHandler
      *
      * get the current menu items
      */
-    private function getMenuItems($type)
+    protected function getMenuItems($type)
     {
         $entity = $this->params->get('aropixel_menu.entity');
         $menuRepository = $this->entityManager->getRepository($entity);
