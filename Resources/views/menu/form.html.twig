@@ -39,12 +39,14 @@
 
             <div class="card" id="panelMenu">
 
+                {% block form_menu_header %}
                 <div class="card-header">
                     <h4 class="card-heading">{{ menus[type_menu].name }}</h4>
                     <div class="card-header-action">
                         <button type="button" class="btn btn-primary heading-btn" id="save_menu" data-type="{{ type_menu }}" data-name="{{ menus[type_menu].name }}" data-url="{{ path('menu_save') }}">{% trans %}aropixel.menu.form.save{% endtrans %}</button>
                     </div>
                 </div>
+                {% endblock %}
 
                 <div class="card-body">
 
