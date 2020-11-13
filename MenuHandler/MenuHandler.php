@@ -21,7 +21,7 @@ class MenuHandler
      */
     protected $params;
 
-    private $menuHandlers;
+    protected $menuHandlers;
 
 
     public function __construct(
