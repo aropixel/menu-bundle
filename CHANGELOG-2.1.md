@@ -4,8 +4,11 @@ CHANGELOG for 2.1.x
 This changelog references the relevant changes (bug and security fixes) done
 in 2.1 minor versions.
 
-* **2.1.5** _(20xx-xx-xx)_
+* **2.1.6** _(20xx-xx-xx)_
 
+
+* **2.1.5** _(2021-01-21)_
+    * Bugfix getMenuItems for submenus of more than 2nd level
 
 * **2.1.4** _(2020-11-13)_
     * Make menuHandlers property protected in MenuHandler

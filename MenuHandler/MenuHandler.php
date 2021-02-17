@@ -168,16 +168,42 @@ class MenuHandler
             'type' => $type
         ));
 
-        // TODO : find better way to get Parents with children
+        // Get Children for each root element
         foreach ($menuRootItems as $menuRootItem) {
-            $children = $menuRepository->children($menuRootItem, false, [], true);
 
-            if (!empty($children)) {
-                $menuRootItem->setChildren($children);
-            }
+            $this->populateChildren($menuRootItem);
+
         }
 
         return $menuRootItems;
+    }
+
+
+    /**
+     * Get children of a parent element
+     * @param $parentItem
+     */
+    protected function populateChildren($parentItem)
+    {
+        //
+        $entity = $this->params->get('aropixel_menu.entity');
+        $menuRepository = $this->entityManager->getRepository($entity);
+
+        // Get direct children
+        $children = $menuRepository->children($parentItem, true, [], true);
+
+        // If parent has children
+        if (!empty($children)) {
+
+            // Set the children
+            $parentItem->setChildren($children);
+
+            // And try to find chidren of each child
+            foreach ($children as $child) {
+                $this->populateChildren($child);
+            }
+        }
+
     }
 
 }
