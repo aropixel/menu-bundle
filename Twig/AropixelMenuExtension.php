@@ -59,6 +59,7 @@ abstract class AropixelMenuExtension extends AbstractExtension
     {
         return array(
             new TwigFilter('get_link', array($this, 'getLink')),
+            new TwigFilter('is_section', array($this, 'isSection')),
         );
     }
 
@@ -70,6 +71,12 @@ abstract class AropixelMenuExtension extends AbstractExtension
         );
     }
 
+
+
+    public function isSection(Menu $menu)
+    {
+        return !$menu->getPage() && !$menu->getStaticPage() && !$menu->getLink();
+    }
 
 
     public function getMenu($type)
