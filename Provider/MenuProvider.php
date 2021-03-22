@@ -88,6 +88,9 @@ class MenuProvider implements MenuProviderInterface
         $this->menus = $cache->get(self::CACHE_KEY, function (ItemInterface $item) use ($em, $menuEntity, $cacheDuration) {
 
             $menuItems = $em->getRepository($menuEntity)->findRootsWithPage();
+            foreach ($menuItems as $menuItem) {
+                $this->hydratePage($menuItem);
+            }
 
             $item->expiresAfter($cacheDuration);
             $item->set($menuItems);
@@ -98,6 +101,17 @@ class MenuProvider implements MenuProviderInterface
         //
         $this->splitMenus();
 
+    }
+
+
+    protected function hydratePage(Menu $menuItem)
+    {
+        //
+        $menuItem->getPage() && $menuItem->getPage()->getSlug();
+
+        foreach ($menuItem->getChildren() as $child) {
+            $this->hydratePage($child);
+        }
     }
 
 
