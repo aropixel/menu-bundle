@@ -269,10 +269,10 @@ class PageMenuHandler implements ItemMenuHandlerInterface
     {
         $menus = $this->params->get('aropixel_menu.menus');
 
-        if ((empty($this->_requiredPages))) {
-            $this->_requiredPages = $menus[$type]['required_pages'];
-        }
-        return $this->_requiredPages;
+//        if ((empty($this->_requiredPages))) {
+//            $this->_requiredPages = $menus[$type]['required_pages'];
+//        }
+        return $menus[$type]['required_pages'];
     }
 
 }
