@@ -130,12 +130,11 @@ class PageMenuHandler implements ItemMenuHandlerInterface
                 foreach ($menuItems as $item) {
 
                     // if it's a static page and if the page is mandatory
-                    if ($item->getStaticPage() && $item->getStaticPage() == $code) {
-                        // set the item required
-                        $item->setIsRequired(true);
-                        $found = true;
+                    $found = $this->itemContainsPage($item, $code);
+                    if ($found) {
                         break;
                     }
+
                 }
 
                 // if the mandatory page is not saved into the menu
@@ -158,6 +157,23 @@ class PageMenuHandler implements ItemMenuHandlerInterface
         }
 
         return $menuItems;
+    }
+
+
+    private function itemContainsPage(Menu $menuItem, $code)
+    {
+        if ($menuItem->getStaticPage() == $code) {
+            return true;
+        }
+
+        $contains = false;
+        if ($menuItem->getChildren()) {
+            foreach ($menuItem->getChildren() as $child) {
+                $contains |= $this->itemContainsPage($child, $code);
+            }
+        }
+
+        return $contains;
     }
 
     /**
