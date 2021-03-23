@@ -4,8 +4,11 @@ CHANGELOG for 2.1.x
 This changelog references the relevant changes (bug and security fixes) done
 in 2.1 minor versions.
 
-* **2.1.7** _(20xx-xx-xx)_
+* **2.1.8** _(20xx-xx-xx)_
 
+
+* **2.1.7** _(2021-03-23)_
+    * Bugfix: required pages not found in sub levels
 
 * **2.1.6** _(2021-03-22)_
     * Bugfix cached pages in menu
