@@ -75,7 +75,7 @@ class PageMenuHandler implements ItemMenuHandlerInterface
                     $menuInputPageRessource->setAlreadyIncluded(true);
                 }
 
-                 $menuInputPageRessources->addRessource($menuInputPageRessource);
+                $menuInputPageRessources->addRessource($menuInputPageRessource);
             }
         }
 
@@ -97,7 +97,7 @@ class PageMenuHandler implements ItemMenuHandlerInterface
                 $menuInputPageRessource->setAlreadyIncluded(true);
             }
 
-             $menuInputPageRessources->addRessource($menuInputPageRessource);
+            $menuInputPageRessources->addRessource($menuInputPageRessource);
         }
 
         return $menuInputPageRessources;
@@ -132,6 +132,7 @@ class PageMenuHandler implements ItemMenuHandlerInterface
                     // if it's a static page and if the page is mandatory
                     $found = $this->itemContainsPage($item, $code);
                     if ($found) {
+                        $found->setIsRequired(true);
                         break;
                     }
 
@@ -160,20 +161,23 @@ class PageMenuHandler implements ItemMenuHandlerInterface
     }
 
 
-    private function itemContainsPage(Menu $menuItem, $code)
+    protected function itemContainsPage(Menu $menuItem, $code)
     {
         if ($menuItem->getStaticPage() == $code) {
-            return true;
+            return $menuItem;
         }
 
         $contains = false;
         if ($menuItem->getChildren()) {
             foreach ($menuItem->getChildren() as $child) {
-                $contains |= $this->itemContainsPage($child, $code);
+                $menuItem = $this->itemContainsPage($child, $code);
+                if ($menuItem) {
+                    return $menuItem;
+                }
             }
         }
 
-        return $contains;
+        return false;
     }
 
     /**
