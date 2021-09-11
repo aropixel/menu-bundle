@@ -102,6 +102,10 @@ class Menu implements MenuInterface
      */
     protected $children;
 
+    /**
+     * @var bool
+     */
+    private $isBlankTarget = false;
 
     /**
      * @return mixed
@@ -406,6 +410,24 @@ class Menu implements MenuInterface
     public function setChildren($children)
     {
         $this->children = $children;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isBlankTarget()
+    {
+        return $this->isBlankTarget;
+    }
+
+    /**
+     * @param bool $isBlankTarget
+     * @return Menu
+     */
+    public function setIsBlankTarget($isBlankTarget): MenuInterface
+    {
+        $this->isBlankTarget = $isBlankTarget;
         return $this;
     }
 
