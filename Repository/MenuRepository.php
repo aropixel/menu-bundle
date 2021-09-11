@@ -15,6 +15,25 @@ class MenuRepository extends NestedTreeRepository
 {
 
     /**
+     * Get root items with page info in same query
+     */
+    public function findRootsWithPage() {
+
+
+        $qb = $this->createQueryBuilder('m');
+
+        $qb->leftJoin('m.page', 'page')
+           ->addSelect('page')
+           ->where('m.parent IS NULL')
+           ->orderBy('m.id', 'ASC');
+
+        $query = $qb->getQuery();
+
+        return $query->getResult();
+
+    }
+
+    /**
      * @param string $type
      */
     public function deleteMenu($type) {

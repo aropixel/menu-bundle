@@ -1,0 +1,40 @@
+aropixel:
+  menu:
+    form:
+      instruction: "Gérez votre menu en ajoutant des éléments de la colonne de droite.<br />Vous pouvez déplacer les éléments du menu par glisser-déposer."
+      title: Titre
+      link: Lien
+      add: Ajouter
+      edit: Modifier
+      delete: Supprimer
+      save: Enregistrer
+      cancel: Annuler
+      ok: Valider
+      understood: Compris !
+
+      type:
+        link: Lien manuel
+        page: Page générale
+        section: Section
+
+      panels:
+        link:
+          title: Lien manuel
+          fields:
+            title: Texte
+            link: Lien
+            target: Destination
+        pages: Pages
+        section: Section
+
+      modals:
+        empty:
+          title: "Veuillez sélectionner un élément"
+        required:
+          title: "Désolé"
+          message: "<strong>Désolé, ce lien est obligatoire.</strong><br />Vous ne pouvez pas le supprimer."
+        edit:
+          title: "Modifier l'élément de menu"
+          fields:
+            text: Texte du lien
+            link: Destination du lien

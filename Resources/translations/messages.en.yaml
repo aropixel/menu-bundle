@@ -1,0 +1,40 @@
+aropixel:
+  menu:
+    form:
+      instruction: "Select and add items to your menu from the right sidebar.<br />You can reorder menu items by drag'n drop."
+      title: Title
+      link: Link
+      add: Add
+      edit: Edit
+      delete: Delete
+      save: Save
+      cancel: Cancel
+      ok: OK
+      understood: Got it !
+
+      type:
+        link: Link
+        page: Page
+        section: Section
+
+      panels:
+        link:
+          title: Link
+          fields:
+            title: Text
+            link: Link
+            target: Target
+        pages: Pages
+        section: Section
+
+      modals:
+        empty:
+          title: "Please, select one item at least"
+        required:
+          title: "Sorry"
+          message: "<strong>Sorry, this link is required.</strong><br />You cannot remove it."
+        edit:
+          title: "Edit item menu"
+          fields:
+            text: Text
+            link: Link

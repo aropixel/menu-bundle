@@ -8,6 +8,7 @@
 namespace Aropixel\MenuBundle\Entity;
 
 use Aropixel\PageBundle\Entity\Page;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
 
@@ -106,6 +107,12 @@ class Menu implements MenuInterface
      * @var bool
      */
     private $isBlankTarget = false;
+
+    public function __construct()
+    {
+        $this->children = new ArrayCollection();
+    }
+
 
     /**
      * @return mixed
@@ -392,6 +399,9 @@ class Menu implements MenuInterface
     public function setParent(self $parent): MenuInterface
     {
         $this->parent = $parent;
+
+        $parent->addChild($this);
+
         return $this;
     }
 
@@ -403,13 +413,29 @@ class Menu implements MenuInterface
         return $this->children;
     }
 
+
     /**
-     * @param self[]|Collection $children
-     * @return MenuInterface
+     * @param $children
      */
     public function setChildren($children)
     {
         $this->children = $children;
+    }
+
+    /**
+     * Add child
+     *
+     * @param Menu $child
+     *
+     * @return self
+     */
+    public function addChild(Menu $child)
+    {
+        if (!$this->children->contains($child)) {
+            $this->children[] = $child;
+            $child->setParent($this);
+        }
+
         return $this;
     }
 
@@ -430,5 +456,16 @@ class Menu implements MenuInterface
         $this->isBlankTarget = $isBlankTarget;
         return $this;
     }
+
+    /**
+     * Remove child
+     *
+     * @param Menu $child
+     */
+    public function removeChild(Menu $child)
+    {
+        $this->children->removeElement($child);
+    }
+
 
 }

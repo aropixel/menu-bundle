@@ -10,9 +10,9 @@
         <div>
             <div class="text-semibold title">{{ item is defined ? item.title : '' }}</div>
             {% if item is defined and item.link %}
-                <div class="text-muted link">Lien : <a href="{{ item.link }}" target="_blank">{{ item.linkDomain }}</a></div>
+                <div class="text-muted link">{% trans %}aropixel.menu.form.link{% endtrans %} : <a href="{{ item.link }}" target="_blank">{{ item.linkDomain }}</a></div>
             {% elseif item is defined %}
-                <div class="text-muted link">Lien : {{ item.originalTitle }}</div>
+                <div class="text-muted link">{% trans %}aropixel.menu.form.link{% endtrans %} : {{ item.originalTitle }}</div>
             {% else %}
                 <div class="text-muted link">&nbsp;</div>
             {% endif %}
@@ -22,8 +22,8 @@
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fas fa-bars"></i></a>
                     <ul class="dropdown-menu dropdown-menu-right">
-                        <li class="dropdown-item"><a data-toggle="modal" data-target="#modal_edit"><i class="fas fa-edit"></i> Modifier</a></li>
-                        <li class="dropdown-item"><a class="deleteRow"><i class="fas fa-trash"></i> Supprimer</a></li>
+                        <li class="dropdown-item"><a data-toggle="modal" data-target="#modal_edit"><i class="fas fa-edit"></i> {% trans %}aropixel.menu.form.edit{% endtrans %}</a></li>
+                        <li class="dropdown-item"><a class="deleteRow"><i class="fas fa-trash"></i> {% trans %}aropixel.menu.form.delete{% endtrans %}</a></li>
                     </ul>
                 </li>
             </ul>
@@ -31,15 +31,16 @@
         <div class="cell-label">
             {% if item is defined %}
                 {% if item.link %}
-                    <span class="badge bg-teal">Lien manuel</span>
+                    <span class="badge bg-teal">{% trans %}aropixel.menu.form.type.link{% endtrans %}</span>
                 {% elseif item.page or item.staticPage %}
-                    <span class="badge bg-pink">Page générale</span>
+                    <span class="badge bg-pink">{% trans %}aropixel.menu.form.type.page{% endtrans %}</span>
                 {% elseif item.title %}
-                    <span class="badge bg-dark-grey">Section</span>
+                    <span class="badge bg-dark-grey">{% trans %}aropixel.menu.form.type.section{% endtrans %}</span>
                 {% endif %}
             {% endif %}
         </div>
     </div>
+
     {% if item is defined %}
         {% if item.children is not empty %}
             <ol>

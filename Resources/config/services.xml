@@ -11,6 +11,27 @@
 
         <prototype namespace="Aropixel\MenuBundle\" resource="../../*" exclude="../../{DependencyInjection,Entity,Migrations,Resources,Tests}"/>
 
+        <service id="Aropixel\MenuBundle\Provider\MenuProviderInterface" alias="Aropixel\MenuBundle\Provider\MenuProvider"/>
+
+        <service id="aropixel_menu.page_menu_handler" class="Aropixel\MenuBundle\MenuHandler\PageMenuHandler" autoconfigure="true">
+            <argument type="service" id="doctrine.orm.entity_manager" />
+            <argument type="service" id="parameter_bag"/>
+        </service>
+
+        <service id="Aropixel\MenuBundle\MenuHandler\PageMenuHandler" alias="aropixel_menu.page_menu_handler"/>
+
+
+        <service id="aropixel_menu.link_menu_handler" class="Aropixel\MenuBundle\MenuHandler\LinkMenuHandler" autoconfigure="true" />
+        <service id="Aropixel\MenuBundle\MenuHandler\LinkMenuHandler" alias="aropixel_menu.link_menu_handler"/>
+
+
+        <service id="aropixel_menu.menu_handler" class="Aropixel\MenuBundle\MenuHandler\MenuHandler" public="true" autowire="false">
+            <argument type="tagged_iterator" tag="aropixel.item_menu_handler_tag" />
+            <argument type="service" id="doctrine.orm.entity_manager" />
+            <argument type="service" id="parameter_bag"/>
+        </service>
+
+        <service id="Aropixel\MenuBundle\MenuHandler\MenuHandler" alias="aropixel_menu.menu_handler"/>
     </services>
 
 </container>

@@ -16,6 +16,8 @@
     {{ parent() }}
     <script type="text/javascript">
         var max_level = {{ menus[type_menu].depth }};
+        var required_title = "{% trans %}aropixel.menu.form.modals.required.title{% endtrans %}";
+        var required_message = "{% trans %}aropixel.menu.form.modals.required.message{% endtrans %}";
     </script>
     <script type="text/javascript" src="{{ asset('bundles/aropixeladmin/modules/jquery.mjs.nestedSortable.js') }}"></script>
     <script type="text/javascript" src="{{ asset('bundles/aropixelmenu/js/menu.js') }}"></script>
@@ -37,17 +39,18 @@
 
             <div class="card" id="panelMenu">
 
+                {% block form_menu_header %}
                 <div class="card-header">
                     <h4 class="card-heading">{{ menus[type_menu].name }}</h4>
                     <div class="card-header-action">
-                        <button type="button" class="btn btn-primary heading-btn" id="save_menu" data-type="{{ type_menu }}" data-name="{{ menus[type_menu].name }}" data-url="{{ path('menu_save') }}">Enregistrer</button>
+                        <button type="button" class="btn btn-primary heading-btn" id="save_menu" data-type="{{ type_menu }}" data-name="{{ menus[type_menu].name }}" data-url="{{ path('menu_save') }}">{% trans %}aropixel.menu.form.save{% endtrans %}</button>
                     </div>
                 </div>
+                {% endblock %}
 
                 <div class="card-body">
 
-                    <p class="text-muted">Gérez votre menu en ajoutant des éléments de la colonne de droite.<br />
-                        Vous pouvez déplacer les éléments du menu par glisser-déposer. </p>
+                    <p class="text-muted">{% trans %}aropixel.menu.form.instruction{% endtrans %}</p>
                 </div>
                 <ol class="menu" id="menu">
                     {% for item in menu %}
@@ -62,56 +65,78 @@
 
             <div class="card border-top-lg border-top-dark-grey">
                 <div class="card-header">
-                    <h4 class="card-title">Section</h4>
+                    <h4 class="card-title">{% trans %}aropixel.menu.form.panels.section{% endtrans %}</h4>
                 </div>
                 <div class="card-body">
                     <div class="form-group m-b-0">
-                        <label>Section</label>
+                        <label>{% trans %}aropixel.menu.form.panels.section{% endtrans %}</label>
                         <input name="manual_section" type="text" class="form-control">
                     </div>
                 </div>
                 <div class="card-footer text-right">
-                    <button type="button" class="btn btn-primary" id="add-section">Ajouter</button>
+                    <button type="button" class="btn btn-primary" id="add-section">{% trans %}aropixel.menu.form.add{% endtrans %}</button>
                 </div>
             </div>
             {% block post_sections %}{% endblock %}
 
-            <div class="card border-top-lg border-top-pink" id="panel-pages">
-                <div class="card-header">
-                    <h4 class="card-title">Pages</h4>
-                </div>
-                <div class="card-body">
-                    <div>
-                        {% for key,label in available_pages %}
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" id="page{{ loop.index0 }}" name="pages[]" value="{{ key }}">
-                                <label class="custom-control-label" for="page{{ loop.index0 }}"><span{% if key in already_included['pages'] %} style="color: #666;" {% endif %} >{{ label }}</span></label>
-                            </div>
-                        {% endfor %}
+            {% for inputRessource in inputRessources %}
+
+                <div class="card border-top-lg border-top-pink" id="panel-{{ inputRessource.ressourceNamePlural }}">
+                    <div class="card-header">
+                        {% set titleCard = 'aropixel.menu.form.panels.'~inputRessource.ressourceNamePlural %}
+                        <h4 class="card-title">{{ titleCard | trans}}</h4>
+                    </div>
+                    <div class="card-body">
+                        <div>
+                            {% for resource in inputRessource.ressources %}
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox"
+                                           class="custom-control-input"
+                                           id="{{ inputRessource.resourceNameSingular }}{{ loop.index0 }}"
+                                           name="{{ inputRessource.ressourceNamePlural }}[]"
+                                           value="{{ resource.value }}"
+                                           data-type="{{ resource.type }}"
+                                           data-label="{{ inputRessource.ressourceLabel }}"
+                                           data-color="{{ inputRessource.ressourceColor }}"
+                                           data-ressourceType="{{ inputRessource.resourceNameSingular }}"
+                                    >
+                                    <label class="custom-control-label" for="{{ inputRessource.resourceNameSingular }}{{ loop.index0 }}">
+                                        <span {{ resource.alreadyIncluded ? "style='color: #666;'" : "" }}>{{ resource.label }}</span>
+                                    </label>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="card-footer text-right">
+                        <button type="button"
+                                class="btn btn-primary add-input-ressource"
+                                data-strict="{{ menus[type_menu].strict_mode ? '1' : '0' }}"
+                        >
+                            {% trans %}aropixel.menu.form.add{% endtrans %}
+                        </button>
                     </div>
                 </div>
-                <div class="card-footer text-right">
-                    <button type="button" class="btn btn-primary" id="add-pages" data-strict="{{ is_strict_mode() ? '1' : '0' }}">Ajouter</button>
-                </div>
-            </div>
+
+            {% endfor %}
+
             {% block post_pages %}{% endblock %}
 
             <div class="card border-top-lg border-top-teal">
                 <div class="card-header">
-                    <h4 class="card-title">Lien manuel</h4>
+                    <h4 class="card-title">{% trans %}aropixel.menu.form.panels.link.title{% endtrans %}</h4>
                 </div>
                 <div class="card-body">
                     <div class="form-group">
-                        <label class="control-label">Titre</label>
+                        <label class="control-label">{% trans %}aropixel.menu.form.panels.link.fields.title{% endtrans %}</label>
                         <input name="manual_label" type="text" class="form-control" />
                     </div>
                     <div class="form-group m-b-0">
-                        <label class="control-label">Lien</label>
+                        <label class="control-label">{% trans %}aropixel.menu.form.panels.link.fields.link{% endtrans %}</label>
                         <input name="manual_link" type="text" class="form-control" />
                     </div>
                 </div>
                 <div class="card-footer text-right">
-                    <button type="button" class="btn btn-primary" id="add-link">Ajouter</button>
+                    <button type="button" class="btn btn-primary" id="add-link">{% trans %}aropixel.menu.form.add{% endtrans %}</button>
                 </div>
             </div>
             {% block post_links %}{% endblock %}
@@ -125,11 +150,11 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-body text-center">
-                    <h5 style="margin-bottom: 0">Veuillez sélectionner un élément</h5>
+                    <h5 style="margin-bottom: 0">{% trans %}aropixel.menu.form.modals.empty.title{% endtrans %}</h5>
                 </div>
 
                 <div class="modal-footer text-center">
-                    <button type="button" class="btn btn-primary" data-dismiss="modal">Compris !</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">{% trans %}aropixel.menu.form.understood{% endtrans %}</button>
                 </div>
             </div>
         </div>
@@ -141,26 +166,26 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Modifier l'élément de menu</h5>
+                    <h5 class="modal-title">{% trans %}aropixel.menu.form.modals.edit.title{% endtrans %}</h5>
                     <button type="button" class="close" data-dismiss="modal">×</button>
                 </div>
                 <div class="modal-body">
 
                     <div class="form-group">
-                        <label>Texte du lien</label>
-                        <input type="text" name="item_label" placeholder="Texte du lien" class="form-control">
+                        <label>{% trans %}aropixel.menu.form.modals.edit.fields.text{% endtrans %}</label>
+                        <input type="text" name="item_label" placeholder="{% trans %}aropixel.menu.form.modals.edit.fields.text{% endtrans %}" class="form-control">
                     </div>
 
                     <div class="form-group">
-                        <label>Destination du lien</label>
-                        <input type="text" name="item_link" placeholder="Destination du lien" class="form-control">
+                        <label>{% trans %}aropixel.menu.form.modals.edit.fields.link{% endtrans %}</label>
+                        <input type="text" name="item_link" placeholder="{% trans %}aropixel.menu.form.modals.edit.fields.link{% endtrans %}" class="form-control">
                     </div>
 
                 </div>
 
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
-                    <button type="button" class="btn btn-primary" id="valid_edit">Valider</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">{% trans %}aropixel.menu.form.cancel{% endtrans %}</button>
+                    <button type="button" class="btn btn-primary" id="valid_edit">{% trans %}aropixel.menu.form.ok{% endtrans %}</button>
                 </div>
             </div>
         </div>
