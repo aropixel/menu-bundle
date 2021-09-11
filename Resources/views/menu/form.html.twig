@@ -101,9 +101,7 @@
                                            data-ressourceType="{{ inputRessource.resourceNameSingular }}"
                                     >
                                     <label class="custom-control-label" for="{{ inputRessource.resourceNameSingular }}{{ loop.index0 }}">
-                                        <span {{ resource.alreadyIncluded ? "style='color: #666;'" : "" }}>
-                                            {{ resource.label }}
-                                        </span>
+                                        <span {{ resource.alreadyIncluded ? "style='color: #666;'" : "" }}>{{ resource.label }}</span>
                                     </label>
                                 </div>
                             {% endfor %}
