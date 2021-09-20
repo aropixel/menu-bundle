@@ -4,8 +4,19 @@ CHANGELOG for 2.1.x
 This changelog references the relevant changes (bug and security fixes) done
 in 2.1 minor versions.
 
-* **2.1.6** _(20xx-xx-xx)_
+* **2.1.9** _(20xx-xx-xx)_
 
+
+* **2.1.8** _(2021-03-25)_
+    * Bugfix required page alert if menu item is deep
+
+* **2.1.7** _(2021-03-23)_
+    * Bugfix: required pages not found in sub levels
+
+* **2.1.6** _(2021-03-22)_
+    * Bugfix cached pages in menu
+    * Bugfix getRequiredPages
+    * Add is_section filter
 
 * **2.1.5** _(2021-01-21)_
     * Bugfix getMenuItems for submenus of more than 2nd level

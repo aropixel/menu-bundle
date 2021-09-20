@@ -75,7 +75,7 @@ class PageMenuHandler implements ItemMenuHandlerInterface
                     $menuInputPageRessource->setAlreadyIncluded(true);
                 }
 
-                 $menuInputPageRessources->addRessource($menuInputPageRessource);
+                $menuInputPageRessources->addRessource($menuInputPageRessource);
             }
         }
 
@@ -97,7 +97,7 @@ class PageMenuHandler implements ItemMenuHandlerInterface
                 $menuInputPageRessource->setAlreadyIncluded(true);
             }
 
-             $menuInputPageRessources->addRessource($menuInputPageRessource);
+            $menuInputPageRessources->addRessource($menuInputPageRessource);
         }
 
         return $menuInputPageRessources;
@@ -130,12 +130,12 @@ class PageMenuHandler implements ItemMenuHandlerInterface
                 foreach ($menuItems as $item) {
 
                     // if it's a static page and if the page is mandatory
-                    if ($item->getStaticPage() && $item->getStaticPage() == $code) {
-                        // set the item required
-                        $item->setIsRequired(true);
-                        $found = true;
+                    $found = $this->itemContainsPage($item, $code);
+                    if ($found) {
+                        $found->setIsRequired(true);
                         break;
                     }
+
                 }
 
                 // if the mandatory page is not saved into the menu
@@ -158,6 +158,26 @@ class PageMenuHandler implements ItemMenuHandlerInterface
         }
 
         return $menuItems;
+    }
+
+
+    protected function itemContainsPage(Menu $menuItem, $code)
+    {
+        if ($menuItem->getStaticPage() == $code) {
+            return $menuItem;
+        }
+
+        $contains = false;
+        if ($menuItem->getChildren()) {
+            foreach ($menuItem->getChildren() as $child) {
+                $menuItem = $this->itemContainsPage($child, $code);
+                if ($menuItem) {
+                    return $menuItem;
+                }
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -269,10 +289,10 @@ class PageMenuHandler implements ItemMenuHandlerInterface
     {
         $menus = $this->params->get('aropixel_menu.menus');
 
-        if ((empty($this->_requiredPages))) {
-            $this->_requiredPages = $menus[$type]['required_pages'];
-        }
-        return $this->_requiredPages;
+//        if ((empty($this->_requiredPages))) {
+//            $this->_requiredPages = $menus[$type]['required_pages'];
+//        }
+        return $menus[$type]['required_pages'];
     }
 
 }

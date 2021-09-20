@@ -103,6 +103,10 @@ class Menu implements MenuInterface
      */
     protected $children;
 
+    /**
+     * @var bool
+     */
+    private $isBlankTarget = false;
 
     public function __construct()
     {
@@ -432,6 +436,24 @@ class Menu implements MenuInterface
             $child->setParent($this);
         }
 
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isBlankTarget()
+    {
+        return $this->isBlankTarget;
+    }
+
+    /**
+     * @param bool $isBlankTarget
+     * @return Menu
+     */
+    public function setIsBlankTarget($isBlankTarget): MenuInterface
+    {
+        $this->isBlankTarget = $isBlankTarget;
         return $this;
     }
 
