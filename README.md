@@ -29,8 +29,11 @@
 - Create your symfony 4 project & install Aropixel AdminBundle
 - Require Aropixel Menu Bundle : `composer require aropixel/menu-bundle`
 - Apply migrations
-- Include the routes
-
+- Include the routes :
+```
+aropixel_menu:
+    resource: '@AropixelMenuBundle/Resources/config/routing.xml'
+```
 
 ## License
 Aropixel Menu Bundle is under the [MIT License](LICENSE)
