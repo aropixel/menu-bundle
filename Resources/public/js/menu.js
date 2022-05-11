@@ -175,6 +175,16 @@ $(document).ready(function() {
 
             $('#panelMenu').unblock();
 
+            var _buttons = {
+                "Fermer": function() {
+
+                    $(this).closest('.modal').modal('hide');
+
+                }
+            }
+            modalDyn('Le menu a bien été enregistré !', 'Vous pouvez continuer à modifier votre menu.', _buttons, {modalClass: 'modal_mini', headerClass: 'bg-success'});
+
+
         });
 
     })
