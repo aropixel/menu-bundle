@@ -31,6 +31,7 @@ $(document).ready(function() {
                 line_properties.static = $(this).attr('data-type') === 'static' ? $(this).attr('value') : '';
                 line_properties.page = $(this).attr('data-type') === 'page' ? $(this).attr('value') : '';
                 line_properties.category = $(this).attr('data-type') === 'category' ? $(this).attr('value') : '';
+                line_properties.selection = $(this).attr('data-type') === 'selection' ? $(this).attr('value') : '';
                 line_properties.link = '';
                 line_properties.type = $(this).attr('data-ressourceType');
 
@@ -271,6 +272,7 @@ $(document).ready(function() {
         new_line.attr('data-static', line_properties.static);
         new_line.attr('data-page', line_properties.page);
         new_line.attr('data-category', line_properties.category);
+        new_line.attr('data-selection', line_properties.selection);
         new_line.attr('data-link', line_properties.link);
         new_line.attr('data-title', line_properties.title);
         new_line.attr('data-original-title', line_properties.originalTitle);
