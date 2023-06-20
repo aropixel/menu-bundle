@@ -1,3 +1,4 @@
+import {ModalDyn} from '../../aropixeladmin/js/module/modal-dyn/modal-dyn.js';
 
 $(document).ready(function() {
 
@@ -15,15 +16,15 @@ $(document).ready(function() {
 
     $('.add-input-ressource').click(function() {
 
-        var checked_inputs = control_select($(this))
+        let checked_inputs = control_select($(this))
 
         if (checked_inputs) {
 
             checked_inputs.each(function() {
 
-                var title = $(this).parent().find('span').html();
+                let title = $(this).parent().find('span').html();
 
-                var line_properties = {}
+                let line_properties = {}
                 line_properties.label = $(this).attr('data-label');
                 line_properties.color = $(this).attr('data-color');
                 line_properties.title = title;
@@ -40,16 +41,18 @@ $(document).ready(function() {
                 }
                 else {
 
-                    //
-                    var _buttons = {
-                        "Fermer": function() {
+                    let _buttons = {
+                        "Fermer": {
 
-                            $(this).closest('.modal').modal('hide');
+                            'class' : 'btn-default',
+                            'callback' : function() {
+                                $(this).closest('.modal').modal('hide');
+                            }
 
                         }
                     }
 
-                    modalDyn('Désolé', '<strong>Ce lien est déjà dans la liste.</strong><br />Vous ne pouvez pas l\'insérer qu\'une seule fois.', _buttons, {modalClass: 'modal_mini', headerClass: 'bg-danger'});
+                    new ModalDyn('Désolé', '<strong>Ce lien est déjà dans la liste.</strong><br />Vous ne pouvez pas l\'insérer qu\'une seule fois.', _buttons, {modalClass: 'modal_mini', headerClass: 'bg-danger'});
                     return;
                 }
 
@@ -62,10 +65,10 @@ $(document).ready(function() {
 
     $('#add-link').click(function() {
 
-        var label = $(this).closest('.card').find('input[name="manual_label"]');
-        var link = $(this).closest('.card').find('input[name="manual_link"]');
+        let label = $(this).closest('.card').find('input[name="manual_label"]');
+        let link = $(this).closest('.card').find('input[name="manual_link"]');
 
-        var line_properties = {}
+        let line_properties = {}
         line_properties.label = 'Lien manuel';
         line_properties.color = 'bg-teal';
         line_properties.title = label.val();
@@ -85,9 +88,9 @@ $(document).ready(function() {
 
     $('#add-section').click(function() {
 
-        var section = $(this).closest('.card').find('input[name="manual_section"]');
+        let section = $(this).closest('.card').find('input[name="manual_section"]');
 
-        var line_properties = {}
+        let line_properties = {}
         line_properties.label = 'Section';
         line_properties.color = 'bg-dark-grey';
         line_properties.title = section.val();
@@ -106,43 +109,45 @@ $(document).ready(function() {
 
     $('#panelMenu').on('click', '.deleteRow', function() {
 
-        var line = $(this).closest('li[data-title]');
+        let line = $(this).closest('li[data-title]');
         if (line.attr('data-static')) {
 
             if (line.attr('data-required') === '1') {
 
-                var remain = false;
+                let remain = false;
                 $('#menu li').each(function() {
 
                     if ($(this).not(line) && $(this).attr('data-static') == line.attr('data-static')) {
-                        var remain = true;
+                        let remain = true;
                     }
 
                 });
 
                 if (!remain) {
 
-                    //
-                    var _buttons = {
-                        "Fermer": function() {
+                    let _buttons = {
+                        "Fermer": {
 
-                            $(this).closest('.modal').modal('hide');
+                            'class' : 'btn-default',
+                            'callback' : function() {
+                                $(this).closest('.modal').modal('hide');
+                            }
 
                         }
                     }
 
-                    modalDyn(required_title, required_message, _buttons, {modalClass: 'modal_mini', headerClass: 'bg-danger'});
+                    new ModalDyn(required_title, required_message, _buttons, {modalClass: 'modal_mini', headerClass: 'bg-danger'});
                     return;
                 }
 
             }
-            var checkbox = $('#panel-pages .panel-body input[value="'+line.attr('data-static')+'"]');
+            let checkbox = $('#panel-pages .panel-body input[value="'+line.attr('data-static')+'"]');
             checkbox.removeAttr('disabled');
         }
 
         if (line.attr('data-page')) {
 
-            var checkbox = $('.add-input-ressource').closest('.panel').find('input[value="'+line.attr('data-page')+'"]');
+            let checkbox = $('.add-input-ressource').closest('.panel').find('input[value="'+line.attr('data-page')+'"]');
             checkbox.removeAttr('disabled');
         }
         line.fadeOut('fast', function() { $(this).remove() })
@@ -167,23 +172,26 @@ $(document).ready(function() {
         });
 
         //
-        var type = $(this).data('type');
-        var name = $(this).data('name');
-        var url = $(this).data('url');
-        var params = serialize();
+        let type = $(this).data('type');
+        let name = $(this).data('name');
+        let url = $(this).data('url');
+        let params = serialize();
 
         $.post(url, {'type':type, 'name':name, 'menu': params}, function() {
 
             $('#panelMenu').unblock();
 
-            var _buttons = {
-                "Fermer": function() {
+            let _buttons = {
+                "Fermer": {
 
-                    $(this).closest('.modal').modal('hide');
+                    'class' : 'btn-default',
+                    'callback' : function() {
+                        $(this).closest('.modal').modal('hide');
+                    }
 
                 }
             }
-            modalDyn('Le menu a bien été enregistré !', 'Vous pouvez continuer à modifier votre menu.', _buttons, {modalClass: 'modal_mini', headerClass: 'bg-success'});
+            new ModalDyn('Le menu a bien été enregistré !', 'Vous pouvez continuer à modifier votre menu.', _buttons, {modalClass: 'modal_mini', headerClass: 'bg-success'});
 
 
         });
@@ -215,7 +223,7 @@ $(document).ready(function() {
 
     function control_select(button) {
 
-        var checked = button.closest('.card').find('input:checked');
+        let checked = button.closest('.card').find('input:checked');
         if (!checked.length) {
             $('#modal_please_select').modal('show');
             return false;
@@ -227,17 +235,17 @@ $(document).ready(function() {
 
     function serialize()
     {
-        var data,
+        let data,
             depth = 0,
             list  = this;
-        step  = function(level, depth)
+        let step = function(level, depth)
         {
-            var array = [ ],
+            let array = [ ],
                 items = level.children('li');
 
             items.each(function()
             {
-                var li   = $(this),
+                let li   = $(this),
                     item = {},
                     sub  = li.children('ol');
                 item.data = $.extend({}, li.data());
@@ -262,13 +270,13 @@ $(document).ready(function() {
 
     function add_line(line_properties) {
 
-        var hostname = '';
+        let hostname = '';
         if (line_properties.link) {
             hostname = $('<a>').prop('href', line_properties.link).prop('hostname');
         }
 
-        var template = $('#template_row').html();
-        var new_line = $(template);
+        let template = $('#template_row').html();
+        let new_line = $(template);
         new_line.attr('data-static', line_properties.static);
         new_line.attr('data-page', line_properties.page);
         new_line.attr('data-category', line_properties.category);
@@ -283,7 +291,7 @@ $(document).ready(function() {
         new_line.find('.cell-label').html('<span class="badge '+line_properties.color+'">'+line_properties.label+'</span>');
 
         if (line_properties.static) {
-            var checkbox = $('#panel-pages .panel-body input[value="'+line_properties.static+'"]');
+            let checkbox = $('#panel-pages .panel-body input[value="'+line_properties.static+'"]');
             checkbox.attr('disabled', 'disabled');
         }
 
@@ -295,25 +303,25 @@ $(document).ready(function() {
 
     $('#modal_edit').on('show.bs.modal', function (event) {
 
-        var button = $(event.relatedTarget);
-        var line = button.closest('li[data-title]');
-        var modal = $(this);
+        let button = $(event.relatedTarget);
+        let line = button.closest('li[data-title]');
+        let modal = $(this);
         $('#valid_edit').data('line', line);
 
 
-        var title = line.attr('data-title');
-        var original_title = line.attr('data-original-title');
-        var link = line.attr('data-link');
-        var label = line.find('.badge').html();
+        let title = line.attr('data-title');
+        let original_title = line.attr('data-original-title');
+        let link = line.attr('data-link');
+        let label = line.find('.badge').html();
 
-        var type = line.attr('data-type');
-        var static_key = line.attr('data-static');
-        var page_id = line.attr('data-page');
+        let type = line.attr('data-type');
+        let static_key = line.attr('data-static');
+        let page_id = line.attr('data-page');
 
 
         modal.find('.modal-body input[name="item_label"]').val(title);
 
-        var input_link = modal.find('.modal-body input[name="item_link"]');
+        let input_link = modal.find('.modal-body input[name="item_link"]');
         if (static_key || page_id || (type=='section' && link.length==0)) {
             input_link.attr('disabled', 'disabled');
             input_link.val(label + ' : ' + original_title);
@@ -327,7 +335,7 @@ $(document).ready(function() {
 
     $('input[name="item_label"], input[name="item_link"]').keyup(function(e) {
 
-        var code = (e.keyCode ? e.keyCode : e.which);
+        let code = (e.keyCode ? e.keyCode : e.which);
         if (code==13) {
             $('#valid_edit').trigger('click');
         }
@@ -339,11 +347,11 @@ $(document).ready(function() {
 
     $('#valid_edit').click(function() {
 
-        var line = $('#valid_edit').data('line');
-        var modal = $('#modal_edit');
+        let line = $('#valid_edit').data('line');
+        let modal = $('#modal_edit');
 
-        var title = modal.find('.modal-body input[name="item_label"]').val();
-        var linkInput = modal.find('.modal-body input[name="item_link"]');
+        let title = modal.find('.modal-body input[name="item_label"]').val();
+        let linkInput = modal.find('.modal-body input[name="item_link"]');
 
         line.attr('data-title', title);
         if (!linkInput.is(':disabled')) {

@@ -8,12 +8,20 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * @Route("menu")
  */
 class MenuController extends AbstractController
 {
+
+    private EntityManagerInterface $entityManager;
+
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
 
     /**
      * @Route("/{type}/edit", name="menu_index", methods="GET")
@@ -53,31 +61,22 @@ class MenuController extends AbstractController
         MenuHandler $menuHandler
     )
     {
-        //
         $type = $request->request->get('type');
 
-        //
         $menus = $this->getParameter('aropixel_menu.menus');
         if (!array_key_exists($type, $menus)) {
             throw $this->createNotFoundException();
         }
 
-        //
         $entity = $this->getParameter('aropixel_menu.entity');
-        $em = $this->getDoctrine()->getManager();
-        $em->getRepository($entity)->deleteMenu($type);
-        $em->flush();
+        $this->entityManager->getRepository($entity)->deleteMenu($type);
+        $this->entityManager->flush();
 
-        //
-        $singleRoot = null;
-        $menuItems = $request->request->get('menu');
+        $menuItems = $request->request->all()['menu'];
 
         $menuHandler->saveMenu($type, $menuItems);
-
-        //
         $menuProvider->refreshCache();
 
-        //
         return new Response('OK', Response::HTTP_OK);
     }
 
