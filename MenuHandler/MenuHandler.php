@@ -85,11 +85,8 @@ class MenuHandler
         $linesItems = [];
 
         foreach ($menuItems as $i => $item) {
-            dump($item);
             $linesItems[] = $this->saveMenuItem($type, $item);
         }
-
-        dump($linesItems);
 
         $this->entityManager->flush();
 
