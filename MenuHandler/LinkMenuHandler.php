@@ -36,7 +36,7 @@ class LinkMenuHandler implements ItemMenuHandlerInterface
 
                 // we clean the related link with the host
                 $parsing = parse_url($item->getLink());
-                if ($parsing) {
+                if (is_array($parsing) && array_key_exists('host', $parsing)) {
                     $item->setLinkDomain($parsing['host']);
                 } else {
                     $item->setLinkDomain($item->getLink());
