@@ -9,10 +9,8 @@ namespace Aropixel\MenuBundle\Twig;
 
 
 use Aropixel\MenuBundle\Entity\Menu;
-use Aropixel\MenuBundle\Provider\MenuProvider;
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-use Symfony\Component\HttpFoundation\ParameterBag;
+use Aropixel\MenuBundle\Provider\MenuProviderInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig\Extension\AbstractExtension;
@@ -23,29 +21,15 @@ use Twig\TwigFunction;
 abstract class AropixelMenuExtension extends AbstractExtension
 {
 
-    /** @var RequestStack */
-    protected $request;
+    protected ?Request $request = null;
+    protected UrlGeneratorInterface $router;
+    private RequestStack $requestStack;
+    private MenuProviderInterface $menuProvider;
 
-    /** @var UrlGeneratorInterface */
-    protected $router;
-
-    /** @var RequestStack */
-    private $requestStack;
-
-    /** @var MenuProvider */
-    private $menuProvider;
-
-
-    /**
-     * AropixelMenuExtension constructor.
-     * @param RequestStack $requestStack
-     * @param UrlGeneratorInterface $router
-     * @param MenuProvider $menuProvider
-     */
     public function __construct(
         RequestStack $requestStack,
         UrlGeneratorInterface $router,
-        MenuProvider $menuProvider
+        MenuProviderInterface $menuProvider,
     )
     {
         $this->request = $requestStack->getCurrentRequest();
@@ -86,7 +70,6 @@ abstract class AropixelMenuExtension extends AbstractExtension
 
 
     abstract public function getLink(Menu $menuItem) : string;
-
 
 
 }

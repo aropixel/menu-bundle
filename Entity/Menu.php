@@ -431,7 +431,7 @@ class Menu implements MenuInterface
      */
     public function addChild(Menu $child)
     {
-        if (!$this->children->contains($child)) {
+        if (!is_null($this->children) && !$this->children->contains($child)) {
             $this->children[] = $child;
             $child->setParent($this);
         }
