@@ -7,106 +7,66 @@
 
 namespace Aropixel\MenuBundle\Entity;
 
+use Aropixel\MenuBundle\Repository\MenuRepository;
 use Aropixel\PageBundle\Entity\Page;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 
-/**
- * Menu
- */
+#[ORM\MappedSuperclass]
+#[ORM\Entity(repositoryClass: MenuRepository::class)]
 class Menu implements MenuInterface
 {
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: "AUTO")]
+    #[ORM\Column(type: "integer")]
+    protected int $id;
 
-    /**
-     * @var integer
-     */
-    protected $id;
+    #[ORM\Column(type: "string", length: 50, nullable: true)]
+    protected ?string $type;
 
-    /**
-     * @var string
-     */
-    protected $type;
+    #[ORM\Column(type: "text")]
+    protected string $title;
 
-    /**
-     * @var string
-     */
-    protected $title;
+    #[Gedmo\Slug(fields: ["title"], updatable: true, unique: true, separator: "/")]
+    #[ORM\Column(type: "string", length: 255, nullable: true)]
+    protected ?string $slug;
 
-    /**
-     * @var string
-     */
-    protected $slug;
+    #[ORM\Column(type: "text", nullable: true)]
+    protected ?string $originalTitle;
 
-    /**
-     * @var string
-     */
-    protected $originalTitle;
+    #[ORM\Column(type: "string", length: 255, nullable: true)]
+    protected ?string $link;
 
-    /**
-     * @var string
-     */
-    protected $link;
+    #[ORM\Column(type: "string", length: 50, nullable: true)]
+    protected ?string $staticPage;
 
-    /**
-     * @var string
-     */
-    protected $linkDomain;
+    #[ORM\Column(name: "lft", type: "integer")]
+    #[Gedmo\TreeLeft]
+    protected int $left;
 
-    /**
-     * @var bool
-     */
-    protected $isActiveItem = false;
+    #[ORM\Column(name: "lvl", type: "integer")]
+    #[Gedmo\TreeLevel]
+    protected int $level;
 
-    /**
-     * @var bool
-     */
-    protected $isRequired = false;
+    #[ORM\Column(name: "rgt", type: "integer")]
+    #[Gedmo\TreeRight]
+    protected int $right;
 
-    /**
-     * @var string
-     */
-    protected $staticPage;
+    #[ORM\Column(type: "integer", nullable: true)]
+    #[Gedmo\TreeRoot]
+    protected ?int $root;
 
-    /**
-     * @var Page
-     */
-    protected $page;
+    #[ORM\ManyToOne(targetEntity: Menu::class, inversedBy: "children")]
+    #[ORM\JoinColumn(name: "parent_id", referencedColumnName: "id", onDelete: "CASCADE")]
+    #[Gedmo\TreeParent]
+    protected ?Menu $parent;
 
-    /**
-     * @var integer
-     */
-    protected $left;
-
-    /**
-     * @var integer
-     */
-    protected $level;
-
-    /**
-     * @var integer
-     */
-    protected $right;
-
-    /**
-     * @var integer
-     */
-    protected $root;
-
-    /**
-     * @var MenuInterface
-     */
-    protected $parent;
-
-    /**
-     * @var MenuInterface[]
-     */
-    protected $children;
-
-    /**
-     * @var bool
-     */
-    private $isBlankTarget = false;
+    #[ORM\OneToMany(mappedBy: "parent", targetEntity: Menu::class, fetch: "EAGER")]
+    #[ORM\OrderBy(["left" => "ASC"])]
+    protected Collection $children;
 
     public function __construct()
     {
