@@ -1,0 +1,3 @@
+aropixel_menu:
+        resource: '@AropixelMenuBundle/Controller/'
+        type: attribute
