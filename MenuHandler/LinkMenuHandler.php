@@ -59,12 +59,12 @@ class LinkMenuHandler implements ItemMenuHandlerInterface
         $link = null;
 
         //
-        if ($item['data']['type'] == 'link' && !strlen($item['data']['link'])) {
+        if ($item['data']['type'] == 'link' && !mb_strlen((string) $item['data']['link'])) {
             $item['data']['link'] = '#';
         }
 
         //
-        if (strlen($item['data']['link'])) {
+        if (mb_strlen((string) $item['data']['link'])) {
             $link = $item['data']['link'];
         }
 

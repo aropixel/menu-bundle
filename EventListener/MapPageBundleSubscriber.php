@@ -20,19 +20,12 @@ use Doctrine\ORM\Mapping\ClassMetadataInfo;
 class MapPageBundleSubscriber implements EventSubscriber
 {
 
-    /** @var boolean */
-    private $isPageEnabled;
-
-
-    /** @var string */
-    private $entityName;
-
-
-
-    public function __construct($isPageEnabled, $entityName)
+    /**
+     * @param bool $isPageEnabled
+     * @param string $entityName
+     */
+    public function __construct(private $isPageEnabled, private $entityName)
     {
-        $this->isPageEnabled = $isPageEnabled;
-        $this->entityName = $entityName;
     }
 
 
@@ -51,10 +44,7 @@ class MapPageBundleSubscriber implements EventSubscriber
 
         if ($this->isPageEnabled && $metadata->getName()==$this->entityName) {
 
-            $metadata->mapManyToOne(array(
-                'fieldName' => 'page',
-                'targetEntity' => PageInterface::class
-            ));
+            $metadata->mapManyToOne(['fieldName' => 'page', 'targetEntity' => PageInterface::class]);
 
         }
 

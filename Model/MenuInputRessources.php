@@ -30,9 +30,6 @@ class MenuInputRessources
         return $this->resourceNameSingular;
     }
 
-    /**
-     * @param mixed $resourceNameSingular
-     */
     public function setResourceNameSingular(string $resourceNameSingular): void
     {
         $this->resourceNameSingular = $resourceNameSingular;
@@ -46,9 +43,6 @@ class MenuInputRessources
         return $this->ressourceNamePlural;
     }
 
-    /**
-     * @param mixed $ressourceNamePlural
-     */
     public function setRessourceNamePlural(string $ressourceNamePlural): void
     {
         $this->ressourceNamePlural = $ressourceNamePlural;
@@ -62,9 +56,6 @@ class MenuInputRessources
         return $this->ressourceLabel;
     }
 
-    /**
-     * @param mixed $ressourceLabel
-     */
     public function setRessourceLabel(string $ressourceLabel): void
     {
         $this->ressourceLabel = $ressourceLabel;
@@ -78,9 +69,6 @@ class MenuInputRessources
         return $this->ressourceColor;
     }
 
-    /**
-     * @param mixed $ressourceColor
-     */
     public function setRessourceColor(string $ressourceColor): void
     {
         $this->ressourceColor = $ressourceColor;

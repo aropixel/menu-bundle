@@ -19,23 +19,8 @@ class PageMenuHandler implements ItemMenuHandlerInterface
 
     private $_staticPages;
 
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
-
-    /**
-     * @var ParameterBagInterface
-     */
-    private $params;
-
-    public function __construct(
-        EntityManagerInterface $entityManager,
-        ParameterBagInterface $params
-    )
+    public function __construct(private readonly EntityManagerInterface $entityManager, private readonly ParameterBagInterface $params)
     {
-        $this->entityManager = $entityManager;
-        $this->params = $params;
     }
 
     /**
@@ -196,7 +181,7 @@ class PageMenuHandler implements ItemMenuHandlerInterface
 
         // si c'est une page qui a été sauvée, on enrichit les variables $pages ou $static
         // pour les relier à la line
-        if (strlen($item['data']['page'])) {
+        if (mb_strlen((string) $item['data']['page'])) {
             if (array_key_exists($item['data']['page'], $staticPages)) {
                 $static = $item['data']['page'];
             }
@@ -210,7 +195,7 @@ class PageMenuHandler implements ItemMenuHandlerInterface
         $line->setTitle($title);
 
         //
-        if (strlen($item['data']['static'])) {
+        if (mb_strlen((string) $item['data']['static'])) {
             $static = $item['data']['static'];
         }
 

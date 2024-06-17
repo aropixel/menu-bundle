@@ -22,37 +22,28 @@ abstract class AropixelMenuExtension extends AbstractExtension
 {
 
     protected ?Request $request = null;
-    protected UrlGeneratorInterface $router;
-    private RequestStack $requestStack;
-    private MenuProviderInterface $menuProvider;
+    private readonly RequestStack $requestStack;
 
     public function __construct(
         RequestStack $requestStack,
-        UrlGeneratorInterface $router,
-        MenuProviderInterface $menuProvider,
+        protected UrlGeneratorInterface $router,
+        private readonly MenuProviderInterface $menuProvider,
     )
     {
         $this->request = $requestStack->getCurrentRequest();
-        $this->router = $router;
         $this->requestStack = $requestStack;
-        $this->menuProvider = $menuProvider;
     }
 
 
     public function getFilters()
     {
-        return array(
-            new TwigFilter('get_link', array($this, 'getLink')),
-            new TwigFilter('is_section', array($this, 'isSection')),
-        );
+        return [new TwigFilter('get_link', $this->getLink(...)), new TwigFilter('is_section', $this->isSection(...))];
     }
 
 
     public function getFunctions()
     {
-        return array(
-            new TwigFunction('get_menu', array($this, 'getMenu')),
-        );
+        return [new TwigFunction('get_menu', $this->getMenu(...))];
     }
 
 

@@ -127,12 +127,12 @@ class MenuHandler
         }
 
         //
-        if (strlen($item['data']['title'])) {
+        if (mb_strlen((string) $item['data']['title'])) {
             $title = $item['data']['title'];
         }
 
         //
-        if (strlen($item['data']['originalTitle'])) {
+        if (mb_strlen((string) $item['data']['originalTitle'])) {
             $originalTitle = $item['data']['originalTitle'];
             $line->setOriginalTitle($originalTitle);
         }
@@ -163,10 +163,7 @@ class MenuHandler
         $entity = $this->params->get('aropixel_menu.entity');
         $menuRepository = $this->entityManager->getRepository($entity);
 
-        $menuRootItems = $menuRepository->findBy(array(
-            'parent' => null,
-            'type' => $type
-        ));
+        $menuRootItems = $menuRepository->findBy(['parent' => null, 'type' => $type]);
 
         // Get Children for each root element
         foreach ($menuRootItems as $menuRootItem) {

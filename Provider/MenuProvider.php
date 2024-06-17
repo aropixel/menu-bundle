@@ -31,7 +31,7 @@ class MenuProvider implements MenuProviderInterface
 
 
     /** @var string Clé du cache */
-    const CACHE_KEY = '_aropixel.cache.menus';
+    public const CACHE_KEY = '_aropixel.cache.menus';
 
 
     /**
@@ -117,7 +117,7 @@ class MenuProvider implements MenuProviderInterface
 
     protected function splitMenus()
     {
-        $splittedMenus = array();
+        $splittedMenus = [];
 
         /** @var Menu $menuItem */
         foreach ($this->menus as $menuItem) {

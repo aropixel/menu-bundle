@@ -25,23 +25,23 @@ class Menu implements MenuInterface
     protected int $id;
 
     #[ORM\Column(type: "string", length: 50, nullable: true)]
-    protected ?string $type;
+    protected ?string $type = null;
 
     #[ORM\Column(type: "text")]
     protected string $title;
 
     #[Gedmo\Slug(fields: ["title"], updatable: true, unique: true, separator: "/")]
     #[ORM\Column(type: "string", length: 255, nullable: true)]
-    protected ?string $slug;
+    protected ?string $slug = null;
 
     #[ORM\Column(type: "text", nullable: true)]
-    protected ?string $originalTitle;
+    protected ?string $originalTitle = null;
 
     #[ORM\Column(type: "string", length: 255, nullable: true)]
-    protected ?string $link;
+    protected ?string $link = null;
 
     #[ORM\Column(type: "string", length: 50, nullable: true)]
-    protected ?string $staticPage;
+    protected ?string $staticPage = null;
 
     #[ORM\Column(name: "lft", type: "integer")]
     #[Gedmo\TreeLeft]
@@ -57,12 +57,12 @@ class Menu implements MenuInterface
 
     #[ORM\Column(type: "integer", nullable: true)]
     #[Gedmo\TreeRoot]
-    protected ?int $root;
+    protected ?int $root = null;
 
     #[ORM\ManyToOne(targetEntity: Menu::class, inversedBy: "children")]
     #[ORM\JoinColumn(name: "parent_id", referencedColumnName: "id", onDelete: "CASCADE")]
     #[Gedmo\TreeParent]
-    protected ?Menu $parent;
+    protected ?Menu $parent = null;
 
     #[ORM\OneToMany(mappedBy: "parent", targetEntity: Menu::class, fetch: "EAGER")]
     #[ORM\OrderBy(["left" => "ASC"])]
@@ -83,10 +83,9 @@ class Menu implements MenuInterface
     }
 
     /**
-     * @param mixed $id
      * @return MenuInterface
      */
-    public function setId($id)
+    public function setId(mixed $id)
     {
         $this->id = $id;
         return $this;
@@ -155,10 +154,9 @@ class Menu implements MenuInterface
     }
 
     /**
-     * @param mixed $slug
      * @return MenuInterface
      */
-    public function setSlug($slug): MenuInterface
+    public function setSlug(mixed $slug): MenuInterface
     {
         $this->slug = $slug;
         return $this;
@@ -245,10 +243,9 @@ class Menu implements MenuInterface
     }
 
     /**
-     * @param mixed $staticPage
      * @return MenuInterface
      */
-    public function setStaticPage($staticPage)
+    public function setStaticPage(mixed $staticPage)
     {
         $this->staticPage = $staticPage;
         return $this;

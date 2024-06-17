@@ -20,9 +20,6 @@ class MenuInputRessource
         return $this->label;
     }
 
-    /**
-     * @param mixed $label
-     */
     public function setLabel(string $label): void
     {
         $this->label = $label;
@@ -36,9 +33,6 @@ class MenuInputRessource
         return $this->value;
     }
 
-    /**
-     * @param mixed $value
-     */
     public function setValue(string $value): void
     {
         $this->value = $value;
@@ -52,9 +46,6 @@ class MenuInputRessource
         return $this->type;
     }
 
-    /**
-     * @param mixed $type
-     */
     public function setType(string $type): void
     {
         $this->type = $type;
@@ -68,9 +59,6 @@ class MenuInputRessource
         return $this->alreadyIncluded;
     }
 
-    /**
-     * @param mixed $alreadyIncluded
-     */
     public function setAlreadyIncluded(bool $alreadyIncluded): void
     {
         $this->alreadyIncluded = $alreadyIncluded;
