@@ -24,8 +24,8 @@ class DoctrineTargetEntitiesResolverPass implements CompilerPassInterface
         $menuClass = $container->getParameter('aropixel_menu.entity');
         $resolveTargetEntityListener->addMethodCall('addResolveTargetEntity', [MenuInterface::class, $menuClass, []]);
 
-        if (!$resolveTargetEntityListener->hasTag('doctrine.event_subscriber')) {
-            $resolveTargetEntityListener->addTag('doctrine.event_subscriber', ['event' => 'loadClassMetadata']);
+        if (!$resolveTargetEntityListener->hasTag('doctrine.event_listener')) {
+            $resolveTargetEntityListener->addTag('doctrine.event_listener', ['event' => 'loadClassMetadata']);
         }
 
     }

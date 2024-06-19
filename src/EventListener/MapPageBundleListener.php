@@ -17,7 +17,7 @@ use Doctrine\ORM\Mapping\ClassMetadataInfo;
 
 
 
-class MapPageBundleSubscriber implements EventSubscriber
+class MapPageBundleListener
 {
 
     /**
@@ -28,13 +28,6 @@ class MapPageBundleSubscriber implements EventSubscriber
     {
     }
 
-
-    public function getSubscribedEvents(): array
-    {
-        return [
-            Events::loadClassMetadata,
-        ];
-    }
 
     public function loadClassMetadata(LoadClassMetadataEventArgs $eventArgs)
     {

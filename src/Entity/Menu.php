@@ -15,57 +15,33 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 
-#[ORM\MappedSuperclass]
-#[ORM\Entity(repositoryClass: MenuRepository::class)]
 class Menu implements MenuInterface
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: "AUTO")]
-    #[ORM\Column(type: "integer")]
     protected int $id;
 
-    #[ORM\Column(type: "string", length: 50, nullable: true)]
     protected ?string $type = null;
 
-    #[ORM\Column(type: "text")]
     protected string $title;
 
-    #[Gedmo\Slug(fields: ["title"], updatable: true, unique: true, separator: "/")]
-    #[ORM\Column(type: "string", length: 255, nullable: true)]
     protected ?string $slug = null;
 
-    #[ORM\Column(type: "text", nullable: true)]
     protected ?string $originalTitle = null;
 
-    #[ORM\Column(type: "string", length: 255, nullable: true)]
     protected ?string $link = null;
-
-    #[ORM\Column(type: "string", length: 50, nullable: true)]
     protected ?string $staticPage = null;
 
-    #[ORM\Column(name: "lft", type: "integer")]
-    #[Gedmo\TreeLeft]
     protected int $left;
 
-    #[ORM\Column(name: "lvl", type: "integer")]
-    #[Gedmo\TreeLevel]
     protected int $level;
 
-    #[ORM\Column(name: "rgt", type: "integer")]
-    #[Gedmo\TreeRight]
     protected int $right;
 
-    #[ORM\Column(type: "integer", nullable: true)]
-    #[Gedmo\TreeRoot]
     protected ?int $root = null;
 
-    #[ORM\ManyToOne(targetEntity: Menu::class, inversedBy: "children")]
-    #[ORM\JoinColumn(name: "parent_id", referencedColumnName: "id", onDelete: "CASCADE")]
-    #[Gedmo\TreeParent]
     protected ?Menu $parent = null;
 
-    #[ORM\OneToMany(mappedBy: "parent", targetEntity: Menu::class, fetch: "EAGER")]
-    #[ORM\OrderBy(["left" => "ASC"])]
+    protected $page = null;
+
     protected Collection $children;
 
     public function __construct()

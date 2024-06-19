@@ -1,0 +1,8 @@
+aropixel_menu_index:
+    path: /menu/{type}/edit
+    controller: Aropixel\MenuBundle\Controller\MenuController::index
+
+aropixel_menu_save:
+    path: /menu/save
+    methods: ['POST']
+    controller: Aropixel\PageBundle\Http\Action\Page\CreatePageAction
