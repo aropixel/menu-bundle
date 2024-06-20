@@ -21,7 +21,7 @@ class Menu implements MenuInterface
 
     protected ?string $type = null;
 
-    protected string $title;
+    protected ?string $title;
 
     protected ?string $slug = null;
 
@@ -29,6 +29,8 @@ class Menu implements MenuInterface
 
     protected ?string $link = null;
     protected ?string $staticPage = null;
+
+    protected ?bool $isRequired = false;
 
     protected int $left;
 

@@ -22,12 +22,6 @@ services:
     Aropixel\MenuBundle\Provider\MenuProviderInterface:
         class: Aropixel\MenuBundle\Provider\MenuProvider
 
-    Aropixel\MenuBundle\MenuHandler\LinkMenuHandler:
-        alias: aropixel_menu.link_menu_handler
-
-    Aropixel\MenuBundle\MenuHandler\PageMenuHandler:
-        alias: aropixel_menu.page_menu_handler
-
     Aropixel\MenuBundle\MenuHandler\MenuHandler:
         public: true
         autowire: false
@@ -35,3 +29,11 @@ services:
             - !tagged_iterator aropixel.item_menu_handler_tag
             - '@doctrine.orm.entity_manager'
             - '@parameter_bag'
+
+    Aropixel\MenuBundle\MenuHandler\PageMenuHandler:
+        autoconfigure: true
+        autowire: true
+
+    Aropixel\MenuBundle\MenuHandler\LinkMenuHandler:
+        autoconfigure: true
+        autowire: true

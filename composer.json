@@ -21,14 +21,15 @@
     "aropixel/admin-bundle": "dev-release/symfony7|dev-main"
   },
   "scripts": {
-    "auto-scripts": {
-      "aropixel:admin:setup": "symfony-cmd"
-    },
+    "symfony-scripts": [
+      "rm -rf var/cache/*",
+      "php bin/console assets:install public --relative"
+    ],
     "post-install-cmd": [
-      "@auto-scripts"
+      "@symfony-scripts"
     ],
     "post-update-cmd": [
-      "@auto-scripts"
+      "@symfony-scripts"
     ]
   }
 }
