@@ -46,6 +46,8 @@ class Menu implements MenuInterface
 
     protected Collection $children;
 
+    protected ?bool $isActiveItem = false;
+
     public function __construct()
     {
         $this->children = new ArrayCollection();
