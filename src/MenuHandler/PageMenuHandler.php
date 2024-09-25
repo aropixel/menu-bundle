@@ -43,7 +43,7 @@ class PageMenuHandler implements ItemMenuHandlerInterface
 
         // create an input item for all the created pages
         foreach ($this->getPagesPublished() as $page) {
-            if ($page->getType() == Page::TYPE_DEFAULT) {
+            if ($page->getType() == Page::TYPE_DEFAULT || $page->getType() == Page::TYPE_DEFAULT_TRANSLATABLE) {
 
                 $menuInputPageRessource = new MenuInputRessource();
 
