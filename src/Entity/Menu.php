@@ -356,6 +356,10 @@ class Menu implements MenuInterface
      */
     public function setChildren($children)
     {
+        if (is_array($children)) {
+            $children = new ArrayCollection($children);
+        }
+
         $this->children = $children;
     }
 
