@@ -1,4 +1,4 @@
-import {ModalDyn} from 'bundles/aropixeladmin/js/modules/modal-dyn/modal-dyn.js';
+import {ModalDyn} from '/bundles/aropixeladmin/js/modules/modal-dyn/modal-dyn.js';
 
 $(document).ready(function() {
 
