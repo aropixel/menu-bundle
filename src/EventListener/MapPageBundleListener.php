@@ -16,8 +16,8 @@ class MapPageBundleListener
      * @param string $entityName
      */
     public function __construct(
-        private bool $isPageEnabled,
-        private string $entityName,
+        private readonly bool $isPageEnabled,
+        private readonly string $entityName,
     )
     {
     }
