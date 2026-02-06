@@ -138,15 +138,12 @@ class MenuHandler
         }
 
         $line->setTitle($title);
+        $this->entityManager->persist($line);
 
-        //
         if (isset($item['children'])) {
             foreach ($item['children'] as $i => $sbitem) {
                 $this->saveMenuItem($type, $sbitem, $line);
             }
-        }
-        else {
-            $this->entityManager->persist($line);
         }
 
         return $line;
