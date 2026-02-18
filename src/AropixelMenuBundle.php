@@ -9,19 +9,11 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 
 
-class AropixelMenuBundle extends Bundle {
-
-
-    /**
-     * @param ContainerBuilder $container
-     */
+class AropixelMenuBundle extends Bundle
+{
     public function build(ContainerBuilder $container): void
     {
         parent::build($container);
         $container->addCompilerPass(new DoctrineTargetEntitiesResolverPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, 1);
     }
-
-
-
-
 }

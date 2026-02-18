@@ -1,9 +1,4 @@
 <?php
-/**
- * Créé par Aropixel @2019.
- * Par: Joël Gomez Caballe
- * Date: 16/04/2019 à 11:23
- */
 
 namespace Aropixel\MenuBundle\DependencyInjection;
 
@@ -14,7 +9,7 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 class Configuration implements ConfigurationInterface
 {
-    public function getConfigTreeBuilder() : TreeBuilder
+    public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder('aropixel_menu');
 
@@ -45,10 +40,6 @@ class Configuration implements ConfigurationInterface
             ->end()
         ;
 
-
         return $treeBuilder;
     }
-
-
-
 }

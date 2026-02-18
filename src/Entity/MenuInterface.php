@@ -1,8 +1,8 @@
 <?php
 /**
- * Créé par Aropixel @2019.
- * Par: Joël Gomez Caballe
- * Date: 24/10/2019 à 23:02
+ * Created by Aropixel.
+ * User: Joël Gomez Caballe
+ * Date: 24/10/2019
  */
 
 namespace Aropixel\MenuBundle\Entity;

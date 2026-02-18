@@ -2,7 +2,7 @@
 
 namespace Aropixel\MenuBundle\DependencyInjection;
 
-use Aropixel\MenuBundle\MenuHandler\ItemMenuHandlerInterface;
+use Aropixel\MenuBundle\Source\MenuSourceInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
@@ -15,30 +15,22 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
  */
 class AropixelMenuExtension extends Extension
 {
-    /**
-     * {@inheritdoc}
-     */
     public function load(array $configs, ContainerBuilder $container): void
     {
-
-        //
         $bundles = $container->getParameter('kernel.bundles');
         $isPageBundleActive = array_key_exists('AropixelPageBundle', $bundles);
 
-        //
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
-        //
         $container->setParameter('aropixel_menu.page_active', $isPageBundleActive);
         $container->setParameter('aropixel_menu.menus', $config['menus']);
         $container->setParameter('aropixel_menu.static_pages', $config['static_pages']);
-//        $container->setParameter('aropixel_menu.required_pages', $config['required_pages']);
         $container->setParameter('aropixel_menu.entity', $config['entity']);
         $container->setParameter('aropixel_menu.cache.duration', $config['cache']);
 
-        $container->registerForAutoconfiguration(ItemMenuHandlerInterface::class)
-            ->addTag('aropixel.item_menu_handler_tag')
+        $container->registerForAutoconfiguration(MenuSourceInterface::class)
+            ->addTag('aropixel_menu.source')
         ;
 
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));

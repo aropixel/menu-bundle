@@ -1,8 +1,6 @@
 <li class="li-movable"
-    data-type="{{ item is defined and (item.page or item.staticPage) ? 'page' : (item is defined and item.link ? 'link' : (item is defined ? 'section' : '')) }}"
-    data-static="{{ item is defined ? item.staticPage : '' }}"
-    data-page="{{ item is defined and item.page ? item.page.id : '' }}"
-    data-link="{{ item is defined ? item.link : '' }}"
+    data-type="{{ item is defined ? item.type : '' }}"
+    data-payload="{{ item is defined and menuManager is defined ? menuManager.getPayload(item)|json_encode : '{}' }}"
     data-title="{{ item is defined ? item.title : '' }}"
     data-original-title="{{ item is defined ? item.originalTitle : '' }}"
     data-required="{{ item is defined and item.isRequired ? '1' : '0' }}">
@@ -11,7 +9,7 @@
             <div class="text-semibold title">{{ item is defined ? item.title : '' }}</div>
             {% if item is defined and item.link %}
                 <div class="text-muted link">{% trans %}aropixel.menu.form.link{% endtrans %} : <a href="{{ item.link }}" target="_blank">{{ item.linkDomain }}</a></div>
-            {% elseif item is defined %}
+            {% elseif item is defined and item.originalTitle %}
                 <div class="text-muted link">{% trans %}aropixel.menu.form.link{% endtrans %} : {{ item.originalTitle }}</div>
             {% else %}
                 <div class="text-muted link">&nbsp;</div>
@@ -22,8 +20,8 @@
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown"><i class="fas fa-bars"></i></a>
                     <div class="dropdown-menu dropdown-menu-right">
-                        <a class="dropdown-item cursor-pointer" data-bs-toggle="modal" data-bs-target="#modal_edit"><i class="fas fa-edit me-2"></i> {% trans %}aropixel.menu.form.edit{% endtrans %}</a>
-                        <a class="dropdown-item cursor-pointer text-danger deleteRow"><i class="fas fa-trash me-2"></i> {% trans %}aropixel.menu.form.delete{% endtrans %}</a>
+                        <a class="dropdown-item cursor-pointer" data-action="click->aropixel-menu#openEditModal"><i class="fas fa-edit me-2"></i> {% trans %}aropixel.menu.form.edit{% endtrans %}</a>
+                        <a class="dropdown-item cursor-pointer text-danger" data-action="click->aropixel-menu#deleteRow"><i class="fas fa-trash me-2"></i> {% trans %}aropixel.menu.form.delete{% endtrans %}</a>
                     </div>
                 </li>
             </ul>
@@ -45,7 +43,7 @@
         {% if item.children is not empty %}
             <ol>
                 {% for sbitem in item.children %}
-                    {{ include('@AropixelMenu/menu/item.html.twig', {'item': sbitem}) }}
+                    {{ include('@AropixelMenu/menu/item.html.twig', {'item': sbitem, 'menuManager': menuManager}) }}
                 {% endfor %}
             </ol>
         {% endif %}

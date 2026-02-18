@@ -1,20 +1,20 @@
 <?php
-/**
- * Créé par Aropixel @2019.
- * Par: Joël Gomez Caballe
- * Date: 16/04/2019 à 15:56
- */
 
 namespace Aropixel\MenuBundle\EventListener;
 
 use Aropixel\MenuBundle\Entity\MenuInterface;
+use Doctrine\Bundle\DoctrineBundle\Attribute\AsDoctrineListener;
 use Doctrine\ORM\Event\LoadClassMetadataEventArgs;
+use Doctrine\ORM\Events;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
-
+#[AsDoctrineListener(event: Events::loadClassMetadata, priority: 8192)]
 class MappedSuperClassListener
 {
-
-    public function __construct(private $entityName)
+    public function __construct(
+        #[Autowire('%aropixel_menu.entity%')]
+        private $entityName
+    )
     {
     }
 
@@ -22,13 +22,9 @@ class MappedSuperClassListener
     {
         $metadata = $eventArgs->getClassMetadata();
         if ($metadata->getReflectionClass()->implementsInterface(MenuInterface::class)) {
-
-            if ($this->entityName == $metadata->getName() && $metadata->isMappedSuperclass) {
-
+            if ($this->entityName === $metadata->getName() && $metadata->isMappedSuperclass) {
                 $metadata->isMappedSuperclass = false;
-
             }
-
         }
     }
 

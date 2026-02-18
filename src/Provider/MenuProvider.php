@@ -1,8 +1,8 @@
 <?php
 /**
- * Créé par Aropixel @2020.
- * Par: Joël Gomez Caballe
- * Date: 21/05/2020 à 14:57
+ * Created by Aropixel.
+ * User: Joël Gomez Caballe
+ * Date: 21/05/2020
  */
 
 namespace Aropixel\MenuBundle\Provider;
@@ -12,78 +12,47 @@ use Aropixel\MenuBundle\Entity\Menu;
 use Aropixel\MenuBundle\Entity\MenuInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
+use Symfony\Component\DependencyInjection\Attribute\AsAlias;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Contracts\Cache\ItemInterface;
 
+#[AsAlias(MenuProviderInterface::class)]
 class MenuProvider implements MenuProviderInterface
 {
 
-    /** @var EntityManagerInterface */
-    protected $em;
-
-
-    /** @var ParameterBagInterface */
-    protected $parameterBag;
-
-
-    /** @var array */
-    protected $menus;
-
-
-    /** @var string Clé du cache */
     public const CACHE_KEY = '_aropixel.cache.menus';
 
+    protected ?array $menus = null;
 
-    /**
-     * MenuProvider constructor.
-     * @param EntityManagerInterface $em
-     * @param ParameterBagInterface $parameterBag
-     */
-    public function __construct(EntityManagerInterface $em, ParameterBagInterface $parameterBag)
-    {
-        $this->em = $em;
-        $this->parameterBag = $parameterBag;
-
-        $this->menus = null;
+    public function __construct(
+        protected readonly EntityManagerInterface $em,
+        protected readonly ParameterBagInterface $parameterBag
+    ) {
     }
 
-
-    protected function loadMenus()
+    protected function loadMenus(): void
     {
-        // permet de récupérer l'entité correcte définis en parametre du front
         $cacheDuration = $this->parameterBag->get('aropixel_menu.cache.duration');
 
-        //
         if ($cacheDuration) {
             $this->loadAndCache($cacheDuration);
-        }
-        else {
+        } else {
             $this->load();
         }
-
     }
 
-
-    protected function load()
+    protected function load(): void
     {
-        //
         $menuEntity = $this->parameterBag->get('aropixel_menu.entity');
-
-        //
         $this->menus = $this->em->getRepository($menuEntity)->findRootsWithPage();
-
-        //
         $this->splitMenus();
     }
 
-
-
-    protected function loadAndCache($cacheDuration)
+    protected function loadAndCache($cacheDuration): void
     {
         $em = $this->em;
         $menuEntity = $this->parameterBag->get('aropixel_menu.entity');
 
-        //
         $cache = new FilesystemAdapter();
         $this->menus = $cache->get(self::CACHE_KEY, function (ItemInterface $item) use ($em, $menuEntity, $cacheDuration) {
 
@@ -98,15 +67,11 @@ class MenuProvider implements MenuProviderInterface
 
         });
 
-        //
         $this->splitMenus();
-
     }
 
-
-    protected function hydratePage(Menu $menuItem)
+    protected function hydratePage(Menu $menuItem): void
     {
-        //
         $menuItem->getPage() && $menuItem->getPage()->getSlug();
 
         foreach ($menuItem->getChildren() as $child) {
@@ -114,8 +79,7 @@ class MenuProvider implements MenuProviderInterface
         }
     }
 
-
-    protected function splitMenus()
+    protected function splitMenus(): void
     {
         $splittedMenus = [];
 
@@ -127,8 +91,7 @@ class MenuProvider implements MenuProviderInterface
         $this->menus = $splittedMenus;
     }
 
-
-    public function getMenu($type)
+    public function getMenu($type): array
     {
         if (is_null($this->menus)) {
             $this->loadMenus();
@@ -137,8 +100,7 @@ class MenuProvider implements MenuProviderInterface
         return array_key_exists($type, $this->menus) ? $this->menus[$type] : [];
     }
 
-
-    public function refreshCache()
+    public function refreshCache(): void
     {
         $cache = new FilesystemAdapter();
         $cache->delete(self::CACHE_KEY);

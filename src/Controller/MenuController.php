@@ -2,7 +2,7 @@
 
 namespace Aropixel\MenuBundle\Controller;
 
-use Aropixel\MenuBundle\MenuHandler\MenuHandler;
+use Aropixel\MenuBundle\MenuHandler\MenuManager;
 use Aropixel\MenuBundle\Provider\MenuProviderInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,12 +16,12 @@ class MenuController extends AbstractController
 
     public function __construct(
         protected readonly EntityManagerInterface $entityManager,
-        protected readonly MenuHandler $menuHandler,
+        protected readonly MenuManager $menuManager,
         protected readonly MenuProviderInterface $menuProvider,
     ) {
     }
 
-    public function index($type): Response
+    public function index(string $type): Response
     {
         // get the menus config
         $menus = $this->getParameter('aropixel_menu.menus');
@@ -31,21 +31,22 @@ class MenuController extends AbstractController
         }
 
         // get all menu items
-        $menuItems = $this->menuHandler->getMenu($type);
+        $menuItems = $this->menuManager->getMenu($type);
 
-        // get the values for the menu form (pages, link etc)
-        $inputRessources = $this->menuHandler->getInputRessources($menuItems);
+        // get the available sources for the menu form
+        $availableSources = $this->menuManager->getAvailableSources($menuItems);
 
         return $this->render('@AropixelMenu/menu/menu.html.twig', [
             'menus' => $menus,
             'type_menu' => $type,
             'menu' => $menuItems,
-            'inputRessources' => $inputRessources,
+            'availableSources' => $availableSources,
+            'menuManager' => $this->menuManager,
         ]);
     }
 
 
-    public function save(Request $request)
+    public function save(Request $request): Response
     {
         $type = $request->request->get('type');
 
@@ -60,7 +61,7 @@ class MenuController extends AbstractController
 
         $menuItems = $request->request->all()['menu'];
 
-        $this->menuHandler->saveMenu($type, $menuItems);
+        $this->menuManager->saveMenu($type, $menuItems);
         $this->menuProvider->refreshCache();
 
         return new Response('OK', Response::HTTP_OK);

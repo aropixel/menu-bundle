@@ -1,8 +1,8 @@
 <?php
 /**
- * Créé par Aropixel @2019.
- * Par: Joël Gomez Caballe
- * Date: 16/04/2019 à 10:21
+ * Created by Aropixel.
+ * User: Joël Gomez Caballe
+ * Date: 16/04/2019
  */
 
 namespace Aropixel\MenuBundle\Entity;
@@ -11,40 +11,73 @@ use Aropixel\MenuBundle\Repository\MenuRepository;
 use Aropixel\PageBundle\Entity\Page;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 
+#[ORM\MappedSuperclass(repositoryClass: MenuRepository::class)]
+#[ORM\Table(name: 'aropixel_menu')]
+#[Gedmo\Tree(type: 'nested')]
 class Menu implements MenuInterface
 {
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
+    #[ORM\Column(type: Types::INTEGER)]
     protected int $id;
 
+    #[ORM\Column(type: Types::STRING, length: 50)]
     protected ?string $type = null;
 
+    #[ORM\Column(type: Types::TEXT)]
     protected ?string $title = null;
 
+    #[Gedmo\Slug(fields: ['title'])]
+    #[Gedmo\SlugHandler(class: 'Gedmo\Sluggable\Handler\TreeSlugHandler', options: [
+        new Gedmo\SlugHandlerOption(name: 'parentRelationField', value: 'parent'),
+        new Gedmo\SlugHandlerOption(name: 'separator', value: '/'),
+    ])]
+    #[ORM\Column(type: Types::STRING, length: 255)]
     protected ?string $slug = null;
 
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
     protected ?string $originalTitle = null;
 
+    #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
     protected ?string $link = null;
+
+    #[ORM\Column(type: Types::STRING, length: 50, nullable: true)]
     protected ?string $staticPage = null;
 
     protected ?bool $isRequired = false;
 
+    #[Gedmo\TreeLeft]
+    #[ORM\Column(name: 'lft', type: Types::INTEGER)]
     protected int $left;
 
+    #[Gedmo\TreeLevel]
+    #[ORM\Column(name: 'lvl', type: Types::INTEGER)]
     protected int $level;
 
+    #[Gedmo\TreeRight]
+    #[ORM\Column(name: 'rgt', type: Types::INTEGER)]
     protected int $right;
 
+    #[Gedmo\TreeRoot]
+    #[ORM\Column(type: Types::INTEGER, nullable: true)]
     protected ?int $root = null;
 
-    protected ?Menu $parent = null;
+
+    #[Gedmo\TreeParent]
+    #[ORM\ManyToOne(targetEntity: MenuInterface::class, inversedBy: 'children', cascade: ['persist'])]
+    #[ORM\JoinColumn(name: 'parent_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    protected ?MenuInterface $parent = null;
+
+    #[ORM\OneToMany(targetEntity: MenuInterface::class, mappedBy: 'parent', fetch: 'EAGER')]
+    #[ORM\OrderBy(['left' => 'ASC'])]
+    protected Collection $children;
 
     protected $page = null;
-
-    protected Collection $children;
 
     protected ?bool $isActiveItem = false;
 
@@ -54,18 +87,12 @@ class Menu implements MenuInterface
     }
 
 
-    /**
-     * @return mixed
-     */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @return MenuInterface
-     */
-    public function setId(mixed $id)
+    public function setId(int $id): self
     {
         $this->id = $id;
         return $this;
@@ -79,11 +106,7 @@ class Menu implements MenuInterface
         return $this->type;
     }
 
-    /**
-     * @param string|null $type
-     * @return MenuInterface
-     */
-    public function setType(?string $type): MenuInterface
+    public function setType(?string $type): self
     {
         $this->type = $type;
         return $this;
@@ -97,11 +120,7 @@ class Menu implements MenuInterface
         return $this->title;
     }
 
-    /**
-     * @param string|null $title
-     * @return MenuInterface
-     */
-    public function setTitle(?string $title): MenuInterface
+    public function setTitle(?string $title): self
     {
         $this->title = $title;
         return $this;
@@ -115,28 +134,18 @@ class Menu implements MenuInterface
         return $this->originalTitle;
     }
 
-    /**
-     * @param string|null $originalTitle
-     * @return MenuInterface
-     */
-    public function setOriginalTitle(?string $originalTitle): MenuInterface
+    public function setOriginalTitle(?string $originalTitle): self
     {
         $this->originalTitle = $originalTitle;
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
     public function getSlug(): ?string
     {
         return $this->slug;
     }
 
-    /**
-     * @return MenuInterface
-     */
-    public function setSlug(mixed $slug): MenuInterface
+    public function setSlug(?string $slug): self
     {
         $this->slug = $slug;
         return $this;
@@ -150,11 +159,7 @@ class Menu implements MenuInterface
         return $this->link;
     }
 
-    /**
-     * @param string|null $link
-     * @return MenuInterface
-     */
-    public function setLink(?string $link): MenuInterface
+    public function setLink(?string $link): self
     {
         $this->link = $link;
         return $this;
@@ -186,11 +191,7 @@ class Menu implements MenuInterface
         return $this->isActiveItem;
     }
 
-    /**
-     * @param bool $isActiveItem
-     * @return MenuInterface
-     */
-    public function setIsActiveItem(bool $isActiveItem): MenuInterface
+    public function setIsActiveItem(bool $isActiveItem): self
     {
         $this->isActiveItem = $isActiveItem;
         return $this;
@@ -204,28 +205,18 @@ class Menu implements MenuInterface
         return $this->isRequired;
     }
 
-    /**
-     * @param bool $isRequired
-     * @return Menu
-     */
-    public function setIsRequired(bool $isRequired): MenuInterface
+    public function setIsRequired(bool $isRequired): self
     {
         $this->isRequired = $isRequired;
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getStaticPage()
+    public function getStaticPage(): ?string
     {
         return $this->staticPage;
     }
 
-    /**
-     * @return MenuInterface
-     */
-    public function setStaticPage(mixed $staticPage)
+    public function setStaticPage(?string $staticPage): self
     {
         $this->staticPage = $staticPage;
         return $this;
@@ -239,11 +230,7 @@ class Menu implements MenuInterface
         return $this->page;
     }
 
-    /**
-     * @param string|null $page
-     * @return MenuInterface
-     */
-    public function setPage(?Page $page): MenuInterface
+    public function setPage(?Page $page): self
     {
         $this->page = $page;
         return $this;
@@ -257,11 +244,7 @@ class Menu implements MenuInterface
         return $this->left;
     }
 
-    /**
-     * @param int $left
-     * @return MenuInterface
-     */
-    public function setLeft(int $left): MenuInterface
+    public function setLeft(int $left): self
     {
         $this->left = $left;
         return $this;
@@ -275,11 +258,7 @@ class Menu implements MenuInterface
         return $this->level;
     }
 
-    /**
-     * @param int $level
-     * @return MenuInterface
-     */
-    public function setLevel(int $level): MenuInterface
+    public function setLevel(int $level): self
     {
         $this->level = $level;
         return $this;
@@ -293,11 +272,7 @@ class Menu implements MenuInterface
         return $this->right;
     }
 
-    /**
-     * @param int $right
-     * @return MenuInterface
-     */
-    public function setRight(int $right): MenuInterface
+    public function setRight(int $right): self
     {
         $this->right = $right;
         return $this;
@@ -311,50 +286,37 @@ class Menu implements MenuInterface
         return $this->root;
     }
 
-    /**
-     * @param int|null $root
-     * @return MenuInterface
-     */
-    public function setRoot(?int $root): MenuInterface
+    public function setRoot(?int $root): self
     {
         $this->root = $root;
         return $this;
     }
 
     /**
-     * @return MenuInterface
+     * @return MenuInterface|null
      */
-    public function getParent(): MenuInterface
+    public function getParent(): ?MenuInterface
     {
         return $this->parent;
     }
 
-    /**
-     * @param self $parent
-     * @return MenuInterface
-     */
-    public function setParent(self $parent): MenuInterface
+    public function setParent(?MenuInterface $parent): self
     {
         $this->parent = $parent;
 
-        $parent->addChild($this);
+        if ($parent) {
+            $parent->addChild($this);
+        }
 
         return $this;
     }
 
-    /**
-     * @return MenuInterface[]|Collection
-     */
-    public function getChildren()
+    public function getChildren(): Collection
     {
         return $this->children;
     }
 
-
-    /**
-     * @param $children
-     */
-    public function setChildren($children)
+    public function setChildren(Collection|array $children): void
     {
         if (is_array($children)) {
             $children = new ArrayCollection($children);
@@ -363,16 +325,9 @@ class Menu implements MenuInterface
         $this->children = $children;
     }
 
-    /**
-     * Add child
-     *
-     * @param Menu $child
-     *
-     * @return self
-     */
-    public function addChild(Menu $child)
+    public function addChild(MenuInterface $child): self
     {
-        if (!is_null($this->children) && !$this->children->contains($child)) {
+        if (!$this->children->contains($child)) {
             $this->children[] = $child;
             $child->setParent($this);
         }
@@ -380,30 +335,18 @@ class Menu implements MenuInterface
         return $this;
     }
 
-    /**
-     * @return bool
-     */
-    public function isBlankTarget()
+    public function isBlankTarget(): bool
     {
         return $this->isBlankTarget;
     }
 
-    /**
-     * @param bool $isBlankTarget
-     * @return Menu
-     */
-    public function setIsBlankTarget($isBlankTarget): MenuInterface
+    public function setIsBlankTarget(bool $isBlankTarget): self
     {
         $this->isBlankTarget = $isBlankTarget;
         return $this;
     }
 
-    /**
-     * Remove child
-     *
-     * @param Menu $child
-     */
-    public function removeChild(Menu $child)
+    public function removeChild(MenuInterface $child): void
     {
         $this->children->removeElement($child);
     }

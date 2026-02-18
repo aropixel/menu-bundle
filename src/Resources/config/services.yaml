@@ -9,31 +9,6 @@ services:
         resource: '../../Controller'
         tags: [ 'controller.service_arguments' ]
 
-    Aropixel\MenuBundle\EventListener\MappedSuperClassListener:
-        arguments: ['%aropixel_menu.entity%']
-        tags:
-            - { name: doctrine.event_listener, event: 'loadClassMetadata', priority: 8192 }
-
-    Aropixel\MenuBundle\EventListener\MapPageBundleListener:
-        arguments: ['%aropixel_menu.page_active%', '%aropixel_menu.entity%']
-        tags:
-            - { name: doctrine.event_listener, event: 'loadClassMetadata', priority: 8192 }
-
-    Aropixel\MenuBundle\Provider\MenuProviderInterface:
-        class: Aropixel\MenuBundle\Provider\MenuProvider
-
-    Aropixel\MenuBundle\MenuHandler\MenuHandler:
+    Aropixel\MenuBundle\MenuHandler\MenuManager:
         public: true
-        autowire: false
-        arguments:
-            - !tagged_iterator aropixel.item_menu_handler_tag
-            - '@doctrine.orm.entity_manager'
-            - '@parameter_bag'
-
-    Aropixel\MenuBundle\MenuHandler\PageMenuHandler:
-        autoconfigure: true
-        autowire: true
-
-    Aropixel\MenuBundle\MenuHandler\LinkMenuHandler:
-        autoconfigure: true
         autowire: true

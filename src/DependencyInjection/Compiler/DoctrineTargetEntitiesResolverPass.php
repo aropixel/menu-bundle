@@ -1,4 +1,5 @@
 <?php
+
 namespace Aropixel\MenuBundle\DependencyInjection\Compiler;
 
 use Aropixel\MenuBundle\Entity\MenuInterface;
@@ -9,12 +10,8 @@ use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 
 class DoctrineTargetEntitiesResolverPass implements CompilerPassInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function process(ContainerBuilder $container): void
     {
-
         try {
             $resolveTargetEntityListener = $container->findDefinition('doctrine.orm.listeners.resolve_target_entity');
         } catch (InvalidArgumentException) {
@@ -27,7 +24,6 @@ class DoctrineTargetEntitiesResolverPass implements CompilerPassInterface
         if (!$resolveTargetEntityListener->hasTag('doctrine.event_listener')) {
             $resolveTargetEntityListener->addTag('doctrine.event_listener', ['event' => 'loadClassMetadata']);
         }
-
     }
 
 }

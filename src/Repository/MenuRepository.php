@@ -1,8 +1,8 @@
 <?php
 /**
- * Créé par Aropixel @2019.
- * Par: Joël Gomez Caballe
- * Date: 06/05/2019 à 14:14
+ * Created by Aropixel.
+ * User: Joël Gomez Caballe
+ * Date: 06/05/2019
  */
 
 namespace Aropixel\MenuBundle\Repository;
@@ -14,12 +14,8 @@ use Gedmo\Tree\Entity\Repository\NestedTreeRepository;
 class MenuRepository extends NestedTreeRepository
 {
 
-    /**
-     * Get root items with page info in same query
-     */
-    public function findRootsWithPage() {
-
-
+    public function findRootsWithPage(): array
+    {
         $qb = $this->createQueryBuilder('m');
 
         $qb->leftJoin('m.page', 'page')
@@ -27,27 +23,18 @@ class MenuRepository extends NestedTreeRepository
            ->where('m.parent IS NULL')
            ->orderBy('m.id', 'ASC');
 
-        $query = $qb->getQuery();
-
-        return $query->getResult();
-
+        return $qb->getQuery()->getResult();
     }
 
-    /**
-     * @param string $type
-     */
-    public function deleteMenu($type) {
-
-
+    public function deleteMenu(string $type): void
+    {
         $qb = $this->createQueryBuilder('m');
 
         $qb->delete($this->getClassName(), 'm')
             ->where('m.type = ?1')
             ->setParameter(1, $type);
 
-        $query = $qb->getQuery();
-        $query->getResult();
-
+        $qb->getQuery()->getResult();
     }
 
 

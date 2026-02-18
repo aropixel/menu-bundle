@@ -1,8 +1,8 @@
 <?php
 /**
- * Créé par Aropixel @2019.
- * Par: Joël Gomez Caballe
- * Date: 06/05/2019 à 13:32
+ * Created by Aropixel.
+ * User: Joël Gomez Caballe
+ * Date: 06/05/2019
  */
 
 namespace Aropixel\MenuBundle\Twig;
@@ -20,41 +20,32 @@ use Twig\TwigFunction;
 
 abstract class AropixelMenuExtension extends AbstractExtension
 {
-
     protected ?Request $request = null;
-    private readonly RequestStack $requestStack;
 
     public function __construct(
-        RequestStack $requestStack,
-        protected UrlGeneratorInterface $router,
+        private readonly RequestStack $requestStack,
+        protected readonly UrlGeneratorInterface $router,
         private readonly MenuProviderInterface $menuProvider,
-    )
-    {
+    ) {
         $this->request = $requestStack->getCurrentRequest();
-        $this->requestStack = $requestStack;
     }
 
-
-    public function getFilters()
+    public function getFilters(): array
     {
         return [new TwigFilter('get_link', $this->getLink(...)), new TwigFilter('is_section', $this->isSection(...))];
     }
 
-
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [new TwigFunction('get_menu', $this->getMenu(...))];
     }
 
-
-
-    public function isSection(Menu $menu)
+    public function isSection(Menu $menu): bool
     {
         return !$menu->getPage() && !$menu->getStaticPage() && !$menu->getLink();
     }
 
-
-    public function getMenu($type)
+    public function getMenu(string $type): array
     {
         return $this->menuProvider->getMenu($type);
     }
