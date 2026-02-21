@@ -41,7 +41,7 @@ class PageMenuSource implements MenuSourceInterface
         if ($this->isPageBundleActive()) {
             $pages = $this->entityManager->getRepository(Page::class)->findPublished();
             foreach ($pages as $page) {
-                if ($page->getType() == Page::TYPE_DEFAULT || $page->getType() == Page::TYPE_DEFAULT_TRANSLATABLE) {
+                if ($page->getType() == Page::TYPE_DEFAULT) {
                     $items[] = [
                         'label' => $page->getTitle(),
                         'value' => $page->getId(),
