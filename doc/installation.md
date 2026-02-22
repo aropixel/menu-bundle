@@ -46,5 +46,5 @@ Add the bundle routes in `config/routes.yaml`:
 ```yaml
 aropixel_menu:
     resource: '@AropixelMenuBundle/Resources/config/routes.yaml'
-    prefix: /admin/menu
+    prefix: /admin
 ```
