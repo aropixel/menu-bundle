@@ -14,6 +14,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Gedmo\Sluggable\Handler\TreeSlugHandler;
 
 
 #[ORM\MappedSuperclass(repositoryClass: MenuRepository::class)]
@@ -33,9 +34,9 @@ class Menu implements MenuInterface
     protected ?string $title = null;
 
     #[Gedmo\Slug(fields: ['title'])]
-    #[Gedmo\SlugHandler(class: 'Gedmo\Sluggable\Handler\TreeSlugHandler', options: [
-        new Gedmo\SlugHandlerOption(name: 'parentRelationField', value: 'parent'),
-        new Gedmo\SlugHandlerOption(name: 'separator', value: '/'),
+    #[Gedmo\SlugHandler(class: TreeSlugHandler::class, options: [
+        'parentRelationField' => 'parent',
+        'separator' => '/',
     ])]
     #[ORM\Column(type: Types::STRING, length: 255)]
     protected ?string $slug = null;

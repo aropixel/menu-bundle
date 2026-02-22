@@ -1,12 +1,6 @@
 <?php
-/**
- * Created by Aropixel.
- * User: Joël Gomez Caballe
- * Date: 21/05/2020
- */
 
 namespace Aropixel\MenuBundle\Provider;
-
 
 use Aropixel\MenuBundle\Entity\Menu;
 use Aropixel\MenuBundle\Entity\MenuInterface;
