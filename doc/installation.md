@@ -39,7 +39,15 @@ Apply migrations or update your schema:
 php bin/console doctrine:schema:update --force
 ```
 
-### 5. Including Routes
+### 5. Assets and Stimulus
+
+The bundle uses a **Stimulus controller** for the menu administration.
+
+Since version 2.3, the Stimulus controller is **automatically detected** if you are using **AssetMapper** or the **Symfony UX Stimulus Bundle**. No manual configuration is required in `assets/controllers.json` or `assets/bootstrap.js`.
+
+The controller is registered under the name `aropixel-menu`.
+
+### 6. Including Routes
 
 Add the bundle routes in `config/routes.yaml`:
 

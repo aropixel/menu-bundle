@@ -1,0 +1,10 @@
+{
+    "controllers": {
+        "menu": {
+            "main": "../src/Resources/public/js/menu_controller.js",
+            "fetch": "eager",
+            "enabled": true
+        }
+    },
+    "entrypoints": []
+}

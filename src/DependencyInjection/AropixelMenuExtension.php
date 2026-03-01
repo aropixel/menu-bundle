@@ -5,6 +5,7 @@ namespace Aropixel\MenuBundle\DependencyInjection;
 use Aropixel\MenuBundle\Source\MenuSourceInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
@@ -13,7 +14,7 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
  *
  * To learn more see {@link http://symfony.com/doc/current/cookbook/bundles/extension.html}
  */
-class AropixelMenuExtension extends Extension
+class AropixelMenuExtension extends Extension implements PrependExtensionInterface
 {
     public function load(array $configs, ContainerBuilder $container): void
     {
@@ -35,5 +36,28 @@ class AropixelMenuExtension extends Extension
 
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yaml');
+    }
+
+    public function prepend(ContainerBuilder $container): void
+    {
+        $bundles = $container->getParameter('kernel.bundles');
+
+        if (isset($bundles['FrameworkBundle'])) {
+            $container->prependExtensionConfig('framework', [
+                'asset_mapper' => [
+                    'paths' => [
+                        __DIR__ . '/../../assets' => '@aropixel/menu-bundle',
+                    ],
+                ],
+            ]);
+        }
+
+        if (isset($bundles['StimulusBundle'])) {
+            $container->prependExtensionConfig('stimulus', [
+                'controller_paths' => [
+                    __DIR__ . '/../../assets',
+                ],
+            ]);
+        }
     }
 }

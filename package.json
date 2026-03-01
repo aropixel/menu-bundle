@@ -1,0 +1,7 @@
+{
+    "name": "aropixel/menu-bundle",
+    "version": "1.0.0",
+    "symfony": {
+        "controllers": "assets/controllers.json"
+    }
+}

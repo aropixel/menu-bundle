@@ -37,6 +37,11 @@ class ProductMenuSource implements MenuSourceInterface
         return $items;
     }
 
+    public function getSelectionTemplate(): string
+    {
+        return 'menu/sources/product.html.twig';
+    }
+
     public function supports(string $type): bool
     {
         return $type === 'product';
@@ -61,7 +66,38 @@ class ProductMenuSource implements MenuSourceInterface
 }
 ```
 
-### 2. Registering the Source
+### 2. Selection Template
+
+You must create a Twig template to render the selection form in the menu administration.
+
+If you want a list of checkboxes (similar to pages):
+
+```twig
+{# templates/menu/sources/product.html.twig #}
+<div>
+    {% for resource in items %}
+        <div class="custom-control custom-checkbox d-flex">
+            <input type="checkbox"
+                   class="custom-control-input me-2"
+                   id="{{ source.name }}{{ loop.index0 }}"
+                   name="{{ source.name }}[]"
+                   value="{{ resource.value }}"
+                   data-type="{{ resource.type }}"
+                   data-label="{{ resource.label }}"
+                   data-color="{{ source.color }}"
+                   data-source="{{ source.name }}"
+            >
+            <label class="custom-control-label" for="{{ source.name }}{{ loop.index0 }}">
+                <span {{ resource.alreadyIncluded ? "style='color: #666;'" : "" }}>{{ resource.label }}</span>
+            </label>
+        </div>
+    {% endfor %}
+</div>
+```
+
+The Stimulus controller `aropixel-menu` will automatically handle these checkboxes.
+
+### 3. Registering the Source
 
 Because the bundle uses `autoconfigure: true`, your class is automatically registered and tagged with `aropixel_menu.source` if it implements `MenuSourceInterface`.
 
