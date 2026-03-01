@@ -7,8 +7,9 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class SectionMenuSource implements MenuSourceInterface
 {
-    public function __construct(private readonly TranslatorInterface $translator)
-    {
+    public function __construct(
+        private readonly TranslatorInterface $translator
+    ) {
     }
 
     public function getName(): string
@@ -33,7 +34,7 @@ class SectionMenuSource implements MenuSourceInterface
 
     public function supports(string $type): bool
     {
-        return $type === 'section';
+        return 'section' === $type;
     }
 
     public function getPayload(MenuInterface $menuItem): array

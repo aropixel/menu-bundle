@@ -41,12 +41,12 @@ class PageMenuSource implements MenuSourceInterface
         if ($this->isPageBundleActive()) {
             $pages = $this->entityManager->getRepository(Page::class)->findPublished();
             foreach ($pages as $page) {
-                if ($page->getType() == Page::TYPE_DEFAULT) {
+                if (Page::TYPE_DEFAULT == $page->getType()) {
                     $items[] = [
                         'label' => $page->getTitle(),
                         'value' => $page->getId(),
                         'type' => 'page',
-                        'alreadyIncluded' => in_array($page->getId(), $alreadyIncluded),
+                        'alreadyIncluded' => \in_array($page->getId(), $alreadyIncluded),
                     ];
                 }
             }
@@ -59,7 +59,7 @@ class PageMenuSource implements MenuSourceInterface
                 'label' => $this->translator->trans($title),
                 'value' => $key,
                 'type' => 'static',
-                'alreadyIncluded' => in_array($key, $alreadyIncluded),
+                'alreadyIncluded' => \in_array($key, $alreadyIncluded),
             ];
         }
 
@@ -68,7 +68,7 @@ class PageMenuSource implements MenuSourceInterface
 
     public function supports(string $type): bool
     {
-        return $type === 'page' || $type === 'static';
+        return 'page' === $type || 'static' === $type;
     }
 
     public function getPayload(MenuInterface $menuItem): array
@@ -95,16 +95,16 @@ class PageMenuSource implements MenuSourceInterface
         $type = $data['type'] ?? null;
         $value = $data['value'] ?? null;
 
-        if ($type === 'static') {
+        if ('static' === $type) {
             $menuItem->setStaticPage($value);
             $menuItem->setPage(null);
-            
+
             // Try to find the title in the config
             $staticPages = $this->params->get('aropixel_menu.static_pages');
             if (isset($staticPages[$value])) {
                 $menuItem->setTitle($this->translator->trans($staticPages[$value]));
             }
-        } elseif ($type === 'page') {
+        } elseif ('page' === $type) {
             $page = $this->entityManager->getRepository(Page::class)->find($value);
             $menuItem->setPage($page);
             $menuItem->setStaticPage(null);
@@ -128,12 +128,14 @@ class PageMenuSource implements MenuSourceInterface
                 $included = array_merge($included, $this->getAlreadyIncluded($item->getChildren()->toArray()));
             }
         }
+
         return array_unique($included);
     }
 
     private function isPageBundleActive(): bool
     {
         $bundles = $this->params->get('kernel.bundles');
-        return array_key_exists('AropixelPageBundle', $bundles);
+
+        return \array_key_exists('AropixelPageBundle', $bundles);
     }
 }

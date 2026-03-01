@@ -1,12 +1,6 @@
 <?php
-/**
- * Created by Aropixel.
- * User: Joël Gomez Caballe
- * Date: 06/05/2019
- */
 
 namespace Aropixel\MenuBundle\Twig;
-
 
 use Aropixel\MenuBundle\Entity\Menu;
 use Aropixel\MenuBundle\Provider\MenuProviderInterface;
@@ -16,7 +10,6 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
-
 
 abstract class AropixelMenuExtension extends AbstractExtension
 {
@@ -50,8 +43,5 @@ abstract class AropixelMenuExtension extends AbstractExtension
         return $this->menuProvider->getMenu($type);
     }
 
-
-    abstract public function getLink(Menu $menuItem) : string;
-
-
+    abstract public function getLink(Menu $menuItem): string;
 }

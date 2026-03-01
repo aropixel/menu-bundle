@@ -3,10 +3,9 @@
 namespace Aropixel\MenuBundle\DependencyInjection\Compiler;
 
 use Aropixel\MenuBundle\Entity\MenuInterface;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
-
 
 class DoctrineTargetEntitiesResolverPass implements CompilerPassInterface
 {
@@ -25,5 +24,4 @@ class DoctrineTargetEntitiesResolverPass implements CompilerPassInterface
             $resolveTargetEntityListener->addTag('doctrine.event_listener', ['event' => 'loadClassMetadata']);
         }
     }
-
 }

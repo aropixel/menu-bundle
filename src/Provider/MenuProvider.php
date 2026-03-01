@@ -3,7 +3,6 @@
 namespace Aropixel\MenuBundle\Provider;
 
 use Aropixel\MenuBundle\Entity\Menu;
-use Aropixel\MenuBundle\Entity\MenuInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Component\DependencyInjection\Attribute\AsAlias;
@@ -13,7 +12,6 @@ use Symfony\Contracts\Cache\ItemInterface;
 #[AsAlias(MenuProviderInterface::class)]
 class MenuProvider implements MenuProviderInterface
 {
-
     public const CACHE_KEY = '_aropixel.cache.menus';
 
     protected ?array $menus = null;
@@ -49,7 +47,6 @@ class MenuProvider implements MenuProviderInterface
 
         $cache = new FilesystemAdapter();
         $this->menus = $cache->get(self::CACHE_KEY, function (ItemInterface $item) use ($em, $menuEntity, $cacheDuration) {
-
             $menuItems = $em->getRepository($menuEntity)->findRootsWithPage();
             foreach ($menuItems as $menuItem) {
                 $this->hydratePage($menuItem);
@@ -57,8 +54,8 @@ class MenuProvider implements MenuProviderInterface
 
             $item->expiresAfter($cacheDuration);
             $item->set($menuItems);
-            return $menuItems;
 
+            return $menuItems;
         });
 
         $this->splitMenus();
@@ -87,11 +84,11 @@ class MenuProvider implements MenuProviderInterface
 
     public function getMenu($type): array
     {
-        if (is_null($this->menus)) {
+        if (null === $this->menus) {
             $this->loadMenus();
         }
 
-        return array_key_exists($type, $this->menus) ? $this->menus[$type] : [];
+        return \array_key_exists($type, $this->menus) ? $this->menus[$type] : [];
     }
 
     public function refreshCache(): void
@@ -101,5 +98,4 @@ class MenuProvider implements MenuProviderInterface
 
         $this->loadMenus();
     }
-
 }

@@ -4,7 +4,6 @@ namespace Aropixel\MenuBundle\MenuHandler;
 
 use Aropixel\MenuBundle\Entity\Menu;
 use Aropixel\MenuBundle\Entity\MenuInterface;
-use Aropixel\MenuBundle\Source\MenuSourceInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
@@ -51,20 +50,21 @@ class MenuManager
         $availableSources = [];
         foreach ($this->sources as $source) {
             $items = $source->getAvailableItems($menuItems);
-            if (!empty($items) || in_array($source->getName(), ['link', 'section'])) {
+            if (!empty($items) || \in_array($source->getName(), ['link', 'section'])) {
                 $availableSources[] = [
                     'source' => $source,
                     'items' => $items,
                 ];
             }
         }
+
         return $availableSources;
     }
 
     public function saveMenu(string $type, array $menuData): void
     {
         $entityClass = $this->params->get('aropixel_menu.entity');
-        
+
         // Delete old menu items for this type
         $this->entityManager->getRepository($entityClass)->deleteMenu($type);
         $this->entityManager->flush();
@@ -96,6 +96,7 @@ class MenuManager
         foreach ($this->sources as $source) {
             if ($source->supports($itemType)) {
                 $source->mapToEntity($payload, $menuItem);
+
                 break;
             }
         }

@@ -7,8 +7,9 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class LinkMenuSource implements MenuSourceInterface
 {
-    public function __construct(private readonly TranslatorInterface $translator)
-    {
+    public function __construct(
+        private readonly TranslatorInterface $translator
+    ) {
     }
 
     public function getName(): string
@@ -35,7 +36,7 @@ class LinkMenuSource implements MenuSourceInterface
 
     public function supports(string $type): bool
     {
-        return $type === 'link';
+        return 'link' === $type;
     }
 
     public function getPayload(MenuInterface $menuItem): array
@@ -49,7 +50,7 @@ class LinkMenuSource implements MenuSourceInterface
     {
         $link = $data['link'] ?? null;
 
-        if ($link === null || mb_strlen((string) $link) === 0) {
+        if (null === $link || 0 === mb_strlen((string) $link)) {
             $link = '#';
         }
 
@@ -58,7 +59,7 @@ class LinkMenuSource implements MenuSourceInterface
         // Optional: we could also populate linkDomain here if necessary
         // or let the MenuManager handle it during loading.
         $parsing = parse_url($link);
-        if (is_array($parsing) && array_key_exists('host', $parsing)) {
+        if (\is_array($parsing) && \array_key_exists('host', $parsing)) {
             $menuItem->setLinkDomain($parsing['host']);
         } else {
             $menuItem->setLinkDomain($link);

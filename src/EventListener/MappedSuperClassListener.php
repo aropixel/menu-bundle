@@ -14,8 +14,7 @@ class MappedSuperClassListener
     public function __construct(
         #[Autowire('%aropixel_menu.entity%')]
         private $entityName
-    )
-    {
+    ) {
     }
 
     public function loadClassMetadata(LoadClassMetadataEventArgs $eventArgs): void
@@ -27,5 +26,4 @@ class MappedSuperClassListener
             }
         }
     }
-
 }

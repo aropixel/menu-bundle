@@ -1,9 +1,4 @@
 <?php
-/**
- * Created by Aropixel.
- * User: Joël Gomez Caballe
- * Date: 16/04/2019
- */
 
 namespace Aropixel\MenuBundle\Entity;
 
@@ -15,7 +10,6 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Sluggable\Handler\TreeSlugHandler;
-
 
 #[ORM\MappedSuperclass(repositoryClass: MenuRepository::class)]
 #[ORM\Table(name: 'aropixel_menu')]
@@ -68,7 +62,6 @@ class Menu implements MenuInterface
     #[ORM\Column(type: Types::INTEGER, nullable: true)]
     protected ?int $root = null;
 
-
     #[Gedmo\TreeParent]
     #[ORM\ManyToOne(targetEntity: MenuInterface::class, inversedBy: 'children', cascade: ['persist'])]
     #[ORM\JoinColumn(name: 'parent_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
@@ -78,7 +71,7 @@ class Menu implements MenuInterface
     #[ORM\OrderBy(['left' => 'ASC'])]
     protected Collection $children;
 
-    protected $page = null;
+    protected $page;
 
     protected ?bool $isActiveItem = false;
 
@@ -86,7 +79,6 @@ class Menu implements MenuInterface
     {
         $this->children = new ArrayCollection();
     }
-
 
     public function getId(): int
     {
@@ -96,12 +88,10 @@ class Menu implements MenuInterface
     public function setId(int $id): self
     {
         $this->id = $id;
+
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getType(): ?string
     {
         return $this->type;
@@ -110,12 +100,10 @@ class Menu implements MenuInterface
     public function setType(?string $type): self
     {
         $this->type = $type;
+
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getTitle(): ?string
     {
         return $this->title;
@@ -124,12 +112,10 @@ class Menu implements MenuInterface
     public function setTitle(?string $title): self
     {
         $this->title = $title;
+
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getOriginalTitle(): ?string
     {
         return $this->originalTitle;
@@ -138,6 +124,7 @@ class Menu implements MenuInterface
     public function setOriginalTitle(?string $originalTitle): self
     {
         $this->originalTitle = $originalTitle;
+
         return $this;
     }
 
@@ -149,12 +136,10 @@ class Menu implements MenuInterface
     public function setSlug(?string $slug): self
     {
         $this->slug = $slug;
+
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getLink(): ?string
     {
         return $this->link;
@@ -163,30 +148,22 @@ class Menu implements MenuInterface
     public function setLink(?string $link): self
     {
         $this->link = $link;
+
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getLinkDomain(): ?string
     {
         return $this->linkDomain;
     }
 
-    /**
-     * @param string|null $linkDomain
-     * @return MenuInterface
-     */
     public function setLinkDomain(?string $linkDomain): MenuInterface
     {
         $this->linkDomain = $linkDomain;
+
         return $this;
     }
 
-    /**
-     * @return bool
-     */
     public function isActiveItem(): bool
     {
         return $this->isActiveItem;
@@ -195,12 +172,10 @@ class Menu implements MenuInterface
     public function setIsActiveItem(bool $isActiveItem): self
     {
         $this->isActiveItem = $isActiveItem;
+
         return $this;
     }
 
-    /**
-     * @return bool
-     */
     public function isRequired(): bool
     {
         return $this->isRequired;
@@ -209,6 +184,7 @@ class Menu implements MenuInterface
     public function setIsRequired(bool $isRequired): self
     {
         $this->isRequired = $isRequired;
+
         return $this;
     }
 
@@ -220,6 +196,7 @@ class Menu implements MenuInterface
     public function setStaticPage(?string $staticPage): self
     {
         $this->staticPage = $staticPage;
+
         return $this;
     }
 
@@ -234,12 +211,10 @@ class Menu implements MenuInterface
     public function setPage(?Page $page): self
     {
         $this->page = $page;
+
         return $this;
     }
 
-    /**
-     * @return int
-     */
     public function getLeft(): int
     {
         return $this->left;
@@ -248,12 +223,10 @@ class Menu implements MenuInterface
     public function setLeft(int $left): self
     {
         $this->left = $left;
+
         return $this;
     }
 
-    /**
-     * @return int
-     */
     public function getLevel(): int
     {
         return $this->level;
@@ -262,12 +235,10 @@ class Menu implements MenuInterface
     public function setLevel(int $level): self
     {
         $this->level = $level;
+
         return $this;
     }
 
-    /**
-     * @return int
-     */
     public function getRight(): int
     {
         return $this->right;
@@ -276,12 +247,10 @@ class Menu implements MenuInterface
     public function setRight(int $right): self
     {
         $this->right = $right;
+
         return $this;
     }
 
-    /**
-     * @return int|null
-     */
     public function getRoot(): ?int
     {
         return $this->root;
@@ -290,12 +259,10 @@ class Menu implements MenuInterface
     public function setRoot(?int $root): self
     {
         $this->root = $root;
+
         return $this;
     }
 
-    /**
-     * @return MenuInterface|null
-     */
     public function getParent(): ?MenuInterface
     {
         return $this->parent;
@@ -319,7 +286,7 @@ class Menu implements MenuInterface
 
     public function setChildren(Collection|array $children): void
     {
-        if (is_array($children)) {
+        if (\is_array($children)) {
             $children = new ArrayCollection($children);
         }
 
@@ -344,6 +311,7 @@ class Menu implements MenuInterface
     public function setIsBlankTarget(bool $isBlankTarget): self
     {
         $this->isBlankTarget = $isBlankTarget;
+
         return $this;
     }
 
@@ -351,6 +319,4 @@ class Menu implements MenuInterface
     {
         $this->children->removeElement($child);
     }
-
-
 }

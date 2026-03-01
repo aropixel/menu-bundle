@@ -6,7 +6,6 @@ use Aropixel\MenuBundle\Entity\Menu;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
-
 class Configuration implements ConfigurationInterface
 {
     public function getConfigTreeBuilder(): TreeBuilder
@@ -16,27 +15,27 @@ class Configuration implements ConfigurationInterface
         $treeBuilder->getRootNode()
             ->fixXmlConfig('menu')
             ->children()
-                ->scalarNode('entity')->defaultValue(Menu::class)->end()
-                ->arrayNode('menus')
-                    ->arrayPrototype()
-                        ->children()
-                            ->scalarNode('name')->end()
-                            ->scalarNode('depth')->end()
-                            ->booleanNode('strict_mode')->defaultValue(false)->end()
-                            ->arrayNode('required_pages')
-                                 ->defaultValue([])
-                                 ->useAttributeAsKey('name')
-                                 ->prototype('variable')->end()
-                            ->end()
-                        ->end()
-                    ->end()
-                ->end()
-                ->arrayNode('static_pages')
-                     ->defaultValue([])
-                     ->useAttributeAsKey('name')
-                     ->prototype('variable')->end()
-                ->end()
-            ->scalarNode('cache')->defaultValue(60*60*24)->end()
+            ->scalarNode('entity')->defaultValue(Menu::class)->end()
+            ->arrayNode('menus')
+            ->arrayPrototype()
+            ->children()
+            ->scalarNode('name')->end()
+            ->scalarNode('depth')->end()
+            ->booleanNode('strict_mode')->defaultValue(false)->end()
+            ->arrayNode('required_pages')
+            ->defaultValue([])
+            ->useAttributeAsKey('name')
+            ->prototype('variable')->end()
+            ->end()
+            ->end()
+            ->end()
+            ->end()
+            ->arrayNode('static_pages')
+            ->defaultValue([])
+            ->useAttributeAsKey('name')
+            ->prototype('variable')->end()
+            ->end()
+            ->scalarNode('cache')->defaultValue(60 * 60 * 24)->end()
             ->end()
         ;
 

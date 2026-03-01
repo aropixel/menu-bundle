@@ -1,27 +1,20 @@
 <?php
-/**
- * Created by Aropixel.
- * User: Joël Gomez Caballe
- * Date: 06/05/2019
- */
 
 namespace Aropixel\MenuBundle\Repository;
 
-use Aropixel\MenuBundle\Entity\Menu;
 use Gedmo\Tree\Entity\Repository\NestedTreeRepository;
-
 
 class MenuRepository extends NestedTreeRepository
 {
-
     public function findRootsWithPage(): array
     {
         $qb = $this->createQueryBuilder('m');
 
         $qb->leftJoin('m.page', 'page')
-           ->addSelect('page')
-           ->where('m.parent IS NULL')
-           ->orderBy('m.id', 'ASC');
+            ->addSelect('page')
+            ->where('m.parent IS NULL')
+            ->orderBy('m.id', 'ASC')
+        ;
 
         return $qb->getQuery()->getResult();
     }
@@ -32,10 +25,9 @@ class MenuRepository extends NestedTreeRepository
 
         $qb->delete($this->getClassName(), 'm')
             ->where('m.type = ?1')
-            ->setParameter(1, $type);
+            ->setParameter(1, $type)
+        ;
 
         $qb->getQuery()->getResult();
     }
-
-
 }
