@@ -1,0 +1,19 @@
+<div>
+    {% for resource in items %}
+        <div class="custom-control custom-checkbox d-flex">
+            <input type="checkbox"
+                   class="custom-control-input me-2"
+                   id="{{ source.name }}{{ loop.index0 }}"
+                   name="{{ source.name }}[]"
+                   value="{{ resource.value }}"
+                   data-type="{{ resource.type }}"
+                   data-label="{{ resource.label }}"
+                   data-color="{{ source.color }}"
+                   data-source="{{ source.name }}"
+            >
+            <label class="custom-control-label" for="{{ source.name }}{{ loop.index0 }}">
+                <span {{ resource.alreadyIncluded ? "style='color: #666;'" : "" }}>{{ resource.label }}</span>
+            </label>
+        </div>
+    {% endfor %}
+</div>

@@ -39,16 +39,14 @@ class PageMenuSource implements MenuSourceInterface
 
         // Published pages
         if ($this->isPageBundleActive()) {
-            $pages = $this->entityManager->getRepository(Page::class)->findPublished();
+            $pages = $this->entityManager->getRepository(Page::class)->findAll();
             foreach ($pages as $page) {
-                if (Page::TYPE_DEFAULT == $page->getType()) {
-                    $items[] = [
-                        'label' => $page->getTitle(),
-                        'value' => $page->getId(),
-                        'type' => 'page',
-                        'alreadyIncluded' => \in_array($page->getId(), $alreadyIncluded),
-                    ];
-                }
+                $items[] = [
+                    'label' => $page->getTitle(),
+                    'value' => $page->getId(),
+                    'type' => 'page',
+                    'alreadyIncluded' => \in_array($page->getId(), $alreadyIncluded),
+                ];
             }
         }
 
@@ -64,6 +62,11 @@ class PageMenuSource implements MenuSourceInterface
         }
 
         return $items;
+    }
+
+    public function getSelectionTemplate(): string
+    {
+        return '@AropixelMenu/menu/sources/page.html.twig';
     }
 
     public function supports(string $type): bool

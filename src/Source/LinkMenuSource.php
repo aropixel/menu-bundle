@@ -29,9 +29,12 @@ class LinkMenuSource implements MenuSourceInterface
 
     public function getAvailableItems(array $menuItems): array
     {
-        // Manual links are handled by a free text field in the form,
-        // not by a list of predefined items.
         return [];
+    }
+
+    public function getSelectionTemplate(): string
+    {
+        return '@AropixelMenu/menu/sources/link.html.twig';
     }
 
     public function supports(string $type): bool

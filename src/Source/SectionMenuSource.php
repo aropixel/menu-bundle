@@ -32,6 +32,11 @@ class SectionMenuSource implements MenuSourceInterface
         return [];
     }
 
+    public function getSelectionTemplate(): string
+    {
+        return '@AropixelMenu/menu/sources/section.html.twig';
+    }
+
     public function supports(string $type): bool
     {
         return 'section' === $type;

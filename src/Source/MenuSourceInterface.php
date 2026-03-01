@@ -27,6 +27,11 @@ interface MenuSourceInterface
     public function getAvailableItems(array $menuItems): array;
 
     /**
+     * Returns the Twig template path to render the selection form for this source.
+     */
+    public function getSelectionTemplate(): string;
+
+    /**
      * Determines if this source supports the given item type.
      */
     public function supports(string $type): bool;

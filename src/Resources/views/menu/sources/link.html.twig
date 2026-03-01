@@ -1,0 +1,17 @@
+<div class="form-group mb-0">
+    <label for="manualLinkLabel">{% trans %}aropixel.menu.form.link.label{% endtrans %}</label>
+    <input type="text"
+           id="manualLinkLabel"
+           class="form-control mb-3"
+           data-aropixel-menu-target="manualLinkLabel"
+           placeholder="{% trans %}aropixel.menu.form.link.label_placeholder{% endtrans %}"
+    >
+    <label for="manualLinkUrl">{% trans %}aropixel.menu.form.link.url{% endtrans %}</label>
+    <input type="text"
+           id="manualLinkUrl"
+           class="form-control"
+           data-aropixel-menu-target="manualLinkUrl"
+           placeholder="{% trans %}aropixel.menu.form.link.url_placeholder{% endtrans %}"
+    >
+    <input type="hidden" data-type="link" data-source="link" data-color="{{ source.color }}">
+</div>

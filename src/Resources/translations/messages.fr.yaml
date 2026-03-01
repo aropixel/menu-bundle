@@ -3,7 +3,6 @@ aropixel:
     form:
       instruction: "Gérez votre menu en ajoutant des éléments de la colonne de droite.<br />Vous pouvez déplacer les éléments du menu par glisser-déposer."
       title: Titre
-      link: Lien
       add: Ajouter
       edit: Modifier
       delete: Supprimer
@@ -17,6 +16,16 @@ aropixel:
         page: Page générale
         section: Section
 
+      link:
+        label: Libellé du lien
+        label_placeholder: "Entrez un libellé"
+        url: URL du lien
+        url_placeholder: "https://..."
+
+      section:
+        label: Libellé de la section
+        label_placeholder: "Entrez un libellé"
+
       panels:
         link:
           title: Lien manuel
@@ -24,8 +33,10 @@ aropixel:
             title: Texte
             link: Lien
             target: Destination
-        pages: Pages
-        section: Section
+        page:
+          title: Pages
+        section:
+          title: Section
 
       modals:
         empty:

@@ -70,52 +70,18 @@
 
         <div class="col-md-4">
 
-            <div class="card">
-                <div class="card-header">
-                    <h4 class="card-title">{% trans %}aropixel.menu.form.panels.section{% endtrans %}</h4>
-                </div>
-                <div class="card-body">
-                    <div class="form-group mb-0">
-                        {#<label>{% trans %}aropixel.menu.form.panels.section{% endtrans %}</label>#}
-                        <input name="manual_section" type="text" class="form-control" data-aropixel-menu-target="manualSection">
-                    </div>
-                </div>
-                <div class="card-footer text-right">
-                    <button type="button" class="btn btn-small btn-primary" data-action="click->aropixel-menu#addSection">{% trans %}aropixel.menu.form.add{% endtrans %}</button>
-                </div>
-            </div>
-            {% block post_sections %}{% endblock %}
-
             {% for availableSource in availableSources %}
                 {% set source = availableSource.source %}
 
                 <div class="card" id="panel-{{ source.name }}">
                     <div class="card-header">
-                        {% set titleCard = 'aropixel.menu.form.panels.' ~ source.name %}
+                        {% set titleCard = 'aropixel.menu.form.panels.' ~ source.name ~ '.title' %}
                         <h4 class="card-title">{{ titleCard | trans }}</h4>
                     </div>
                     <div class="card-body">
-                        <div>
-                            {% for resource in availableSource.items %}
-                                <div class="custom-control custom-checkbox d-flex">
-                                    <input type="checkbox"
-                                           class="custom-control-input me-2"
-                                           id="{{ source.name }}{{ loop.index0 }}"
-                                           name="{{ source.name }}[]"
-                                           value="{{ resource.value }}"
-                                           data-type="{{ resource.type }}"
-                                           data-label="{{ source.label }}"
-                                           data-color="{{ source.color }}"
-                                           data-source="{{ source.name }}"
-                                    >
-                                    <label class="custom-control-label" for="{{ source.name }}{{ loop.index0 }}">
-                                        <span {{ resource.alreadyIncluded ? "style='color: #666;'" : "" }}>{{ resource.label }}</span>
-                                    </label>
-                                </div>
-                            {% endfor %}
-                        </div>
+                        {% include source.selectionTemplate with {'source': source, 'items': availableSource.items} %}
                     </div>
-                    <div class="card-footer text-right">
+                    <div class="card-footer pt-0 text-right">
                         <button type="button"
                                 class="btn btn-small btn-primary add-input-ressource"
                                 data-action="click->aropixel-menu#addInputResource"
@@ -126,28 +92,6 @@
                 </div>
 
             {% endfor %}
-
-            {% block post_pages %}{% endblock %}
-
-            <div class="card">
-                <div class="card-header">
-                    <h4 class="card-title">{% trans %}aropixel.menu.form.panels.link.title{% endtrans %}</h4>
-                </div>
-                <div class="card-body">
-                    <div class="form-group">
-                        <label class="control-label">{% trans %}aropixel.menu.form.panels.link.fields.title{% endtrans %}</label>
-                        <input name="manual_label" type="text" class="form-control" data-aropixel-menu-target="manualLabel" />
-                    </div>
-                    <div class="form-group mb-0">
-                        <label class="control-label">{% trans %}aropixel.menu.form.panels.link.fields.link{% endtrans %}</label>
-                        <input name="manual_link" type="text" class="form-control" data-aropixel-menu-target="manualLink" />
-                    </div>
-                </div>
-                <div class="card-footer text-right">
-                    <button type="button" class="btn btn-small btn-primary" data-action="click->aropixel-menu#addLink">{% trans %}aropixel.menu.form.add{% endtrans %}</button>
-                </div>
-            </div>
-            {% block post_links %}{% endblock %}
 
         </div>
 

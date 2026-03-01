@@ -3,7 +3,6 @@ aropixel:
     form:
       instruction: "Select and add items to your menu from the right sidebar.<br />You can reorder menu items by drag'n drop."
       title: Title
-      link: Link
       add: Add
       edit: Edit
       delete: Delete
@@ -17,6 +16,16 @@ aropixel:
         page: Page
         section: Section
 
+      link:
+        label: Link label
+        label_placeholder: "Enter a label"
+        url: Link URL
+        url_placeholder: "https://..."
+
+      section:
+        label: Section label
+        label_placeholder: "Enter a label"
+
       panels:
         link:
           title: Link
@@ -24,8 +33,10 @@ aropixel:
             title: Text
             link: Link
             target: Target
-        pages: Pages
-        section: Section
+        page:
+          title: Pages
+        section:
+          title: Section
 
       modals:
         empty:

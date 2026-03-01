@@ -3,7 +3,7 @@ import { ModalDyn } from '/bundles/aropixeladmin/js/module/modal-dyn/modal-dyn.j
 
 /* stimulusFetch: 'lazy' */
 export default class extends Controller {
-    static targets = ["menu", "saveButton", "typeInput", "manualLabel", "manualLink", "manualSection", "modalEdit", "itemLabel", "itemLink", "validEdit"];
+    static targets = ["menu", "saveButton", "modalEdit", "itemLabel", "itemLink", "validEdit", "manualLinkLabel", "manualLinkUrl", "sectionLabel"];
     static values = {
         maxLevel: Number,
         url: String,
@@ -33,78 +33,77 @@ export default class extends Controller {
     addInputResource(event) {
         const button = event.currentTarget;
         const card = button.closest('.card');
-        const checkedInputs = card.querySelectorAll('input:checked');
+        const checkedInputs = card.querySelectorAll('input[type="checkbox"]:checked');
+        const manualLinkLabelInput = card.querySelector('[data-aropixel-menu-target="manualLinkLabel"]');
+        const manualLinkUrlInput = card.querySelector('[data-aropixel-menu-target="manualLinkUrl"]');
+        const sectionLabelInput = card.querySelector('[data-aropixel-menu-target="sectionLabel"]');
+        const hiddenInfo = card.querySelector('input[type="hidden"]');
 
-        if (checkedInputs.length === 0) {
-            $('#modal_please_select').modal('show');
-            return;
-        }
-
-        checkedInputs.forEach(input => {
-            const title = input.closest('.custom-control').querySelector('span').innerHTML;
-            const lineProperties = {
-                label: input.dataset.label,
-                color: input.dataset.color,
-                title: title,
-                originalTitle: title,
-                type: input.dataset.source,
-                payload: {
-                    'type': input.dataset.type,
-                    'value': input.value
-                }
-            };
-
-            if (!this.strictModeValue || !this.isIncluded(lineProperties)) {
-                this.addLine(lineProperties);
-            } else {
-                const buttons = {
-                    "Fermer": {
-                        'class': 'btn-default',
-                        'callback': function() {
-                            $(this).closest('.modal').modal('hide');
-                        }
+        if (checkedInputs.length > 0) {
+            checkedInputs.forEach(input => {
+                const title = input.closest('.custom-control').querySelector('span').innerHTML;
+                const lineProperties = {
+                    label: input.dataset.label,
+                    color: input.dataset.color,
+                    title: title,
+                    originalTitle: title,
+                    type: input.dataset.source,
+                    payload: {
+                        'type': input.dataset.type,
+                        'value': input.value
                     }
                 };
-                new ModalDyn('Désolé', '<strong>Ce lien est déjà dans la liste.</strong><br />Vous ne pouvez pas l\'insérer qu\'une seule fois.', buttons, {modalClass: 'modal_mini', headerClass: 'bg-danger'});
-            }
-            input.checked = false;
-        });
+
+                if (!this.strictModeValue || !this.isIncluded(lineProperties)) {
+                    this.addLine(lineProperties);
+                } else {
+                    this.showAlreadyIncludedAlert();
+                }
+                input.checked = false;
+            });
+        } else if (manualLinkUrlInput && manualLinkUrlInput.value) {
+            const label = manualLinkLabelInput.value || manualLinkUrlInput.value;
+            const link = manualLinkUrlInput.value;
+            const lineProperties = {
+                label: 'Lien manuel',
+                color: hiddenInfo.dataset.color,
+                title: label,
+                originalTitle: 'Lien manuel',
+                type: 'link',
+                payload: {
+                    'link': link
+                }
+            };
+            this.addLine(lineProperties);
+            manualLinkLabelInput.value = '';
+            manualLinkUrlInput.value = '';
+        } else if (sectionLabelInput && sectionLabelInput.value) {
+            const label = sectionLabelInput.value;
+            const lineProperties = {
+                label: 'Section',
+                color: hiddenInfo.dataset.color,
+                title: label,
+                originalTitle: 'Section',
+                type: 'section',
+                payload: {}
+            };
+            this.addLine(lineProperties);
+            sectionLabelInput.value = '';
+        } else {
+            $('#modal_please_select').modal('show');
+        }
     }
 
-    addLink() {
-        const label = this.manualLabelTarget.value;
-        const link = this.manualLinkTarget.value;
-
-        const lineProperties = {
-            label: 'Lien manuel',
-            color: 'bg-teal',
-            title: label,
-            originalTitle: 'Element de menu vide',
-            type: 'link',
-            payload: {
-                'link': link
+    showAlreadyIncludedAlert() {
+        const buttons = {
+            "Fermer": {
+                'class': 'btn-default',
+                'callback': function() {
+                    $(this).closest('.modal').modal('hide');
+                }
             }
         };
-
-        this.addLine(lineProperties);
-        this.manualLabelTarget.value = '';
-        this.manualLinkTarget.value = '';
-    }
-
-    addSection() {
-        const section = this.manualSectionTarget.value;
-
-        const lineProperties = {
-            label: 'Section',
-            color: 'bg-dark-grey',
-            title: section,
-            originalTitle: 'Section',
-            type: 'section',
-            payload: {}
-        };
-
-        this.addLine(lineProperties);
-        this.manualSectionTarget.value = '';
+        new ModalDyn('Désolé', '<strong>Ce lien est déjà dans la liste.</strong><br />Vous ne pouvez pas l\'insérer qu\'une seule fois.', buttons, {modalClass: 'modal_mini', headerClass: 'bg-danger'});
     }
 
     deleteRow(event) {
