@@ -114,7 +114,20 @@ class MenuManager
 
     public function getPayload(MenuInterface $menuItem): array
     {
+        // Try to find a source that supports the menu item to get its payload
         foreach ($this->sources as $source) {
+
+            // Check if the source supports the menu item
+            // For example, LinkMenuSource supports if it's a link, PageMenuSource if it's a page, etc.
+            if ($source->supports('link') && $menuItem->getLink()) {
+                return $source->getPayload($menuItem);
+            }
+
+            if ($source->supports('page') && ($menuItem->getPage() || $menuItem->getStaticPage())) {
+                return $source->getPayload($menuItem);
+            }
+
+            // Fallback for general support if the source can determine it from the entity
             if ($source->supports($menuItem->getType() ?: '')) {
                 return $source->getPayload($menuItem);
             }

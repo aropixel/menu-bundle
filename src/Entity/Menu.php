@@ -41,6 +41,8 @@ class Menu implements MenuInterface
     #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
     protected ?string $link = null;
 
+    protected ?string $linkDomain = null;
+
     #[ORM\Column(type: Types::STRING, length: 50, nullable: true)]
     protected ?string $staticPage = null;
 
@@ -154,7 +156,12 @@ class Menu implements MenuInterface
 
     public function getLinkDomain(): ?string
     {
-        return $this->linkDomain;
+        $parsing = parse_url($this->link);
+        if (!is_array($parsing)) {
+            return null;
+        }
+
+        return $parsing['host'] ?? null;
     }
 
     public function setLinkDomain(?string $linkDomain): MenuInterface

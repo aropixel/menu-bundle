@@ -1,5 +1,5 @@
 <li class="li-movable"
-    data-type="{{ item is defined ? item.type : '' }}"
+    data-type="{% if item is defined %}{% if item.link %}link{% elseif item.page or item.staticPage %}page{% elseif item.title %}section{% else %}{{ item.type }}{% endif %}{% endif %}"
     data-payload="{{ item is defined and menuManager is defined ? menuManager.getPayload(item)|json_encode : '{}' }}"
     data-title="{{ item is defined ? item.title : '' }}"
     data-original-title="{{ item is defined ? item.originalTitle : '' }}"
@@ -8,9 +8,9 @@
         <div>
             <div class="text-semibold title">{{ item is defined ? item.title : '' }}</div>
             {% if item is defined and item.link %}
-                <div class="text-muted link">{% trans %}aropixel.menu.form.link{% endtrans %} : <a href="{{ item.link }}" target="_blank">{{ item.linkDomain }}</a></div>
+                <div class="text-muted link"><a href="{{ item.link }}" target="_blank">{{ item.linkDomain }}</a></div>
             {% elseif item is defined and item.originalTitle %}
-                <div class="text-muted link">{% trans %}aropixel.menu.form.link{% endtrans %} : {{ item.originalTitle }}</div>
+                <div class="text-muted link">{{ item.originalTitle }}</div>
             {% else %}
                 <div class="text-muted link">&nbsp;</div>
             {% endif %}

@@ -46,6 +46,7 @@ class LinkMenuSource implements MenuSourceInterface
     {
         return [
             'link' => $menuItem->getLink(),
+            'linkDomain' => $menuItem->getLinkDomain(),
         ];
     }
 
