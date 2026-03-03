@@ -35,14 +35,14 @@
 
 
     <div class="row"
-         data-controller="menu"
-         data-menu-max-level-value="{{ menus[type_menu].depth }}"
-         data-menu-url-value="{{ path('aropixel_menu_save') }}"
-         data-menu-type-value="{{ type_menu }}"
-         data-menu-name-value="{{ menus[type_menu].name }}"
-         data-menu-required-title-value="{% trans %}aropixel.menu.form.modals.required.title{% endtrans %}"
-         data-menu-required-message-value="{% trans %}aropixel.menu.form.modals.required.message{% endtrans %}"
-         data-menu-strict-mode-value="{{ menus[type_menu].strict_mode ? 'true' : 'false' }}"
+         data-controller="aropixel-menu"
+         data-aropixel-menu-max-level-value="{{ menus[type_menu].depth }}"
+         data-aropixel-menu-url-value="{{ path('aropixel_menu_save') }}"
+         data-aropixel-menu-type-value="{{ type_menu }}"
+         data-aropixel-menu-name-value="{{ menus[type_menu].name }}"
+         data-aropixel-menu-required-title-value="{% trans %}aropixel.menu.form.modals.required.title{% endtrans %}"
+         data-aropixel-menu-required-message-value="{% trans %}aropixel.menu.form.modals.required.message{% endtrans %}"
+         data-aropixel-menu-strict-mode-value="{{ menus[type_menu].strict_mode ? 'true' : 'false' }}"
     >
 
         <div class="col-md-8">
@@ -55,8 +55,8 @@
                         <h4 class="card-heading">{{ menus[type_menu].name }}</h4>
                         <div class="card-header-action">
                             <button type="button" class="btn btn-primary heading-btn"
-                                    data-menu-target="saveButton"
-                                    data-action="click->menu#saveMenu"
+                                    data-aropixel-menu-target="saveButton"
+                                    data-action="click->aropixel-menu#saveMenu"
                             >
                                 {% trans %}aropixel.menu.form.save{% endtrans %}
                             </button>
@@ -68,7 +68,7 @@
 
                     <p class="text-muted">{% trans %}aropixel.menu.form.instruction{% endtrans %}</p>
                 </div>
-                <ol class="menu" id="menu" data-menu-target="menu">
+                <ol class="menu" id="menu" data-aropixel-menu-target="menu">
                     {% for item in menu %}
                         {{ include ('@AropixelMenu/menu/item.html.twig', {'item': item, 'menuManager': menuManager}) }}
                     {% endfor %}
@@ -93,7 +93,7 @@
                     <div class="card-footer pt-0 text-right">
                         <button type="button"
                                 class="btn btn-small btn-primary add-input-ressource"
-                                data-action="click->menu#addInputResource"
+                                data-action="click->aropixel-menu#addInputResource"
                         >
                             {% trans %}aropixel.menu.form.add{% endtrans %}
                         </button>
@@ -123,7 +123,7 @@
     <!-- /modal with basic title -->
 
     <!-- Modal with basic title -->
-    <div id="modal_edit" class="modal fade" data-menu-target="modalEdit">
+    <div id="modal_edit" class="modal fade" data-aropixel-menu-target="modalEdit">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -134,19 +134,19 @@
 
                     <div class="form-group">
                         <label>{% trans %}aropixel.menu.form.modals.edit.fields.text{% endtrans %}</label>
-                        <input type="text" name="item_label" placeholder="{% trans %}aropixel.menu.form.modals.edit.fields.text{% endtrans %}" class="form-control" data-menu-target="itemLabel" data-action="keyup->menu#handleEditKeyup">
+                        <input type="text" name="item_label" placeholder="{% trans %}aropixel.menu.form.modals.edit.fields.text{% endtrans %}" class="form-control" data-aropixel-menu-target="itemLabel" data-action="keyup->menu#handleEditKeyup">
                     </div>
 
                     <div class="form-group">
                         <label>{% trans %}aropixel.menu.form.modals.edit.fields.link{% endtrans %}</label>
-                        <input type="text" name="item_link" placeholder="{% trans %}aropixel.menu.form.modals.edit.fields.link{% endtrans %}" class="form-control" data-menu-target="itemLink" data-action="keyup->menu#handleEditKeyup">
+                        <input type="text" name="item_link" placeholder="{% trans %}aropixel.menu.form.modals.edit.fields.link{% endtrans %}" class="form-control" data-aropixel-menu-target="itemLink" data-action="keyup->menu#handleEditKeyup">
                     </div>
 
                 </div>
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline" data-bs-dismiss="modal">{% trans %}aropixel.menu.form.cancel{% endtrans %}</button>
-                    <button type="button" class="btn btn-primary" data-menu-target="validEdit" data-action="click->menu#submitEdit">{% trans %}aropixel.menu.form.ok{% endtrans %}</button>
+                    <button type="button" class="btn btn-primary" data-aropixel-menu-target="validEdit" data-action="click->aropixel-menu#submitEdit">{% trans %}aropixel.menu.form.ok{% endtrans %}</button>
                 </div>
             </div>
         </div>
