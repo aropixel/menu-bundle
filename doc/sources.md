@@ -101,32 +101,62 @@ The Stimulus controller `aropixel-menu` will automatically handle these checkbox
 
 Because the bundle uses `autoconfigure: true`, your class is automatically registered and tagged with `aropixel_menu.source` if it implements `MenuSourceInterface`.
 
-If you are not using autoconfiguration, tag your service manually:
+If you are not using autoconfiguration, tag your service manually using the `#[AutoconfigureTag]` attribute:
 
-```yaml
-services:
-    App\Menu\ProductMenuSource:
-        tags: ['aropixel_menu.source']
+```php
+use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
+
+#[AutoconfigureTag('aropixel_menu.source')]
+class ProductMenuSource implements MenuSourceInterface
+{
+    // ...
+}
 ```
 
-### 3. Usage in Templates
+### 4. Resolving the URL on the front-end
+
+Implement the `resolveUrl()` method to tell the bundle how to generate the URL for your source type. This method is called automatically by the `|get_link` Twig filter.
+
+```php
+public function resolveUrl(MenuInterface $menuItem): string
+{
+    // $menuItem->getLink() contains the value stored by mapToEntity()
+    $id = $menuItem->getLink();
+    if (!$id) {
+        return '#';
+    }
+
+    return '/products/' . $id;
+}
+```
+
+If you need the Symfony router, inject `UrlGeneratorInterface`:
+
+```php
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+
+class ProductMenuSource implements MenuSourceInterface
+{
+    public function __construct(
+        private readonly ProductRepository $productRepository,
+        private readonly UrlGeneratorInterface $router,
+    ) {}
+
+    public function resolveUrl(MenuInterface $menuItem): string
+    {
+        return $this->router->generate('product_show', ['id' => $menuItem->getLink()]);
+    }
+
+    // ...
+}
+```
+
+### 5. Usage in Templates
 
 The bundle will automatically:
 1. Create a new panel in the menu management interface for your source.
 2. Handle the drag-and-drop and serialization of your custom items.
 3. Call your `mapToEntity` method when saving the menu.
+4. Call your `resolveUrl` method when the `|get_link` Twig filter is used.
 
-To display the link on the front-end, use the `MenuProvider`:
-
-```twig
-{# templates/layout.html.twig #}
-{% set main_menu = menu_provider.getMenu('main') %}
-
-<ul>
-    {% for item in main_menu %}
-        <li>
-            <a href="{{ path('product_show', {id: item.customId}) }}">{{ item.title }}</a>
-        </li>
-    {% endfor %}
-</ul>
-```
+See [Front-end Usage](front-end.md) for Twig examples.

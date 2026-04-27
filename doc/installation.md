@@ -36,7 +36,7 @@ aropixel_menu:
 Apply migrations or update your schema:
 
 ```bash
-php bin/console doctrine:schema:update --force
+php bin/console doctrine:migrations:migrate
 ```
 
 ### 5. Assets and Stimulus
@@ -56,3 +56,9 @@ aropixel_menu:
     resource: '@AropixelMenuBundle/Resources/config/routes.yaml'
     prefix: /admin
 ```
+
+### 7. Front-end Link Resolution
+
+See [Front-end Usage](front-end.md) for Twig filters and link resolution.
+
+See [Custom Data Sources](sources.md) for adding custom source types with their own URL resolver.

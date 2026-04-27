@@ -1,0 +1,51 @@
+aropixel:
+  menu:
+    form:
+      instruction: "Spravujte své menu přidáváním položek z pravého sloupce.<br />Položky menu můžete přesouvat přetažením."
+      title: Titulek
+      add: Přidat
+      edit: Upravit
+      delete: Odstranit
+      save: Uložit
+      cancel: Zrušit
+      ok: Potvrdit
+      understood: Rozumím!
+
+      type:
+        link: Ruční odkaz
+        page: Obecná stránka
+        section: Sekce
+
+      link:
+        label: Popisek odkazu
+        label_placeholder: "Zadejte popisek"
+        url: URL odkazu
+        url_placeholder: "https://..."
+
+      section:
+        label: Popisek sekce
+        label_placeholder: "Zadejte popisek"
+
+      panels:
+        link:
+          title: Ruční odkaz
+          fields:
+            title: Text
+            link: Odkaz
+            target: Cíl
+        page:
+          title: Stránky
+        section:
+          title: Sekce
+
+      modals:
+        empty:
+          title: "Vyberte prosím položku"
+        required:
+          title: "Omlouváme se"
+          message: "<strong>Omlouváme se, tento odkaz je povinný.</strong><br />Nemůžete jej odstranit."
+        edit:
+          title: "Upravit položku menu"
+          fields:
+            text: Text odkazu
+            link: Cíl odkazu

@@ -21,6 +21,7 @@
 ## Table of contents
 
 - [Quick start](#quick-start)
+- [Languages](#languages)
 - [License](#license)
 
 
@@ -34,6 +35,15 @@
 aropixel_menu:
     resource: '@AropixelMenuBundle/Resources/config/routing.xml'
 ```
+
+## Languages
+The bundle is available in the following languages:
+- French
+- English
+- German
+- Spanish
+- Italian
+- Czech
 
 ## License
 Aropixel Menu Bundle is under the [MIT License](LICENSE)

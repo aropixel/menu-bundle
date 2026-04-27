@@ -1,0 +1,51 @@
+aropixel:
+  menu:
+    form:
+      instruction: "Gestisci il tuo menu aggiungendo elementi dalla colonna di destra.<br />Puoi spostare gli elementi del menu trascinandoli."
+      title: Titolo
+      add: Aggiungi
+      edit: Modifica
+      delete: Elimina
+      save: Salva
+      cancel: Annulla
+      ok: Valida
+      understood: Capito!
+
+      type:
+        link: Link manuale
+        page: Pagina generale
+        section: Sezione
+
+      link:
+        label: Etichetta del link
+        label_placeholder: "Inserisci un'etichetta"
+        url: URL del link
+        url_placeholder: "https://..."
+
+      section:
+        label: Etichetta della sezione
+        label_placeholder: "Inserisci un'etichetta"
+
+      panels:
+        link:
+          title: Link manuale
+          fields:
+            title: Testo
+            link: Link
+            target: Destinazione
+        page:
+          title: Pagine
+        section:
+          title: Sezione
+
+      modals:
+        empty:
+          title: "Seleziona un elemento"
+        required:
+          title: "Spiacenti"
+          message: "<strong>Spiacenti, questo link è obbligatorio.</strong><br />Non puoi eliminarlo."
+        edit:
+          title: "Modifica l'elemento del menu"
+          fields:
+            text: Testo del link
+            link: Destinazione del link

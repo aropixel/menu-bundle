@@ -19,3 +19,7 @@ services:
     Aropixel\MenuBundle\MenuHandler\MenuManager:
         public: true
         autowire: true
+
+    Aropixel\MenuBundle\Source\MenuSourceChain:
+        arguments:
+            - !tagged_iterator aropixel_menu.source

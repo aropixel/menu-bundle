@@ -16,6 +16,7 @@ class Configuration implements ConfigurationInterface
             ->fixXmlConfig('menu')
             ->children()
             ->scalarNode('entity')->defaultValue(Menu::class)->end()
+            ->scalarNode('page_route')->defaultValue('app_page_show')->end()
             ->arrayNode('menus')
             ->arrayPrototype()
             ->children()

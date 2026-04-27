@@ -45,4 +45,9 @@ interface MenuSourceInterface
      * Hydrates the Menu entity from the received data (payload).
      */
     public function mapToEntity(array $data, MenuInterface $menuItem): void;
+
+    /**
+     * Resolves the menu item to a URL for front-end rendering.
+     */
+    public function resolveUrl(MenuInterface $menuItem): string;
 }

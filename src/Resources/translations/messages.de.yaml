@@ -1,0 +1,51 @@
+aropixel:
+  menu:
+    form:
+      instruction: "Verwalten Sie Ihr Menü, indem Sie Elemente aus der rechten Spalte hinzufügen.<br />Sie können die Menüelemente per Drag & Drop verschieben."
+      title: Titel
+      add: Hinzufügen
+      edit: Bearbeiten
+      delete: Löschen
+      save: Speichern
+      cancel: Abbrechen
+      ok: Bestätigen
+      understood: Verstanden!
+
+      type:
+        link: Manueller Link
+        page: Allgemeine Seite
+        section: Abschnitt
+
+      link:
+        label: Link-Bezeichnung
+        label_placeholder: "Geben Sie eine Bezeichnung ein"
+        url: Link-URL
+        url_placeholder: "https://..."
+
+      section:
+        label: Abschnittsbezeichnung
+        label_placeholder: "Geben Sie eine Bezeichnung ein"
+
+      panels:
+        link:
+          title: Manueller Link
+          fields:
+            title: Text
+            link: Link
+            target: Ziel
+        page:
+          title: Seiten
+        section:
+          title: Abschnitt
+
+      modals:
+        empty:
+          title: "Bitte wählen Sie ein Element aus"
+        required:
+          title: "Entschuldigung"
+          message: "<strong>Entschuldigung, dieser Link ist obligatorisch.</strong><br />Sie können ihn nicht löschen."
+        edit:
+          title: "Menüelement bearbeiten"
+          fields:
+            text: Linktext
+            link: Linkziel

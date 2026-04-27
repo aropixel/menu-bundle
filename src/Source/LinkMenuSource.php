@@ -50,6 +50,11 @@ class LinkMenuSource implements MenuSourceInterface
         ];
     }
 
+    public function resolveUrl(MenuInterface $menuItem): string
+    {
+        return $menuItem->getLink() ?? '#';
+    }
+
     public function mapToEntity(array $data, MenuInterface $menuItem): void
     {
         $link = $data['link'] ?? null;

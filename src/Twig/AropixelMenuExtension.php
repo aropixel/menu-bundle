@@ -2,30 +2,27 @@
 
 namespace Aropixel\MenuBundle\Twig;
 
-use Aropixel\MenuBundle\Entity\Menu;
+use Aropixel\MenuBundle\Entity\MenuInterface;
 use Aropixel\MenuBundle\Provider\MenuProviderInterface;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Aropixel\MenuBundle\Source\MenuSourceChain;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
 
-abstract class AropixelMenuExtension extends AbstractExtension
+class AropixelMenuExtension extends AbstractExtension
 {
-    protected ?Request $request = null;
-
     public function __construct(
-        private readonly RequestStack $requestStack,
-        protected readonly UrlGeneratorInterface $router,
         private readonly MenuProviderInterface $menuProvider,
+        private readonly MenuSourceChain $sourceChain,
     ) {
-        $this->request = $requestStack->getCurrentRequest();
     }
 
     public function getFilters(): array
     {
-        return [new TwigFilter('get_link', $this->getLink(...)), new TwigFilter('is_section', $this->isSection(...))];
+        return [
+            new TwigFilter('get_link', $this->getLink(...)),
+            new TwigFilter('is_section', $this->isSection(...)),
+        ];
     }
 
     public function getFunctions(): array
@@ -33,15 +30,18 @@ abstract class AropixelMenuExtension extends AbstractExtension
         return [new TwigFunction('get_menu', $this->getMenu(...))];
     }
 
-    public function isSection(Menu $menu): bool
+    public function getLink(MenuInterface $menuItem): string
     {
-        return !$menu->getPage() && !$menu->getStaticPage() && !$menu->getLink();
+        return $this->sourceChain->resolveUrl($menuItem);
+    }
+
+    public function isSection(MenuInterface $menuItem): bool
+    {
+        return $this->sourceChain->isSection($menuItem);
     }
 
     public function getMenu(string $type): array
     {
         return $this->menuProvider->getMenu($type);
     }
-
-    abstract public function getLink(Menu $menuItem): string;
 }

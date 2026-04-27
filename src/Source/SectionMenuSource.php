@@ -47,6 +47,11 @@ class SectionMenuSource implements MenuSourceInterface
         return [];
     }
 
+    public function resolveUrl(MenuInterface $menuItem): string
+    {
+        return '#';
+    }
+
     public function mapToEntity(array $data, MenuInterface $menuItem): void
     {
         $menuItem->setLink(null);

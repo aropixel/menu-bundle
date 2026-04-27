@@ -28,6 +28,7 @@ class AropixelMenuExtension extends Extension implements PrependExtensionInterfa
         $container->setParameter('aropixel_menu.menus', $config['menus']);
         $container->setParameter('aropixel_menu.static_pages', $config['static_pages']);
         $container->setParameter('aropixel_menu.entity', $config['entity']);
+        $container->setParameter('aropixel_menu.page_route', $config['page_route']);
         $container->setParameter('aropixel_menu.cache.duration', $config['cache']);
 
         $container->registerForAutoconfiguration(MenuSourceInterface::class)

@@ -5,7 +5,9 @@ namespace Aropixel\MenuBundle\Source;
 use Aropixel\MenuBundle\Entity\MenuInterface;
 use Aropixel\PageBundle\Entity\Page;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class PageMenuSource implements MenuSourceInterface
@@ -13,7 +15,10 @@ class PageMenuSource implements MenuSourceInterface
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
         private readonly ParameterBagInterface $params,
-        private readonly TranslatorInterface $translator
+        private readonly TranslatorInterface $translator,
+        private readonly UrlGeneratorInterface $router,
+        #[Autowire('%aropixel_menu.page_route%')]
+        private readonly string $pageRoute,
     ) {
     }
 
@@ -91,6 +96,31 @@ class PageMenuSource implements MenuSourceInterface
         }
 
         return [];
+    }
+
+    public function resolveUrl(MenuInterface $menuItem): string
+    {
+        if ($menuItem->getStaticPage()) {
+            $staticPages = $this->params->get('aropixel_menu.static_pages');
+            $routeName = $staticPages[$menuItem->getStaticPage()] ?? null;
+            if ($routeName) {
+                try {
+                    return $this->router->generate($routeName);
+                } catch (\Exception) {
+                }
+            }
+
+            return '#';
+        }
+
+        if ($page = $menuItem->getPage()) {
+            try {
+                return $this->router->generate($this->pageRoute, ['slug' => $page->getSlug()]);
+            } catch (\Exception) {
+            }
+        }
+
+        return '#';
     }
 
     public function mapToEntity(array $data, MenuInterface $menuItem): void
