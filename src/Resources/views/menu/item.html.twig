@@ -18,10 +18,10 @@
         <div class="cell-menu" style="width:80px">
             <ul class="icons-list">
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown"><i class="fas fa-bars"></i></a>
-                    <div class="dropdown-menu dropdown-menu-right">
-                        <a class="dropdown-item cursor-pointer" data-action="click->aropixel-menu#openEditModal"><i class="fas fa-edit me-2"></i> {% trans %}aropixel.menu.form.edit{% endtrans %}</a>
-                        <a class="dropdown-item cursor-pointer text-danger" data-action="click->aropixel-menu#deleteRow"><i class="fas fa-trash me-2"></i> {% trans %}aropixel.menu.form.delete{% endtrans %}</a>
+                    <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown">{{ ux_icon('lucide:menu') }}</a>
+                    <div class="dropdown-menu dropdown-menu-end">
+                        <a class="dropdown-item cursor-pointer" data-action="click->aropixel-menu#openEditModal">{{ ux_icon('lucide:square-pen', {class: 'me-2'}) }} {% trans %}aropixel.menu.form.edit{% endtrans %}</a>
+                        <a class="dropdown-item cursor-pointer text-danger" data-action="click->aropixel-menu#deleteRow">{{ ux_icon('lucide:trash-2', {class: 'me-2'}) }} {% trans %}aropixel.menu.form.delete{% endtrans %}</a>
                     </div>
                 </li>
             </ul>
