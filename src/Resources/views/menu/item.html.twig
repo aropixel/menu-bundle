@@ -43,7 +43,7 @@
         {% if item.children is not empty %}
             <ol>
                 {% for sbitem in item.children %}
-                    {{ include('@AropixelMenu/menu/item.html.twig', {'item': sbitem, 'menuManager': menuManager}) }}
+                    {{ include('@AropixelMenu/menu/item.html.twig', {item: sbitem, menuManager: menuManager}) }}
                 {% endfor %}
             </ol>
         {% endif %}

@@ -5,10 +5,9 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    {#<link href="{{ asset('bundles/aropixeladmin/theme_ll/js/plugins/nestable/jquery-nestable/jquery.nestable.css') }}" rel="stylesheet" type="text/css">#}
+    {# <link href="{{ asset('bundles/aropixeladmin/theme_ll/js/plugins/nestable/jquery-nestable/jquery.nestable.css') }}" rel="stylesheet" type="text/css"> #}
     <link href="{{ asset('bundles/aropixelmenu/css/menu.css') }}" rel="stylesheet" type="text/css">
 {% endblock %}
-
 
 {% block javascripts %}
     {{ parent() }}
@@ -22,9 +21,8 @@
 {% block body %}
 
     <template id="template_row">
-        {% include '@AropixelMenu/menu/item.html.twig' %}
+        {{ include('@AropixelMenu/menu/item.html.twig') }}
     </template>
-
 
     <div class="row"
          data-controller="aropixel-menu"
@@ -38,7 +36,6 @@
     >
 
         <div class="col-md-8">
-
 
             <div class="card" id="panelMenu">
 
@@ -62,7 +59,7 @@
                 </div>
                 <ol class="menu" id="menu" data-aropixel-menu-target="menu">
                     {% for item in menu %}
-                        {{ include ('@AropixelMenu/menu/item.html.twig', {'item': item, 'menuManager': menuManager}) }}
+                        {{ include ('@AropixelMenu/menu/item.html.twig', {item: item, menuManager: menuManager}) }}
                     {% endfor %}
                 </ol>
 
@@ -77,10 +74,10 @@
                 <div class="card" id="panel-{{ source.name }}">
                     <div class="card-header">
                         {% set titleCard = 'aropixel.menu.form.panels.' ~ source.name ~ '.title' %}
-                        <h4 class="card-title">{{ titleCard | trans }}</h4>
+                        <h4 class="card-title">{{ titleCard|trans }}</h4>
                     </div>
                     <div class="card-body">
-                        {% include source.selectionTemplate with {'source': source, 'items': availableSource.items} %}
+                        {{ include(source.selectionTemplate, {source: source, items: availableSource.items}) }}
                     </div>
                     <div class="card-footer pt-0 text-right">
                         <button type="button"
@@ -145,6 +142,4 @@
     </div>
     <!-- /modal with basic title -->
 
-
 {% endblock %}
-

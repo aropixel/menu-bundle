@@ -12,7 +12,7 @@
                    data-source="{{ source.name }}"
             >
             <label class="form-check-label" for="{{ source.name }}{{ loop.index0 }}">
-                <span {{ resource.alreadyIncluded ? "style='color: #666;'" : "" }}>{{ resource.label }}</span>
+                <span {{ resource.alreadyIncluded ? "style='color: #666;'" : '' }}>{{ resource.label }}</span>
             </label>
         </div>
     {% endfor %}
