@@ -47,6 +47,16 @@ Since version 2.3, the Stimulus controller is **automatically detected** if you 
 
 The controller is registered under the name `aropixel-menu`.
 
+With **Webpack Encore** (no AssetMapper), register it yourself in `assets/bootstrap.js`:
+
+```js
+import { startStimulusApp } from '@symfony/stimulus-bundle';
+import AropixelMenuController from '../vendor/aropixel/menu-bundle/assets/aropixel_menu_controller.js';
+
+const app = startStimulusApp();
+app.register('aropixel-menu', AropixelMenuController);
+```
+
 ### 6. Including Routes
 
 Add the bundle routes in `config/routes.yaml`:

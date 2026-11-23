@@ -1,6 +1,12 @@
 import { Controller } from '@hotwired/stimulus';
 import { ModalDyn } from '/bundles/aropixeladmin/js/module/modal-dyn/modal-dyn.js';
 
+// jQuery and its plugins (nestedSortable) are loaded by the admin as classic scripts: use that
+// global instance explicitly. A bundler that provides its own `$` (Webpack Encore's
+// autoProvidejQuery, which also rewrites `window.jQuery`) would otherwise hand this controller
+// a jQuery without the plugin.
+const $ = globalThis.jQuery;
+
 /* stimulusFetch: 'lazy' */
 export default class extends Controller {
     static targets = ["menu", "saveButton", "modalEdit", "itemLabel", "itemLink", "validEdit", "manualLinkLabel", "manualLinkUrl", "sectionLabel"];
