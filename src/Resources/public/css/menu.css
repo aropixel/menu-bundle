@@ -41,15 +41,28 @@
 .panel-body + .menu li:first-child > div {
     border-top: 0;
 }
-.ui-sortable-helper {
-    display: table;
+/* Drag & drop (SortableJS). Every item carries a child list; an empty one takes room only while
+   dragging, so that an item can be dropped onto another to become its child. */
+#panelMenu .li-movable > .dd-handle {
+    cursor: move;
 }
-
+#panelMenu ol.is-dragging ol:empty {
+    min-height: 12px;
+}
 .placeholder {
     outline: 1px dashed #4183C4;
+    opacity: .6;
 }
-.mjs-nestedSortable-error {
-    outline: 1px dashed #ff958c;
-    background: #fbe3e4;
-    border-color: transparent;
+
+/* Saving: the panel is greyed out and inert until the request returns. */
+#panelMenu {
+    position: relative;
+}
+#panelMenu.is-saving::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(255, 255, 255, .8);
+    cursor: wait;
+    z-index: 10;
 }

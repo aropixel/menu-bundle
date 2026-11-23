@@ -5,17 +5,11 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    {# <link href="{{ asset('bundles/aropixeladmin/theme_ll/js/plugins/nestable/jquery-nestable/jquery.nestable.css') }}" rel="stylesheet" type="text/css"> #}
     <link href="{{ asset('bundles/aropixelmenu/css/menu.css') }}" rel="stylesheet" type="text/css">
 {% endblock %}
 
-{% block javascripts %}
-    {{ parent() }}
-    <script type="text/javascript" src="{{ asset('bundles/aropixeladmin/modules/jquery.mjs.nestedSortable.js') }}"></script>
-    <script type="module" src="{{ asset('bundles/aropixeladmin/js/module/modal-dyn/modal-dyn.js') }}"></script>
-    {# Without AssetMapper there is no importmap to resolve `@hotwired/stimulus`: loading the
-       controller here would only throw. The application registers it (see doc/installation.md). #}
-{% endblock %}
+{# The `aropixel-menu` Stimulus controller needs no script tag here: AssetMapper/StimulusBundle
+   pick it up from assets/, a Webpack Encore application registers it (see doc/installation.md). #}
 
 {% block body %}
 
@@ -23,8 +17,8 @@
         {{ include('@AropixelMenu/menu/item.html.twig') }}
     </template>
 
-    <div class="row"
-         data-controller="aropixel-menu"
+    {# The modals are targets of the controller too: it wraps them along with the grid. #}
+    <div data-controller="aropixel-menu"
          data-aropixel-menu-max-level-value="{{ menus[type_menu].depth }}"
          data-aropixel-menu-url-value="{{ path('aropixel_menu_save') }}"
          data-aropixel-menu-type-value="{{ type_menu }}"
@@ -33,6 +27,8 @@
          data-aropixel-menu-required-message-value="{% trans %}aropixel.menu.form.modals.required.message{% endtrans %}"
          data-aropixel-menu-strict-mode-value="{{ menus[type_menu].strict_mode ? 'true' : 'false' }}"
     >
+
+    <div class="row">
 
         <div class="col-md-8">
 
@@ -140,5 +136,7 @@
         </div>
     </div>
     <!-- /modal with basic title -->
+
+    </div>
 
 {% endblock %}
