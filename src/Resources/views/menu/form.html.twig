@@ -13,9 +13,8 @@
     {{ parent() }}
     <script type="text/javascript" src="{{ asset('bundles/aropixeladmin/modules/jquery.mjs.nestedSortable.js') }}"></script>
     <script type="module" src="{{ asset('bundles/aropixeladmin/js/module/modal-dyn/modal-dyn.js') }}"></script>
-    {% if not aropixel_asset_mapper_enabled %}
-        <script src="{{ asset('bundles/aropixelmenu/js/menu_controller.js') }}" type="module"></script>
-    {% endif %}
+    {# Without AssetMapper there is no importmap to resolve `@hotwired/stimulus`: loading the
+       controller here would only throw. The application registers it (see doc/installation.md). #}
 {% endblock %}
 
 {% block body %}
