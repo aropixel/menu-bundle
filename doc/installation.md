@@ -57,6 +57,18 @@ const app = startStimulusApp();
 app.register('aropixel-menu', AropixelMenuController);
 ```
 
+The controller imports its drag & drop library by web path
+(`/bundles/aropixelmenu/js/vendor/sortablejs/sortable.esm.js`), like the admin-bundle modules:
+alias that prefix in `webpack.config.js`:
+
+```js
+Encore.addAliases({
+    '/bundles/aropixelmenu': require('path').resolve(__dirname, 'vendor/aropixel/menu-bundle/src/Resources/public'),
+});
+```
+
+The controller does not use jQuery. It relies on the admin's global Bootstrap 5 (`bootstrap.Modal`).
+
 ### 6. Including Routes
 
 Add the bundle routes in `config/routes.yaml`:
